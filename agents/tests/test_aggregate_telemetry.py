@@ -11,7 +11,7 @@ import pytest
 import aggregate_telemetry as agg
 
 AGENTS_DIR = Path(__file__).resolve().parents[1]
-RESULTS_DIR = AGENTS_DIR.parent / "results"
+RESULTS_DIR = AGENTS_DIR.parent / "tests" / "fixtures"
 PRICING = AGENTS_DIR / "pricing.json"
 
 # A price config independent of the committed pricing.json, so cost-math tests
@@ -161,9 +161,8 @@ def test_projection_unpriced_model():
 
 
 def test_aggregation_over_committed_results():
-    """The committed results contains legacy (harness none) examples plus a
-    harness-carrying fixture. Aggregation must produce both, priced with the real
-    pricing.json."""
+    """The fixtures carry legacy (harness none) rows plus a harness-carrying one.
+    Aggregation must produce both, priced with the real pricing.json."""
     prices = agg.load_prices(PRICING)
     rows = agg.load_results(RESULTS_DIR)
     report = agg.build_report(rows, prices)
