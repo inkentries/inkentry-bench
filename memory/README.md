@@ -43,7 +43,7 @@ memory/decision_archaeology.py - runs five-condition comparison
 
 ### Committed question sets
 
-Per #237, three blind-authored question sets are committed:
+Three blind-authored question sets are committed:
 
 - `memory/questions-ripgrep.json` (11 questions)
 - `memory/questions-ruff.json` (11 questions)

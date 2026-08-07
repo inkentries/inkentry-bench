@@ -13,7 +13,8 @@
 #   --repos-dir DIR     checkout root              (default: repos)
 #   --dataset SLUG      HuggingFace dataset        (default: princeton-nlp/SWE-bench)
 #                       NOTE: full split used (not SWE-bench_Verified) so all 50 tasks
-#                       in tasks_50.json resolve — see issue #252.
+#                       in tasks_50.json resolve; see the note in
+#                       agents/README.md on the denominator gap.
 #   --retries N         max retries per git op     (default: 3)
 #   --git-timeout SEC   timeout per git command    (default: 120)
 #   -h|--help

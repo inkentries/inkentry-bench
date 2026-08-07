@@ -430,7 +430,7 @@ counts and the `tasks_50.json` overlap without writing.
 ### Overlap with `tasks_50.json`
 
 Of the 50-slice, **24** instances are in SWE-bench Verified (the other 26 come
-from the SWE-bench *full* split; see `setup_repos.sh`, issue #252). Only those
+from the SWE-bench *full* split; see `setup_repos.sh`). Only those
 24 can ever survive the filter; the survivor subset is reported by
 `build_filtered_tasks.py --overlap-with agents/tasks_50.json` once the
 label set is available.
@@ -541,7 +541,7 @@ before quoting a figure.
 
 Tests: `uv run --with pytest pytest agents/tests/ -v` (offline; covers
 grouping, legacy-none handling, cost/cache math, and projection). The committed
-`results/examples/swebench-harness-matrix-fixture.json` carries the
+`tests/fixtures/swebench-harness-matrix.json` carries the
 harness-matrix provenance fields so aggregation over a harness-carrying file is
 exercised end to end.
 
@@ -561,5 +561,5 @@ exercised end to end.
   empty results. `inkentry_full` is equivalent to `inkentry_search` for these
   repos. The condition differentiates only on repos with prior inkentry memory
   (Phase 6 benchmarks).
-- **Phase 6a prerequisite:** `inkentry context` (#201) must be merged before the
+- **Phase 6a prerequisite:** `inkentry context` must exist before the
   cross-session handoff benchmark can be scripted as described in the plan.

@@ -4,7 +4,7 @@
 # Creates a synthetic git repo with ~5000 commits and ~50 inkentry notes
 # (1% density), then times `inkentry memory list --backend git-notes`.
 #
-# Success criterion (from issue #186): <500ms for `list --limit 10` on a
+# Success criterion: <500ms for `list --limit 10` on a
 # 5k-commit repo.
 #
 # Usage:
@@ -95,7 +95,7 @@ run_timed() {
     printf "%-55s %4dms\n" "$label" "$elapsed_ms"
 
     if [[ "$label" == *"(primary)"* ]] && (( elapsed_ms > 500 )); then
-        echo "  ⚠️  EXCEEDS 500ms threshold — see issue #186 for mitigations"
+        echo "  ⚠️  EXCEEDS 500ms threshold"
     fi
 }
 

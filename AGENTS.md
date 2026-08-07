@@ -1,14 +1,13 @@
 # AGENTS.md — Benchmark Coding Conventions
 
-Operational findings and coding conventions for the `` directory.
-Companion to `AGENTS.md` at the repo root.
+Operational findings and coding conventions for this repository.
 
 ---
 
 ## Benchmark Design Principles
 
-These emerged from the benchmarking overhaul (issues #224–#232) and the
-original review in `tmp/benchmark-fix-plan.md`:
+These emerged from a review of the original benchmark suite, which failed most
+of them:
 
 1. **Every claim needs a control.** Multi-turn-with-inkentry must be compared
    against multi-turn-without-inkentry, not against single-shot. A lift that
@@ -23,16 +22,14 @@ original review in `tmp/benchmark-fix-plan.md`:
    results aren't in, say so explicitly. Don't list empty rows in the
    executive summary.
 
-### Scaffolding vs. Deliverable split
+### Scaffolding vs. deliverable split
 
-When a PR delivers the *framework* but not the *content* (e.g. benchmark script
-is ready but task corpus is placeholder), use `Refs #N` not `Closes #N`. File a
-follow-up issue for the content-authoring half. This pattern was used for:
-
-- #226 (blind protocol) → #237 (question sets)
-- #228 (handoff redesign) → #247 (task corpus)
-- #230 (graph benchmark) → #248 (task corpus)
-- #231 (perf orchestrator) → follow-up (scale runs)
+A benchmark lands in two halves: the framework, and the content it runs over —
+question sets, task corpora, labelled relevance judgements. Shipping the
+framework against a placeholder corpus is fine and often necessary, but it does
+not make the benchmark done. Track the content-authoring half as its own piece
+of work, and keep the README explicit about which half exists, so nobody reads
+a wired-up script as a measured result.
 
 ---
 
@@ -134,6 +131,7 @@ Smoke tests catch them; code review often misses them.
 - `memory/` — decision archaeology and cross-session handoff
 - `graph/` — code-graph retrieval
 - `codesearchnet/` — CodeSearchNet retrieval
+- `ownrepo/` — in-domain golden-set retrieval
 - `gemma/crosscodeeval/` — RepoBench cross-file completion
 - `perf_*.sh` — performance benchmarks
 
@@ -145,7 +143,7 @@ repo root would pollute the inkentry index. See `README.md` for setup.
 
 ### Output paths
 - Scratch results: `results/` (gitignored except `.gitignore`)
-- Committed baselines: `baselines/` (outside `` so scaffold hash is stable)
+- Committed baselines: none. See the Baselines section of README.md.
 - Plans and reports: `tmp/` (gitignored; use `git add -f` to commit)
 
 ### Configuration priority for API scripts

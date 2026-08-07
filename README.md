@@ -1,6 +1,96 @@
-# inkentry Benchmarks
+# inkentry-bench
 
-Developer-only scripts for measuring whether inkentry improves agent task completion and retrieval accuracy. Run manually before releases or after significant changes to the indexer, chunker, or embedding pipeline.
+Benchmark harness for [inkentry](https://github.com/inkentries/inkentry): retrieval
+quality, agent task completion, and indexing performance. Nothing here runs in
+CI — these are manual runs, taken before and after changes to the indexer,
+chunker, embedding pipeline, or ranking.
+
+---
+
+## Capture a retrieval baseline
+
+**Anything that changes how results are ranked needs a before/after number.**
+Some ranking regressions are invisible to tests: fusing scores computed under
+different embedding instruct prefixes, for instance, produces a plausible
+ordering that is quietly worse, and no assertion fails. A measured number is
+the only thing that catches it.
+
+One command, from a clean checkout:
+
+```bash
+INKENTRY_SECRET_STORE=file bash codesearchnet/run.sh --samples 500 --seed 0 --mode hybrid
+```
+
+That does all three phases: samples 500 CodeSearchNet Python functions, writes
+them to disk as a corpus, indexes the corpus with your current `inkentry`
+build, and queries it. It prints MRR@10, Recall@5 and Recall@10, and writes
+`results/codesearchnet-hybrid-<timestamp>.json`.
+
+**Then make your change, rebuild, and re-run with the same flags.** Two runs
+are comparable when `--samples`, `--seed`, `--languages` and `--mode` match and
+the corpus was rebuilt the same way; the result JSON records all of them plus
+the inkentry version, so a pair of files can be checked rather than trusted.
+
+Compare with:
+
+```bash
+python3 report.py results/codesearchnet-hybrid-<before>.json results/codesearchnet-hybrid-<after>.json
+```
+
+### Cost, and how to spend less of it
+
+Indexing is the slow phase — it embeds every chunk, and on a laptop CPU that is
+minutes for 500 functions and hours for a full repository. The query phase is
+seconds.
+
+- `--reuse-index` re-queries an existing corpus index. Use it to compare
+  `--mode hybrid` against `--mode text` or `--mode semantic` without paying to
+  index again. It is **not** valid for a before/after comparison of a change
+  that affects indexing, chunking or embedding — those need a fresh index.
+- `--reuse-corpus` keeps the materialized files but re-indexes them. This is
+  the right flag for a ranking change: identical corpus, new index.
+- `--samples 100` gives a fast smoke number. It is too small to trust for a
+  reported figure — expect several points of noise.
+
+### Options
+
+`--languages python` (comma-separated; CodeSearchNet ships go, java,
+javascript, php, python, ruby) · `--samples 500` · `--seed 0` ·
+`--mode hybrid|semantic|text|auto` · `--corpus-dir DIR` (default
+`~/.cache/inkentry-bench/codesearchnet`) · `--out FILE`
+
+### What the number means
+
+Each sample is a real function and its real docstring. The docstring is the
+query; a hit is that function appearing in the top 10.
+
+**The docstring is stripped from the indexed body**, because it is the query —
+leaving it in lets full-text search match the query against itself and score a
+perfect 1.0, which measures nothing and hides regressions. Pass
+`--keep-docstrings` to reproduce the leaky variant; the result JSON records
+which way it ran in `docstrings_kept`.
+
+The corpus is assembled from sampled functions rather than whole repositories,
+so absolute scores are not comparable to published CodeSearchNet numbers. They
+are comparable to *each other*, which is what a before/after needs.
+
+### The in-domain alternative
+
+`ownrepo/golden_eval.py` builds a golden set straight out of an existing index
+— every chunk with a symbol name and a doc comment becomes a (query, target)
+pair. No downloads, no corpus to build, and it measures retrieval over real
+inkentry code rather than sampled Python:
+
+```bash
+cd /path/to/indexed/repo
+INKENTRY_SECRET_STORE=file python3 /path/to/inkentry-bench/ownrepo/golden_eval.py \
+    --samples 150 --mode semantic --model-label <embedding-model>
+```
+
+It needs an already-indexed repository and is read-only on the database. Note
+the leakage caveat in its module docstring: inkentry's embedding text includes
+the doc comment, so absolute numbers run high. Fine for relative comparison,
+not for a published figure.
 
 ---
 
@@ -11,24 +101,37 @@ Developer-only scripts for measuring whether inkentry improves agent task comple
 | **Primary** | CrossCodeEval | gemma-4-e2b-it (local) | Pre-release |
 | **Primary** | SWE-bench | any OpenAI-compatible | Pre-release |
 | Secondary | SWE-bench (Claude) | claude-sonnet-4-6 | Major releases only |
-| Retrieval | CodeSearchNet | model-agnostic | On indexer/chunker changes |
+| Retrieval | CodeSearchNet | model-agnostic | On indexer/chunker/ranking changes |
+| Retrieval | Own-repo golden set | model-agnostic | On indexer/chunker/ranking changes |
 | Retrieval | Code-graph | model-agnostic | On graph/indexer changes |
-
----
-
-## Committed baselines
-
-Baseline results (no-inkentry condition) live in `baselines/` at the repo root and are committed to git. Normal runs execute only the inkentry condition and auto-compare against the baseline. See `baselines/README.md` for when and how to regenerate.
 
 ---
 
 ## Prerequisites
 
-**For Gemma benchmarks (primary):**
-- `uv` in PATH - run scripts use `uv run` and install Python deps automatically
-- Local OpenAI-compatible server at `http://127.0.0.1:1234` with `gemma-4-e2b-it` loaded
-- `inkentry` in PATH (build: `cargo build --release`)
-- Docker (SWE-bench only)
+- `inkentry` in PATH (build: `cargo build --release`). Set `INKENTRY_BIN` to
+  point at a specific binary instead.
+- **`INKENTRY_SECRET_STORE=file`.** Anything that links the inkentry crate
+  blocks forever on a keyring unlock prompt without it. The run scripts export
+  it; set it yourself when invoking a Python evaluator directly.
+- `uv` in PATH — run scripts use `uv run` and install Python deps from
+  `requirements.txt` automatically.
+- Docker, for SWE-bench only.
+- A local OpenAI-compatible server at `http://127.0.0.1:1234` with
+  `gemma-4-e2b-it` loaded, for the Gemma benchmarks only.
+
+## Baselines
+
+There are no committed baselines in this repository. Every benchmark here
+predates the rename from the previous product, and its recorded numbers were
+measured against that product's index, embedding model and ranking — they are
+not inkentry numbers and comparing against them would be misleading. Capture
+your own "before" run and keep the file.
+
+The two places where pre-rename measurements survive are labelled as such:
+`linearrag/results.json` and `linearrag/labels.json` (see `linearrag/README.md`).
+Fabricated test fixtures live in `tests/fixtures/` and are labelled too. Real
+runs land in `results/`, which is gitignored.
 
 ## SWE-bench repo setup
 
@@ -55,10 +158,10 @@ Options: `--tasks N` (first N only) · `--repos-dir DIR` · `--dataset SLUG`
 Measures whether `inkentry_search` helps complete lines that require symbols from other files. Uses [RepoBench-Python](https://huggingface.co/datasets/tianyang/repobench_python_v1.1), `cross_file_first` split: the completion point requires a symbol introduced in another file, making it the most relevant split for measuring inkentry's retrieval benefit.
 
 ```bash
-# Inkentry condition — compares against committed baseline automatically
+# Inkentry condition
 bash gemma/crosscodeeval/run.sh --condition inkentry --repo-path /path/to/indexed/repo
 
-# Regenerate baseline (run once after scaffold changes)
+# Control condition — run this too; there is no committed baseline to compare against
 bash gemma/crosscodeeval/run.sh --condition baseline --samples 400
 ```
 
@@ -151,13 +254,12 @@ python graph/evaluate.py --tasks graph/tasks.json --k 10
 
 ## CodeSearchNet — retrieval quality
 
-Model-agnostic. Measures how accurately `inkentry search` retrieves relevant code for natural-language queries.
+Model-agnostic. Measures how accurately `inkentry search` retrieves code for
+natural-language queries. `run.sh` builds and indexes its own corpus, so it does
+not need a repository indexed beforehand.
 
-```bash
-bash codesearchnet/run.sh --languages python --samples 1000
-```
-
-The target repo must be indexed before running: `inkentry index /path/to/repo`.
+See [Capture a retrieval baseline](#capture-a-retrieval-baseline) above for the
+full invocation, the comparability rules, and the docstring-leakage caveat.
 
 **Metrics:** `mrr_at_10`, `recall_at_5`, `recall_at_10`
 
@@ -166,7 +268,7 @@ The target repo must be indexed before running: `inkentry index /path/to/repo`.
 ## Comparing results
 
 ```bash
-python report.py baselines/crosscodeeval-gemma-4-e2b-it-baseline.json results/crosscodeeval-inkentry-<ts>.json
+python report.py results/crosscodeeval-baseline-<ts>.json results/crosscodeeval-inkentry-<ts>.json
 ```
 
 The inkentry run scripts print this comparison automatically when a baseline exists. You can also compare any two result files directly.
@@ -181,18 +283,21 @@ Example output:
 
 ---
 
-## Paired statistics (§6 reporting standard)
+## Paired statistics
 
 `report.py` gives a quick side-by-side of aggregate figures. For any *published*
-agentic comparison, use `paired_stats.py` instead: it applies the plan §6
-standards over per-task result files (arrays of records, or the post-harness
-`{"aggregate": ..., "tasks": [...]}` form).
+agentic comparison, use `paired_stats.py` instead: it applies the reporting
+standards below over per-task result files (arrays of records, or the
+post-harness `{"aggregate": ..., "tasks": [...]}` form).
 
 ```bash
 python paired_stats.py \
-    results/examples/swebench-local-baseline.json \
-    results/examples/swebench-local-inkentry.json
+    tests/fixtures/swebench-local-baseline.json \
+    tests/fixtures/swebench-local-treatment.json
 ```
+
+Those two files are fabricated input for exercising the tool, not measurements
+— see `tests/fixtures/README.md`.
 
 What it computes:
 
@@ -203,7 +308,7 @@ What it computes:
   task by majority vote before pairing.
 - **Bootstrap 95% CIs** over per-seed cell means (`mean +/- half-width [lo, hi]`),
   reproducible via a fixed RNG seed. Needs n>=3 seeds.
-- **Deterministic layers** (Track A retrieval, n=1) are stated as
+- **Deterministic layers** (retrieval benchmarks, n=1) are stated as
   `deterministic, n=1` rather than given a fabricated CI.
 - **Cell-labeled output:** every figure names its full cell (model, harness,
   condition, instance_filter, n). The tool **refuses (errors)** to aggregate
@@ -214,8 +319,8 @@ What it computes:
 **Power note:** the 50-task slice can only detect large effects (about +/-15pp).
 Headline claims must come from the filtered subset or the 150+ question set.
 
-Committed example fixtures live in `results/examples/`; real runs land in
-`results/` (gitignored).
+Fabricated fixtures live in `tests/fixtures/`; real runs land in `results/`
+(gitignored).
 
 ---
 
@@ -227,7 +332,7 @@ Committed example fixtures live in `results/examples/`; real runs land in
 | `edit_similarity` | CrossCodeEval | Average SequenceMatcher ratio between prediction and ground truth |
 | `identifier_recall` | CrossCodeEval | Fraction of identifiers in ground truth that appear in the prediction |
 | `resolve_rate` | SWE-bench | Fraction of tasks where the patch passes all tests (set by harness) |
-| `mrr_at_10` | CodeSearchNet | Mean Reciprocal Rank at 10 |
-| `recall_at_5/10` | CodeSearchNet | Fraction of queries where ground truth appears in top 5/10 results |
+| `mrr_at_10` | CodeSearchNet, own-repo | Mean Reciprocal Rank at 10 |
+| `recall_at_5/10` | CodeSearchNet, own-repo | Fraction of queries where ground truth appears in top 5/10 results |
 | `median_tokens_per_task` | SWE-bench | Median total tokens per task |
 | `median_wall_seconds` | All | Median wall-clock seconds per task/query |

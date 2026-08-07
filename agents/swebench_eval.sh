@@ -20,7 +20,7 @@
 #
 # NOTE: We default to the full SWE-bench split (not SWE-bench_Verified) because all
 # 50 tasks in tasks_50.json exist in the full split, whereas only 24/50 are in
-# SWE-bench_Verified — causing a 26-task denominator gap. See issue #252.
+# SWE-bench_Verified — causing a 26-task denominator gap.
 
 set -euo pipefail
 
