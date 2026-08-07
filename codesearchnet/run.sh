@@ -1,45 +1,91 @@
 #!/usr/bin/env bash
-# Thin wrapper around evaluate.py that adds a timestamp to the output filename.
+# Capture a CodeSearchNet retrieval number for the current inkentry build.
+#
+# Materializes the sampled corpus, indexes it, and evaluates against it, so a
+# bare invocation goes from nothing to a comparable number.
 #
 # Usage:
-#   bash codesearchnet/run.sh [--languages python,java] [--samples 1000] [--out FILE]
+#   bash codesearchnet/run.sh [--languages python] [--samples 500] [--seed 0]
+#                             [--mode hybrid] [--corpus-dir DIR] [--out FILE]
+#                             [--reuse-corpus] [--reuse-index]
 #
-# All arguments are forwarded to evaluate.py. If --out is not given, a
-# timestamped filename is generated under results/.
+# Two runs are comparable only if --languages, --samples and --seed match.
+# Indexing is the slow part; --reuse-index skips it when only the query side
+# changed, and --reuse-corpus keeps an already-materialized corpus.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BENCH_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Anything linking the inkentry crate blocks forever on a keyring prompt
+# without this.
+export INKENTRY_SECRET_STORE="${INKENTRY_SECRET_STORE:-file}"
+INKENTRY_BIN="${INKENTRY_BIN:-inkentry}"
+export INKENTRY_BIN
+
+LANGUAGES="python"
+SAMPLES="500"
+SEED="0"
+MODE="hybrid"
+CORPUS_DIR="${HOME}/.cache/inkentry-bench/codesearchnet"
+OUT=""
+REUSE_CORPUS=0
+REUSE_INDEX=0
 
 usage() {
     grep '^#' "$0" | grep -v '#!/' | sed 's/^# \?//'
     exit 1
 }
 
-# Check for -h/--help before forwarding args
-for arg in "$@"; do
-    case "$arg" in
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --languages) LANGUAGES="$2"; shift 2 ;;
+        --samples) SAMPLES="$2"; shift 2 ;;
+        --seed) SEED="$2"; shift 2 ;;
+        --mode) MODE="$2"; shift 2 ;;
+        --corpus-dir) CORPUS_DIR="$2"; shift 2 ;;
+        --out) OUT="$2"; shift 2 ;;
+        --reuse-corpus) REUSE_CORPUS=1; shift ;;
+        --reuse-index) REUSE_INDEX=1; REUSE_CORPUS=1; shift ;;
         -h|--help) usage ;;
+        *) echo "unknown argument: $1" >&2; usage ;;
     esac
 done
 
-# Build default output path with timestamp if --out not supplied
-TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-DEFAULT_OUT="${BENCH_DIR}/results/codesearchnet-inkentry-${TIMESTAMP}.json"
-
-# Check whether the caller passed --out
-HAS_OUT=0
-for arg in "$@"; do
-    if [[ "$arg" == "--out" ]]; then
-        HAS_OUT=1
-        break
-    fi
-done
-
-if [[ "$HAS_OUT" -eq 0 ]]; then
-    mkdir -p "${BENCH_DIR}/results"
-    exec python3 "${SCRIPT_DIR}/evaluate.py" "$@" --out "$DEFAULT_OUT"
-else
-    exec python3 "${SCRIPT_DIR}/evaluate.py" "$@"
+if ! command -v "$INKENTRY_BIN" >/dev/null 2>&1; then
+    echo "inkentry not found in PATH (set INKENTRY_BIN to override)" >&2
+    exit 1
 fi
+
+if [[ -z "$OUT" ]]; then
+    TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+    OUT="${REPO_DIR}/results/codesearchnet-${MODE}-${TIMESTAMP}.json"
+fi
+mkdir -p "$(dirname "$OUT")"
+
+PY=(python3)
+if command -v uv >/dev/null 2>&1; then
+    PY=(uv run --quiet --with-requirements "${REPO_DIR}/requirements.txt" python3)
+fi
+
+if [[ "$REUSE_CORPUS" -eq 0 ]]; then
+    echo "==> materializing corpus (${LANGUAGES}, ${SAMPLES}/lang, seed ${SEED})"
+    "${PY[@]}" "${SCRIPT_DIR}/evaluate.py" \
+        --materialize \
+        --corpus-dir "$CORPUS_DIR" \
+        --languages "$LANGUAGES" \
+        --samples "$SAMPLES" \
+        --seed "$SEED"
+fi
+
+if [[ "$REUSE_INDEX" -eq 0 ]]; then
+    echo "==> indexing corpus (this is the slow phase)"
+    "$INKENTRY_BIN" index "${CORPUS_DIR}/corpus"
+fi
+
+echo "==> evaluating (mode: ${MODE})"
+"${PY[@]}" "${SCRIPT_DIR}/evaluate.py" \
+    --corpus-dir "$CORPUS_DIR" \
+    --mode "$MODE" \
+    --out "$OUT"
