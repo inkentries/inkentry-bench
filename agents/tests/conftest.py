@@ -1,8 +1,8 @@
-"""Pytest bootstrap for bench/agents/tests/.
+"""Pytest bootstrap for agents/tests/.
 
-bench/agents/*.py are plain scripts (not an installed package), so make
+agents/*.py are plain scripts (not an installed package), so make
 them importable by name (harness_common, harness_opencode, ...) by putting
-bench/agents/ on sys.path. See tests/README-style header comment in
+agents/ on sys.path. See tests/README-style header comment in
 test_harness_common.py for the full run command.
 """
 

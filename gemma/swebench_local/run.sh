@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# DEPRECATED — use bench/agents/swebench_run.sh instead.
+# DEPRECATED — use agents/swebench_run.sh instead.
 #
 # This script was the original Gemma-local SWE-bench runner. It always outputs
 # "resolved": 0 because it never wires up the Docker harness. Use the unified
 # pipeline instead:
 #
-#   bash bench/agents/swebench_run.sh \
-#       --condition baseline|spelunk_search|spelunk_full \
+#   bash agents/swebench_run.sh \
+#       --condition baseline|inkentry_search|inkentry_full \
 #       --model gemma-4-e2b-it \
 #       --api-base-url http://127.0.0.1:1234/v1 \
 #       [--eval]   # add --eval to run Docker harness automatically
 #
-# See bench/agents/README.md for full pipeline documentation.
+# See agents/README.md for full pipeline documentation.
 # ---------------------------------------------------------------------------
 # Original script preserved below for reference. Do not use for benchmarking.
 # ---------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 # Run SWE-bench with the local Gemma model.
 #
 # Uses the same tasks_50.json as the Claude variant so results are directly
-# comparable. Repo checkouts are expected at bench/repos/<task_id>/ or
+# comparable. Repo checkouts are expected at repos/<task_id>/ or
 # at the path given by REPOS_DIR.
 #
 # NOTE: "resolved" and "resolve_rate" in output are always 0 — actual
@@ -27,18 +27,18 @@
 #   https://github.com/princeton-nlp/SWE-bench
 #
 # Usage:
-#   bash bench/gemma/swebench_local/run.sh --condition baseline|spelunk [options]
+#   bash gemma/swebench_local/run.sh --condition baseline|inkentry [options]
 #
 # Options:
-#   --condition    baseline|spelunk          (required)
+#   --condition    baseline|inkentry          (required)
 #   --tasks        N                         number of tasks (default: 50)
 #   --model        MODEL                     (default: gemma-4-e2b-it)
 #   --api-base-url URL                       (default: http://127.0.0.1:1234/v1)
-#   --out          DIR                       output directory (default: bench/results)
+#   --out          DIR                       output directory (default: results)
 
-echo "DEPRECATED: bench/gemma/swebench_local/run.sh always outputs resolved=0." >&2
-echo "Use bench/agents/swebench_run.sh --condition <cond> [--eval] instead." >&2
-echo "See bench/agents/README.md for the full pipeline." >&2
+echo "DEPRECATED: gemma/swebench_local/run.sh always outputs resolved=0." >&2
+echo "Use agents/swebench_run.sh --condition <cond> [--eval] instead." >&2
+echo "See agents/README.md for the full pipeline." >&2
 exit 1
 
 set -euo pipefail
@@ -75,35 +75,35 @@ done
 if [[ -z "$CONDITION" ]]; then
     echo "Error: --condition is required." >&2; usage
 fi
-if [[ "$CONDITION" != "baseline" && "$CONDITION" != "spelunk" ]]; then
-    echo "Error: --condition must be 'baseline' or 'spelunk'." >&2; exit 1
+if [[ "$CONDITION" != "baseline" && "$CONDITION" != "inkentry" ]]; then
+    echo "Error: --condition must be 'baseline' or 'inkentry'." >&2; exit 1
 fi
 
 if [[ "$CONDITION" == "baseline" ]]; then
     AGENT_SCRIPT="${SCRIPT_DIR}/agent_baseline.py"
 else
-    AGENT_SCRIPT="${SCRIPT_DIR}/agent_spelunk.py"
+    AGENT_SCRIPT="${SCRIPT_DIR}/agent_inkentry.py"
 fi
 
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 OUT_FILE="${OUT_DIR}/swebench-local-${CONDITION}-${TIMESTAMP}.json"
 mkdir -p "$OUT_DIR"
 
-SPELUNK_VERSION="unknown"
-if command -v spelunk &>/dev/null; then
-    SPELUNK_VERSION="$(spelunk --version 2>&1 | head -1 | awk '{print $NF}')"
+INKENTRY_VERSION="unknown"
+if command -v inkentry &>/dev/null; then
+    INKENTRY_VERSION="$(inkentry --version 2>&1 | head -1 | awk '{print $NF}')"
 fi
 
-SCAFFOLD_HASH="$(git -C "${REPO_ROOT}" log -1 --format="%H" -- bench/ 2>/dev/null || echo "unknown")"
+SCAFFOLD_HASH="$(git -C "${REPO_ROOT}" log -1 --format="%H" --  2>/dev/null || echo "unknown")"
 
-# Warn if committed baseline is stale (spelunk condition only)
-if [[ "$CONDITION" == "spelunk" ]]; then
+# Warn if committed baseline is stale (inkentry condition only)
+if [[ "$CONDITION" == "inkentry" ]]; then
     BASELINE_FILE="${BASELINES_DIR}/swebench-local-gemma-4-e2b-it-baseline.json"
     if [[ -f "$BASELINE_FILE" ]]; then
         BASELINE_HASH="$(python3 -c "import json; d=json.load(open('${BASELINE_FILE}')); print(d.get('scaffold_hash','unknown'))")"
         if [[ "$BASELINE_HASH" != "$SCAFFOLD_HASH" && "$BASELINE_HASH" != "unknown" ]]; then
             echo "Warning: committed baseline scaffold_hash (${BASELINE_HASH}) does not match"
-            echo "         current bench/ HEAD (${SCAFFOLD_HASH})."
+            echo "         current  HEAD (${SCAFFOLD_HASH})."
             echo "         Consider regenerating: bash $0 --condition baseline"
             echo ""
         fi
@@ -192,7 +192,7 @@ output = {
     "model":                  "${MODEL}",
     "model_source":           "local",
     "api_base_url":           "${API_BASE_URL}",
-    "spelunk_version":        "${SPELUNK_VERSION}",
+    "inkentry_version":        "${INKENTRY_VERSION}",
     "scaffold_hash":          "${SCAFFOLD_HASH}",
     "tasks_run":              len(task_results),
     "resolved":               0,
@@ -208,8 +208,8 @@ out_path.write_text(json.dumps(output, indent=2))
 print(f"Results written to: ${OUT_FILE}")
 PYEOF
 
-# Print comparison if spelunk condition and baseline exists
-if [[ "$CONDITION" == "spelunk" && -f "${BASELINES_DIR}/swebench-local-gemma-4-e2b-it-baseline.json" ]]; then
+# Print comparison if inkentry condition and baseline exists
+if [[ "$CONDITION" == "inkentry" && -f "${BASELINES_DIR}/swebench-local-gemma-4-e2b-it-baseline.json" ]]; then
     echo ""
     echo "=== Comparison vs committed baseline ==="
     python3 "${BENCH_DIR}/report.py" \

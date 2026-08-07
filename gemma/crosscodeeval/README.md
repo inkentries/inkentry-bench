@@ -1,6 +1,6 @@
 # RepoBench Cross-File Completion
 
-Evaluates spelunk's semantic search against RepoBench-Python cross-file
+Evaluates inkentry's semantic search against RepoBench-Python cross-file
 completion tasks.
 
 ## Conditions
@@ -10,12 +10,12 @@ completion tasks.
 | `baseline_single_shot` | 1 | none | Single-shot completion, no loop |
 | `multi_turn_no_tools` | <=5 | none | Same loop budget, no retrieval |
 | `naive_search` | <=5 | `read_file`, `run_grep` | Loop with grep-level tools |
-| `spelunk` | <=5 | `spelunk_search` | Loop with semantic search |
+| `inkentry` | <=5 | `inkentry_search` | Loop with semantic search |
 
 ## Indexed repo mismatch
 
 The RepoBench dataset spans 1,751 repos; no single repo has more than 86 tasks.
-Spelunk indexes a single repo, so naive sampling produces near-0% overlap.
+Inkentry indexes a single repo, so naive sampling produces near-0% overlap.
 
 ### Option A: Per-task indexing (most accurate, heavy)
 
@@ -33,14 +33,14 @@ For `--samples 50` runs, ccp2 is the only repo with comfortable headroom.
 
 ```bash
 git clone https://github.com/mpenning/ciscoconfparse2.git /tmp/ccp2
-spelunk index /tmp/ccp2
+inkentry index /tmp/ccp2
 
-python bench/gemma/crosscodeeval/evaluate.py \
-    --condition spelunk \
+python gemma/crosscodeeval/evaluate.py \
+    --condition inkentry \
     --repo-path /tmp/ccp2 \
     --repo-filter mpenning/ciscoconfparse2 \
     --samples 50 \
-    --out bench/results/repobench-spelunk-ccp2.json
+    --out results/repobench-inkentry-ccp2.json
 ```
 
 The `--repo-filter` flag ensures 100% overlap. The script cross-validates

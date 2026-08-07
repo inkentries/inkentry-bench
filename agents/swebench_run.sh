@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Orchestrate SWE-bench agent runs across the pinned 50-task set.
 #
-# Reads task IDs from bench/agents/tasks_50.json, expects repos to be
-# checked out at bench/repos/<task_id>/ (via bench/setup_repos.sh).
+# Reads task IDs from agents/tasks_50.json, expects repos to be
+# checked out at repos/<task_id>/ (via setup_repos.sh).
 #
-# This is the canonical batch orchestrator for bench/agents/ (see
-# bench/agents/README.md — batch_run.py is a retired duplicate, do not use
+# This is the canonical batch orchestrator for agents/ (see
+# agents/README.md — batch_run.py is a retired duplicate, do not use
 # it for new runs).
 #
 # Usage:
-#   bash bench/agents/swebench_run.sh \\
+#   bash agents/swebench_run.sh \\
 #       --condition baseline \\
 #       --harness none \\
 #       --model deepseek-v4-flash \\
@@ -18,10 +18,10 @@
 #       [--tasks 50] [--max-turns 20] [--seed 42] [--eval]
 #
 # Options:
-#   --condition     baseline|spelunk_search|spelunk_full   (required; valid for
+#   --condition     baseline|inkentry_search|inkentry_full   (required; valid for
 #                           every harness — opencode/claude-code reach the
-#                           spelunk tools over the bench-local MCP server, see
-#                           bench/agents/spelunk_mcp_server.py)
+#                           inkentry tools over the bench-local MCP server, see
+#                           agents/inkentry_mcp_server.py)
 #   --harness       none|opencode|claude-code               (default: none)
 #                   none:        agent.py's own tool-calling loop (component-clean cell)
 #                   opencode:    headless `opencode run`, DeepSeek via a generated
@@ -37,11 +37,11 @@
 #   --tasks         N       only run first N tasks (default: 50)
 #   --max-turns     N       max agent turns per task (default: 20)
 #   --seed          N       random seed (default: 42)
-#   --skip-index            skip spelunk index (if repos are pre-indexed;
-#                           applies to any harness on a spelunk condition)
-#   --repos-dir     DIR     checkout root (default: bench/repos)
+#   --skip-index            skip inkentry index (if repos are pre-indexed;
+#                           applies to any harness on a inkentry condition)
+#   --repos-dir     DIR     checkout root (default: repos)
 #   --patches-dir   DIR     where per-task .patch files are saved
-#                           (default: bench/patches/<condition>-<timestamp>)
+#                           (default: patches/<condition>-<timestamp>)
 #   --eval                  automatically run swebench_eval.sh after agent run
 #                           (requires Docker and swebench pip package)
 #
@@ -94,9 +94,9 @@ SHIM_BASE_URL=""
 DEEPSEEK_CLAUDE_BASE_URL="https://api.deepseek.com/anthropic"
 NO_DEEPSEEK=false
 
-# Default to the shared spelunk-bench checkout if it exists
-if [[ -d "${HOME}/opensource/spelunk-bench/repos" ]]; then
-    REPOS_DIR="${HOME}/opensource/spelunk-bench/repos"
+# Default to the shared inkentry-bench checkout if it exists
+if [[ -d "${HOME}/opensource/inkentry-bench/repos" ]]; then
+    REPOS_DIR="${HOME}/opensource/inkentry-bench/repos"
 else
     REPOS_DIR="${SCRIPT_DIR}/../repos"
 fi
@@ -141,13 +141,13 @@ case "$HARNESS" in
 esac
 
 # All three conditions are valid for all three harnesses: opencode and
-# claude-code reach the spelunk tools over the bench-local MCP server (see
-# bench/agents/spelunk_mcp_server.py). Validating the value here keeps the
+# claude-code reach the inkentry tools over the bench-local MCP server (see
+# agents/inkentry_mcp_server.py). Validating the value here keeps the
 # per-task result JSON's own "condition" field — which each harness script
 # sets from --condition — from ever recording a typo as a real cell.
 case "$CONDITION" in
-    baseline|spelunk_search|spelunk_full) ;;
-    *) echo "Error: --condition must be one of baseline|spelunk_search|spelunk_full (got: ${CONDITION})" >&2; exit 1 ;;
+    baseline|inkentry_search|inkentry_full) ;;
+    *) echo "Error: --condition must be one of baseline|inkentry_search|inkentry_full (got: ${CONDITION})" >&2; exit 1 ;;
 esac
 
 if [[ "$HARNESS" == "claude-code" && "$ENDPOINT_KIND" == "shim" && -z "$SHIM_BASE_URL" ]]; then
@@ -247,24 +247,24 @@ for TASK_ID in $ALL_TASK_IDS; do
         continue
     fi
 
-    # Condition, not harness, decides whether spelunk touches the repo: every
-    # harness reaches the same tools on a spelunk condition. Without the
-    # index the spelunk arm is a silent no-op that scores like baseline.
+    # Condition, not harness, decides whether inkentry touches the repo: every
+    # harness reaches the same tools on a inkentry condition. Without the
+    # index the inkentry arm is a silent no-op that scores like baseline.
     if [[ "$CONDITION" != "baseline" && "$SKIP_INDEX" != "true" ]]; then
         echo "  Indexing repo..."
-        spelunk index "$TASK_REPO" 2>&1 | tail -1 || true
+        inkentry index "$TASK_REPO" 2>&1 | tail -1 || true
     fi
 
-    # For spelunk_full: attempt memory harvest from git history.
+    # For inkentry_full: attempt memory harvest from git history.
     # Best-effort — single-commit SWE-bench repos have no harvestable history.
-    if [[ "$CONDITION" == "spelunk_full" ]]; then
+    if [[ "$CONDITION" == "inkentry_full" ]]; then
         echo "  Harvesting memory (best-effort)..."
-        spelunk memory harvest --git-range HEAD~50..HEAD "$TASK_REPO" 2>&1 | tail -1 || true
+        inkentry memory harvest --git-range HEAD~50..HEAD "$TASK_REPO" 2>&1 | tail -1 || true
     fi
 
     # Build the per-harness command. Each harness script takes the same
     # (task_id, repo_path, issue, model, seed, save-patch) core so that only
-    # the harness itself varies between cells (bench/AGENTS.md principle #1).
+    # the harness itself varies between cells (AGENTS.md principle #1).
     PATCH_FILE="${PATCHES_DIR}/${TASK_ID}.patch"
     case "$HARNESS" in
         none)
@@ -384,7 +384,7 @@ if [[ "$RUN_EVAL" == "true" ]]; then
 else
     echo ""
     echo "To compute resolve_rate, run the Docker harness:"
-    echo "  bash bench/agents/swebench_eval.sh \\"
+    echo "  bash agents/swebench_eval.sh \\"
     echo "      --results ${RESULTS_FILE} \\"
     echo "      --patches-dir ${PATCHES_DIR}"
     echo ""

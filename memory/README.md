@@ -2,17 +2,17 @@
 
 ## Decision Archaeology
 
-Measures whether spelunk memory can retrieve design rationale from git history
+Measures whether inkentry memory can retrieve design rationale from git history
 better than lexical search (grep, FTS5).
 
 ### Blindness Protocol
 
-Questions MUST be authored without access to the harvested spelunk memory
+Questions MUST be authored without access to the harvested inkentry memory
 database. The protocol:
 
 1. **Source material:** Read raw `git log` output for the target repo. Use
    `git log --format="%H %s"` or GitHub PR/commit pages. Do NOT run
-   `spelunk memory list` or `spelunk memory search`.
+   `inkentry memory list` or `inkentry memory search`.
 2. **Question authoring:** Write natural-language questions a developer would
    genuinely ask about the codebase's history. Examples:
    - "How does error handling work in the parser?"
@@ -21,9 +21,9 @@ database. The protocol:
 3. **Ground truth:** For each question, record the commit SHA(s) that best
    answer it. Derive this from the raw git log, NOT from memory entries.
 4. **Review:** Have the question set reviewed by a second party with no
-   access to the spelunk memory database. Record the reviewer and date
+   access to the inkentry memory database. Record the reviewer and date
    in the `reviewed_by` field.
-5. **Format:** Save as `bench/memory/questions-<repo>.json`:
+5. **Format:** Save as `memory/questions-<repo>.json`:
    ```json
    [
        {
@@ -37,54 +37,54 @@ database. The protocol:
 ### Script
 
 ```
-bench/memory/author_questions.py   - extracts git log for blind authoring
-bench/memory/decision_archaeology.py - runs five-condition comparison
+memory/author_questions.py   - extracts git log for blind authoring
+memory/decision_archaeology.py - runs five-condition comparison
 ```
 
 ### Committed question sets
 
 Per #237, three blind-authored question sets are committed:
 
-- `bench/memory/questions-ripgrep.json` (11 questions)
-- `bench/memory/questions-ruff.json` (11 questions)
-- `bench/memory/questions-tokio.json` (11 questions)
+- `memory/questions-ripgrep.json` (11 questions)
+- `memory/questions-ruff.json` (11 questions)
+- `memory/questions-tokio.json` (11 questions)
 
 33 questions total, each with `question`, `ground_truth_commit` (full 40-char
 SHA), and `reviewed_by`. All three repos were cloned fresh into a scratch
-directory outside this worktree; `bench/memory/raw-commits-<repo>.json` was
+directory outside this worktree; `memory/raw-commits-<repo>.json` was
 generated via `author_questions.py --num-commits 500` and used as the only
 source material (supplemented by reading the corresponding GitHub PR pages
-for commits with empty bodies). No `spelunk memory list`/`search` was run
+for commits with empty bodies). No `inkentry memory list`/`search` was run
 against any of the three repos during authoring. The previous
 `questions-ripgrep.json` (5 questions, derived from harvested memory) has
 been replaced rather than kept alongside the new set.
 
-Each set was reviewed by a second pass with no access to the spelunk memory
+Each set was reviewed by a second pass with no access to the inkentry memory
 database; see `reviewed_by: "ada (test-engineer) on 2026-06-10"` on every
 entry for the audit trail.
 
 ### Authoring workflow
 
 ```bash
-# 1. Export raw git log (no spelunk access)
-python bench/memory/author_questions.py \
+# 1. Export raw git log (no inkentry access)
+python memory/author_questions.py \
     --repo-path /path/to/repo \
     --num-commits 500 \
-    --out bench/memory/raw-commits-<repo>.json
+    --out memory/raw-commits-<repo>.json
 
-# 2. Read the raw-commits file (NOT spelunk memory output).
+# 2. Read the raw-commits file (NOT inkentry memory output).
 #    Author ≥10 questions per repo. Record ground-truth commit SHAs.
 
 # 3. Save questions
-#    (hand-write into bench/memory/questions-<repo>.json)
+#    (hand-write into memory/questions-<repo>.json)
 
 # 4. Index + harvest memory, then run benchmark
-spelunk index /path/to/repo
-cd /path/to/repo && spelunk memory harvest --git-range HEAD~500..HEAD
-python bench/memory/decision_archaeology.py \
+inkentry index /path/to/repo
+cd /path/to/repo && inkentry memory harvest --git-range HEAD~500..HEAD
+python memory/decision_archaeology.py \
     --repo-path /path/to/repo \
-    --questions bench/memory/questions-<repo>.json \
-    --out bench/results/archaeology-<repo>.json
+    --questions memory/questions-<repo>.json \
+    --out results/archaeology-<repo>.json
 ```
 
 ### Five conditions
@@ -95,7 +95,7 @@ python bench/memory/decision_archaeology.py \
 | `grep_keywords` | Regex-extracted keywords | `git log --grep` per keyword |
 | `fts_commit_messages` | Full question | SQLite FTS5 over all commit messages |
 | `vanilla_rag` | Full question | Plain embed-and-KNN over raw commit messages |
-| `memory_search` | Full question | `spelunk memory search` (semantic) |
+| `memory_search` | Full question | `inkentry memory search` (semantic) |
 
 `vanilla_rag` is the generic "any embedding store could do this" control: it
 embeds each raw commit message and the question with the same embedder, then
@@ -104,16 +104,16 @@ ranks by cosine similarity. No harvesting, LLM extraction, graph, or reranking
 gets from harvesting/extraction over plain embeddings of the same corpus
 `fts_commit_messages` indexes.
 
-Embeddings come from a running `spelunk-server` via its `/index/embed` endpoint
+Embeddings come from a running `inkentry-server` via its `/index/embed` endpoint
 (the native F2LLM-v2-330M embedder; embeddings are computed, never stored
 server-side). The embedding model + dimension are recorded under
 `vanilla_rag_provenance` in the results JSON. This layer is deterministic (n=1).
-Start the server first (`spelunk server start`); override the endpoint with
+Start the server first (`inkentry server start`); override the endpoint with
 `--embed-url` / `--embed-token` if it is not the default loopback address.
 
 ## Cross-Session Handoff
 
-Measures whether spelunk memory improves completion success for a fresh
+Measures whether inkentry memory improves completion success for a fresh
 agent picking up partially-completed work.
 
 ### Three conditions
@@ -126,7 +126,7 @@ agent picking up partially-completed work.
 
 ### Task format
 
-Tasks live in `bench/memory/handoff_tasks.json`:
+Tasks live in `memory/handoff_tasks.json`:
 
 ```json
 [
@@ -151,9 +151,9 @@ clones then attempt the task under the three conditions.
 Usage:
 
 ```bash
-python bench/memory/cross_session_handoff.py \
-    --tasks bench/memory/handoff_tasks.json \
+python memory/cross_session_handoff.py \
+    --tasks memory/handoff_tasks.json \
     --session-1-turns 5 \
     --session-2-turns 15 \
-    --out bench/results/handoff.json
+    --out results/handoff.json
 ```

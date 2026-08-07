@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# bench/perf_search.sh — spelunk search latency benchmark
+# perf_search.sh — inkentry search latency benchmark
 #
-# Times `spelunk search` across different query lengths and modes,
+# Times `inkentry search` across different query lengths and modes,
 # reporting p50/p95/p99 latency.
 #
 # Usage:
-#   ./bench/perf_search.sh [REPO_PATH]
+#   ./perf_search.sh [REPO_PATH]
 #
 # Prerequisites:
 #   - Repo must already be indexed
@@ -13,12 +13,12 @@
 
 set -euo pipefail
 
-SPELUNK="${SPELUNK:-spelunk}"
+INKENTRY="${INKENTRY:-inkentry}"
 REPO="${1:-.}"
 
 echo "=== Search latency ==="
 echo "Repo:   ${REPO}"
-echo "Binary: ${SPELUNK}"
+echo "Binary: ${INKENTRY}"
 echo
 
 # Queries of varying lengths
@@ -41,7 +41,7 @@ for mode in "${MODES[@]}"; do
 
         for _ in $(seq 1 $ITER); do
             start=$(python3 -c "import time; print(int(time.time()*1000))")
-            "$SPELUNK" search "$q" --mode "$mode" --limit 5 --format json > /dev/null 2>&1
+            "$INKENTRY" search "$q" --mode "$mode" --limit 5 --format json > /dev/null 2>&1
             end=$(python3 -c "import time; print(int(time.time()*1000))")
             elapsed=$(( end - start ))
             RUN_TIMES+=("$elapsed")

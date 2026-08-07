@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Compare spelunk benchmark results across two or more result JSON files.
+"""Compare inkentry benchmark results across two or more result JSON files.
 
 Usage:
-    python bench/report.py results/run-a.json results/run-b.json [results/run-c.json ...]
+    python report.py results/run-a.json results/run-b.json [results/run-c.json ...]
 """
 
 import json
@@ -30,7 +30,7 @@ def make_row(result: dict) -> dict:
         "benchmark": result.get("benchmark", "unknown"),
         "condition": result.get("condition", "unknown"),
         "model": model_label,
-        "spelunk_version": result.get("spelunk_version", "unknown"),
+        "inkentry_version": result.get("inkentry_version", "unknown"),
         # SWE-bench
         "resolve_rate": result.get("resolve_rate"),
         # CodeSearchNet
@@ -49,7 +49,7 @@ HEADERS = [
     ("benchmark",            "benchmark"),
     ("condition",            "condition"),
     ("model",                "model"),
-    ("spelunk_version",      "spelunk_ver"),
+    ("inkentry_version",      "inkentry_ver"),
     ("resolve_rate",         "resolve_rate"),
     ("mrr_at_10",            "mrr@10"),
     ("exact_match",          "exact_match"),
@@ -98,7 +98,7 @@ def print_markdown_table(rows: list[dict]) -> None:
 
 def main() -> None:
     if len(sys.argv) < 3:
-        print("Usage: python bench/report.py <result1.json> <result2.json> [...]", file=sys.stderr)
+        print("Usage: python report.py <result1.json> <result2.json> [...]", file=sys.stderr)
         sys.exit(1)
 
     rows = []

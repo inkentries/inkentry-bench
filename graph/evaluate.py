@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Code-graph benchmark — grep vs spelunk_search vs spelunk_graph.
+"""Code-graph benchmark — grep vs inkentry_search vs inkentry_graph.
 
 For each task (a symbol in an indexed repo), runs three conditions and
 measures how well each retrieves the ground-truth set of files containing
@@ -7,20 +7,20 @@ callers/callees/implementers of that symbol.
 
 Conditions:
     grep           — git grep <symbol> over the repo
-    spelunk_search — spelunk search <symbol> (semantic)
-    spelunk_graph  — spelunk graph <symbol> --format json
+    inkentry_search — inkentry search <symbol> (semantic)
+    inkentry_graph  — inkentry graph <symbol> --format json
 
 Metrics: precision@k, recall@k, F1. No LLM, no API costs.
 
 Usage:
-    python bench/graph/evaluate.py \\
-        --tasks bench/graph/tasks.json \\
-        --repos-dir ~/spelunk-bench/repos \\
+    python graph/evaluate.py \\
+        --tasks graph/tasks.json \\
+        --repos-dir ~/inkentry-bench/repos \\
         --k 10 \\
-        --out bench/results/graph.json
+        --out results/graph.json
 
     # or via environment variable:
-    SPELUNK_BENCH_REPOS=~/spelunk-bench/repos python bench/graph/evaluate.py ...
+    INKENTRY_BENCH_REPOS=~/inkentry-bench/repos python graph/evaluate.py ...
 
 Task format (JSON):
     [
@@ -47,7 +47,7 @@ def run_grep(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
     """Return set of file paths containing the symbol via git grep, capped at limit."""
     try:
         result = subprocess.run(
-            ["git", "grep", "-wl", symbol, "--", ":!.spelunk"],
+            ["git", "grep", "-wl", symbol, "--", ":!.inkentry"],
             cwd=repo_path,
             capture_output=True,
             text=True,
@@ -61,11 +61,11 @@ def run_grep(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
         return set()
 
 
-def run_spelunk_search(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
-    """Return set of file paths from spelunk search results."""
+def run_inkentry_search(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
+    """Return set of file paths from inkentry search results."""
     try:
         result = subprocess.run(
-            ["spelunk", "search", symbol, "--limit", str(limit), "--format", "json"],
+            ["inkentry", "search", symbol, "--limit", str(limit), "--format", "json"],
             cwd=repo_path,
             capture_output=True,
             text=True,
@@ -79,11 +79,11 @@ def run_spelunk_search(repo_path: Path, symbol: str, limit: int = 10) -> set[str
         return set()
 
 
-def run_spelunk_graph(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
-    """Return set of file paths from spelunk graph results."""
+def run_inkentry_graph(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
+    """Return set of file paths from inkentry graph results."""
     try:
         result = subprocess.run(
-            ["spelunk", "graph", symbol, "--format", "json"],
+            ["inkentry", "graph", symbol, "--format", "json"],
             cwd=repo_path,
             capture_output=True,
             text=True,
@@ -126,10 +126,10 @@ def f1(p: float, r: float) -> float:
     return 2 * p * r / (p + r)
 
 
-def get_spelunk_version() -> str:
+def get_inkentry_version() -> str:
     try:
         r = subprocess.run(
-            ["spelunk", "--version"], capture_output=True, text=True, timeout=5
+            ["inkentry", "--version"], capture_output=True, text=True, timeout=5
         )
         return r.stdout.strip()
     except Exception:
@@ -141,8 +141,8 @@ def main():
     parser.add_argument("--tasks", required=True, help="Tasks JSON file.")
     parser.add_argument(
         "--repos-dir",
-        default=os.environ.get("SPELUNK_BENCH_REPOS"),
-        help="Directory containing benchmark repos (overrides $SPELUNK_BENCH_REPOS).",
+        default=os.environ.get("INKENTRY_BENCH_REPOS"),
+        help="Directory containing benchmark repos (overrides $INKENTRY_BENCH_REPOS).",
     )
     parser.add_argument("--k", type=int, default=10, help="Result limit (default: 10).")
     parser.add_argument("--out", default=None)
@@ -150,7 +150,7 @@ def main():
 
     if not args.repos_dir:
         parser.error(
-            "Provide --repos-dir or set $SPELUNK_BENCH_REPOS to the directory "
+            "Provide --repos-dir or set $INKENTRY_BENCH_REPOS to the directory "
             "containing the benchmark repos."
         )
     repos_dir = Path(args.repos_dir).expanduser().resolve()
@@ -163,8 +163,8 @@ def main():
 
     conditions = {
         "grep": {"precisions": [], "recalls": [], "f1s": [], "wall": []},
-        "spelunk_search": {"precisions": [], "recalls": [], "f1s": [], "wall": []},
-        "spelunk_graph": {"precisions": [], "recalls": [], "f1s": [], "wall": []},
+        "inkentry_search": {"precisions": [], "recalls": [], "f1s": [], "wall": []},
+        "inkentry_graph": {"precisions": [], "recalls": [], "f1s": [], "wall": []},
     }
 
     for i, task in enumerate(tasks):
@@ -176,8 +176,8 @@ def main():
 
         for cond_name, runners in [
             ("grep", lambda: run_grep(repo_path, symbol, args.k)),
-            ("spelunk_search", lambda: run_spelunk_search(repo_path, symbol, args.k)),
-            ("spelunk_graph", lambda: run_spelunk_graph(repo_path, symbol, args.k)),
+            ("inkentry_search", lambda: run_inkentry_search(repo_path, symbol, args.k)),
+            ("inkentry_graph", lambda: run_inkentry_graph(repo_path, symbol, args.k)),
         ]:
             start = time.monotonic()
             retrieved = runners()
@@ -199,7 +199,7 @@ def main():
 
     output = {
         "benchmark": "code_graph",
-        "spelunk_version": get_spelunk_version(),
+        "inkentry_version": get_inkentry_version(),
         "k": args.k,
         "num_tasks": len(tasks),
         "timestamp": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),

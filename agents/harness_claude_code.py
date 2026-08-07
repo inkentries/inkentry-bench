@@ -4,7 +4,7 @@
 Sibling of agent.py and harness_opencode.py, but shells out to `claude -p`
 (Claude Code's non-interactive mode) instead of a hand-rolled tool-calling
 loop or opencode. Only the harness varies between cells — task repo, issue
-text, and model identity are held constant (bench/AGENTS.md principle #1).
+text, and model identity are held constant (AGENTS.md principle #1).
 
 Two endpoint modes for reaching DeepSeek from Claude Code:
 
@@ -13,7 +13,7 @@ Two endpoint modes for reaching DeepSeek from Claude Code:
       overrides: ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic,
       ANTHROPIC_AUTH_TOKEN=$DEEPSEEK_API_KEY, ANTHROPIC_MODEL=deepseek-v4-flash.
       Verified against DeepSeek's live docs (api-docs.deepseek.com) at
-      build time — see bench/agents/README.md for the citation and for the
+      build time — see agents/README.md for the citation and for the
       one caveat: the docs show ANTHROPIC_AUTH_TOKEN, not ANTHROPIC_API_KEY;
       using the wrong var name is a documented silent-failure mode elsewhere
       in this codebase's tooling, so both are exported defensively (see
@@ -33,22 +33,22 @@ always pinned and recorded, per spec point 4, so future Claude-model cells
 stay reproducible.
 
 Usage:
-    python bench/agents/harness_claude_code.py \\
+    python agents/harness_claude_code.py \\
         --task-id django__django-11099 \\
         --repo-path /path/to/repo \\
-        --issue bench/repos/django__django-11099/ISSUE.txt \\
+        --issue repos/django__django-11099/ISSUE.txt \\
         --model deepseek-v4-flash \\
         --api-key "$DEEPSEEK_API_KEY" \\
-        [--effort high] [--seed 42] [--save-patch bench/patches/.../task.patch]
+        [--effort high] [--seed 42] [--save-patch patches/.../task.patch]
 
     # Anthropic-compat endpoint misbehaves -> shim fallback:
-    python bench/agents/harness_claude_code.py \\
+    python agents/harness_claude_code.py \\
         --task-id django__django-11099 --repo-path ... --issue ... \\
         --model deepseek-v4-flash --api-key "$DEEPSEEK_API_KEY" \\
         --endpoint-kind shim --shim-base-url http://127.0.0.1:4000
 
 Output: single JSON object on stdout (same reproducibility contract as
-agent.py, plus the harness-dimension fields — see bench/agents/README.md).
+agent.py, plus the harness-dimension fields — see agents/README.md).
 """
 
 import argparse
@@ -60,11 +60,11 @@ import tempfile
 import time
 from pathlib import Path
 
-from agent import get_spelunk_version
+from agent import get_inkentry_version
 from harness_common import CONDITIONS, build_system_prompt, extract_patch, read_issue_text
-from spelunk_mcp_server import (
+from inkentry_mcp_server import (
     SERVER_NAME,
-    SPELUNK_CONDITIONS,
+    INKENTRY_CONDITIONS,
     mcp_server_command,
     mcp_tool_names_for_condition,
     read_telemetry,
@@ -101,7 +101,7 @@ def _deepseek_anthropic_env(api_key: str, model: str, base_url: str) -> dict:
     DeepSeek's live docs, api-docs.deepseek.com/guides/anthropic_api and
     .../quick_start/agent_integrations/claude_code, 2026-07-04) and
     ANTHROPIC_API_KEY (belt-and-braces, in case a Claude Code version reads
-    the more generic name instead) — see bench/agents/README.md for the
+    the more generic name instead) — see agents/README.md for the
     citation. Exporting an unused extra env var is harmless; silently
     picking the wrong one and falling through to the user's own Anthropic
     credentials would not be (it would misattribute a Claude-native run as
@@ -118,7 +118,7 @@ def _deepseek_anthropic_env(api_key: str, model: str, base_url: str) -> dict:
 def write_mcp_config(
     config_dir: Path, condition: str, repo_path: Path, telemetry_log: Path | None
 ) -> Path:
-    """Write a --mcp-config JSON registering the bench-local spelunk server.
+    """Write a --mcp-config JSON registering the bench-local inkentry server.
 
     Written outside repo_path so it can never land in the extracted patch.
     """
@@ -128,7 +128,7 @@ def write_mcp_config(
             SERVER_NAME: {
                 "command": argv[0],
                 "args": argv[1:],
-                "env": {"SPELUNK_SECRET_STORE": "file"},
+                "env": {"INKENTRY_SECRET_STORE": "file"},
             }
         }
     }
@@ -159,11 +159,11 @@ def build_claude_cmd(
         # the comparison is unpublishable.
         "--strict-mcp-config",
     ]
-    if condition in SPELUNK_CONDITIONS and mcp_config_path:
+    if condition in INKENTRY_CONDITIONS and mcp_config_path:
         cmd += ["--mcp-config", str(mcp_config_path)]
         # acceptEdits covers file edits, not MCP tool calls; a headless -p run
         # that hits a permission prompt is a lost cell. Each tool is named in
-        # full: whether the `mcp__spelunk` server-wide shorthand is honoured
+        # full: whether the `mcp__inkentry` server-wide shorthand is honoured
         # is unverified, and naming them keeps the allow-list condition-gated
         # independently of what the server advertises.
         cmd += ["--allowedTools", *mcp_tool_names_for_condition(condition)]
@@ -186,7 +186,7 @@ def run_claude_code(
         CLAUDE_CODE_PROMPT_PREFIX,
         condition,
         mcp_tool_names_for_condition(condition)
-        if condition in SPELUNK_CONDITIONS
+        if condition in INKENTRY_CONDITIONS
         else [],
     )
     prompt = (
@@ -249,9 +249,9 @@ def main() -> None:
         default="baseline",
         choices=list(CONDITIONS),
         help=(
-            "Recorded verbatim in provenance as condition. On a spelunk "
-            "condition the spelunk tools are wired in over a bench-local MCP "
-            "server — see bench/agents/README.md. The deepseek-vs-native "
+            "Recorded verbatim in provenance as condition. On a inkentry "
+            "condition the inkentry tools are wired in over a bench-local MCP "
+            "server — see agents/README.md. The deepseek-vs-native "
             "distinction lives in endpoint_kind, not here."
         ),
     )
@@ -353,11 +353,11 @@ def main() -> None:
         env = _deepseek_anthropic_env(api_key, args.model, base_url_used)
         endpoint_kind = args.endpoint_kind
 
-    scratch_dir = Path(tempfile.mkdtemp(prefix="spelunk-bench-mcp-"))
+    scratch_dir = Path(tempfile.mkdtemp(prefix="inkentry-bench-mcp-"))
     telemetry_log = scratch_dir / "tool_calls.jsonl"
     mcp_config_path = (
         write_mcp_config(scratch_dir, args.condition, repo_path, telemetry_log)
-        if args.condition in SPELUNK_CONDITIONS
+        if args.condition in INKENTRY_CONDITIONS
         else None
     )
 
@@ -391,9 +391,9 @@ def main() -> None:
         "model_source": "api",
         "api_base_url": base_url_used,
         "api_key_source": provenance_label,
-        # Null only on baseline, where no spelunk tools are wired in.
-        "spelunk_version": (
-            get_spelunk_version() if args.condition in SPELUNK_CONDITIONS else None
+        # Null only on baseline, where no inkentry tools are wired in.
+        "inkentry_version": (
+            get_inkentry_version() if args.condition in INKENTRY_CONDITIONS else None
         ),
         "seed": args.seed,
         "run_seed": args.seed,

@@ -5,27 +5,27 @@ Sibling of agent.py, but instead of our own OpenAI-compatible tool-calling
 loop, this shells out to the `opencode` CLI in headless mode (`opencode run`)
 so the same (task, model, condition) cell can be compared across harnesses.
 Only the harness varies — everything else (task repo, issue text, model,
-patch-extraction convention) is held constant (bench/AGENTS.md principle #1).
+patch-extraction convention) is held constant (AGENTS.md principle #1).
 
 DeepSeek is wired in via opencode's native custom-provider mechanism: a
 generated `opencode.json` in the task repo registers a
 "deepseek" provider using the @ai-sdk/openai-compatible npm adapter, pointed
 at DeepSeek's own /v1 endpoint (not the Anthropic-compat one — that's the
-claude-code harness's path). See bench/agents/README.md for the exact
+claude-code harness's path). See agents/README.md for the exact
 provider block.
 
 Usage:
-    python bench/agents/harness_opencode.py \\
+    python agents/harness_opencode.py \\
         --task-id django__django-11099 \\
         --repo-path /path/to/repo \\
-        --issue bench/repos/django__django-11099/ISSUE.txt \\
+        --issue repos/django__django-11099/ISSUE.txt \\
         --model deepseek-v4-flash \\
         --api-base-url https://api.deepseek.com/v1 \\
         --api-key "$DEEPSEEK_API_KEY" \\
-        [--max-turns 20] [--seed 42] [--save-patch bench/patches/.../task.patch]
+        [--max-turns 20] [--seed 42] [--save-patch patches/.../task.patch]
 
 Output: single JSON object on stdout (same reproducibility contract as
-agent.py, plus the harness-dimension fields — see bench/agents/README.md).
+agent.py, plus the harness-dimension fields — see agents/README.md).
 """
 
 import argparse
@@ -37,17 +37,17 @@ import tempfile
 import time
 from pathlib import Path
 
-from agent import get_spelunk_version
+from agent import get_inkentry_version
 from harness_common import CONDITIONS, build_system_prompt, extract_patch, read_issue_text
-from spelunk_mcp_server import (
+from inkentry_mcp_server import (
     SERVER_NAME,
-    SPELUNK_CONDITIONS,
+    INKENTRY_CONDITIONS,
     mcp_server_command,
     mcp_tool_names_for_condition,
     read_telemetry,
 )
 
-PROVIDER_ID = "spelunk-bench-deepseek"
+PROVIDER_ID = "inkentry-bench-deepseek"
 
 OPENCODE_SYSTEM_PROMPT = (
     "You are an expert software engineer. You are given a GitHub issue and a "
@@ -93,8 +93,8 @@ def write_provider_config(
 ) -> Path:
     """Write an opencode.json in the task repo registering DeepSeek as a
     custom OpenAI-compatible provider (native DeepSeek endpoint — not the
-    Anthropic-compat shim used by the claude-code harness), plus the spelunk
-    MCP server on a spelunk condition.
+    Anthropic-compat shim used by the claude-code harness), plus the inkentry
+    MCP server on a inkentry condition.
 
     Scoped to the repo directory (not global ~/.config/opencode/) so
     concurrent/parallel task runs never race on a shared config file, and so
@@ -105,7 +105,7 @@ def write_provider_config(
         "provider": {
             PROVIDER_ID: {
                 "npm": "@ai-sdk/openai-compatible",
-                "name": "DeepSeek (spelunk-bench)",
+                "name": "DeepSeek (inkentry-bench)",
                 "options": {
                     "baseURL": api_base_url,
                     "apiKey": api_key,
@@ -116,12 +116,12 @@ def write_provider_config(
             }
         },
     }
-    if condition in SPELUNK_CONDITIONS:
+    if condition in INKENTRY_CONDITIONS:
         config["mcp"] = {
             SERVER_NAME: {
                 "type": "local",
                 "command": mcp_server_command(condition, repo_path, telemetry_log),
-                "environment": {"SPELUNK_SECRET_STORE": "file"},
+                "environment": {"INKENTRY_SECRET_STORE": "file"},
                 "enabled": True,
             }
         }
@@ -144,7 +144,7 @@ def run_opencode(
     system_prompt = build_system_prompt(
         OPENCODE_SYSTEM_PROMPT,
         condition,
-        mcp_tool_names_for_condition(condition) if condition in SPELUNK_CONDITIONS else [],
+        mcp_tool_names_for_condition(condition) if condition in INKENTRY_CONDITIONS else [],
     )
     prompt = (
         f"{system_prompt}\n\n"
@@ -229,9 +229,9 @@ def main() -> None:
         default="baseline",
         choices=list(CONDITIONS),
         help=(
-            "Recorded verbatim in provenance as condition. On a spelunk "
-            "condition the spelunk tools are wired in over a bench-local MCP "
-            "server — see bench/agents/README.md."
+            "Recorded verbatim in provenance as condition. On a inkentry "
+            "condition the inkentry tools are wired in over a bench-local MCP "
+            "server — see agents/README.md."
         ),
     )
     parser.add_argument("--task-id", required=True)
@@ -269,7 +269,7 @@ def main() -> None:
     opencode_cmd = get_opencode_command()
     opencode_version = get_opencode_version(opencode_cmd)
 
-    scratch_dir = Path(tempfile.mkdtemp(prefix="spelunk-bench-mcp-"))
+    scratch_dir = Path(tempfile.mkdtemp(prefix="inkentry-bench-mcp-"))
     telemetry_log = scratch_dir / "tool_calls.jsonl"
 
     config_path = write_provider_config(
@@ -312,7 +312,7 @@ def main() -> None:
         # opencode has no effort/thinking concept of its own (that's a
         # claude-code-harness-only knob) -- always null here so every
         # harness's result JSON is a strict key-superset of the documented
-        # provenance contract (bench/agents/README.md "Reproducibility /
+        # provenance contract (agents/README.md "Reproducibility /
         # provenance contract"), never a per-harness subset.
         "effort": None,
         "thinking": None,
@@ -320,9 +320,9 @@ def main() -> None:
         "model_source": "api",
         "api_base_url": args.api_base_url,
         "api_key_source": provenance_label,
-        # Null only on baseline, where no spelunk tools are wired in.
-        "spelunk_version": (
-            get_spelunk_version() if args.condition in SPELUNK_CONDITIONS else None
+        # Null only on baseline, where no inkentry tools are wired in.
+        "inkentry_version": (
+            get_inkentry_version() if args.condition in INKENTRY_CONDITIONS else None
         ),
         "seed": args.seed,
         "run_seed": args.seed,

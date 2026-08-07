@@ -5,10 +5,10 @@ Reads a batch result JSON and writes a flat predictions list the
 SWE-bench harness can consume, plus a metadata sidecar.
 
 Usage:
-    python bench/agents/export_patches.py \\
-        --results bench/results/swebench-baseline-batch.json \\
-        --patches-dir bench/patches/baseline \\
-        --out bench/predictions/baseline.json
+    python agents/export_patches.py \\
+        --results results/swebench-baseline-batch.json \\
+        --patches-dir patches/baseline \\
+        --out predictions/baseline.json
 """
 
 import argparse
@@ -80,7 +80,7 @@ def main():
             {
                 "model": results[0].get("model", "") if results else "",
                 "condition": results[0].get("condition", "") if results else "",
-                "spelunk_version": results[0].get("spelunk_version", ""),
+                "inkentry_version": results[0].get("inkentry_version", ""),
                 "seed": results[0].get("seed", ""),
                 "tasks_total": len(results),
                 "tasks_with_patch": len(predictions_list),

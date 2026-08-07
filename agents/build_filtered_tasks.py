@@ -3,9 +3,9 @@
 
 Intersects SWE-bench Verified with a SWE-Bench+ leakage/suspicious label set
 (arXiv 2410.06992) and writes the surviving instance_ids, plus a provenance
-header, to bench/agents/tasks_filtered.json.
+header, to agents/tasks_filtered.json.
 
-Reporting rule (see bench/agents/README.md): filtered and unfiltered Track-B
+Reporting rule (see agents/README.md): filtered and unfiltered Track-B
 numbers are ALWAYS reported separately, and every published figure names its
 `instance_filter` — one of {"swebench_plus_filtered", "full"}.
 
@@ -35,18 +35,18 @@ so it lands in the output provenance header.
 ------------------------------------------------------------------------------
 Usage
 ------------------------------------------------------------------------------
-    python bench/agents/build_filtered_tasks.py \
+    python agents/build_filtered_tasks.py \
         --labels swebench_plus_verified_exclude.json \
         --labels-source "arXiv:2410.06992 replication pkg, rev <sha/date>" \
-        --out bench/agents/tasks_filtered.json
+        --out agents/tasks_filtered.json
 
     # Verified loads from the HuggingFace datasets cache / hub.
     # Override the dataset revision for reproducibility:
-    python bench/agents/build_filtered_tasks.py \
+    python agents/build_filtered_tasks.py \
         --labels labels.json --dataset-revision <hf_revision>
 
     # Dry run: report counts + tasks_50 overlap without writing.
-    python bench/agents/build_filtered_tasks.py --labels labels.json --dry-run
+    python agents/build_filtered_tasks.py --labels labels.json --dry-run
 """
 from __future__ import annotations
 

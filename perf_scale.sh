@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-# bench/perf_scale.sh — orchestrator for scale-level performance benchmarks
+# perf_scale.sh — orchestrator for scale-level performance benchmarks
 #
 # Runs indexing timing, search latency, and optional memory benchmarks
 # across multiple labelled repo sizes, aggregating into a single JSON.
 #
 # Usage:
-#   bash bench/perf_scale.sh --repos small:path medium:path large:path
-#   bash bench/perf_scale.sh --repos small:ripgrep medium:django large:linux
+#   bash perf_scale.sh --repos small:path medium:path large:path
+#   bash perf_scale.sh --repos small:ripgrep medium:django large:linux
 #
 # Options:
 #   --repos       NAME:PATH,...   labelled repos (required)
-#   --out         FILE            output JSON (default: bench/results/perf-scale-<ts>.json)
+#   --out         FILE            output JSON (default: results/perf-scale-<ts>.json)
 #   --search-iters N              iterations per search query (default: 10)
 #   --memory-commits N            commits for git_meta_perf.sh (default: 5000)
 #   --skip-memory                 skip the memory benchmark
-#   --cold                        remove .spelunk/ before indexing (cold-start timing)
+#   --cold                        remove .inkentry/ before indexing (cold-start timing)
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SPELUNK="${SPELUNK:-spelunk}"
+INKENTRY="${INKENTRY:-inkentry}"
 
 REPOS=""
 OUT_FILE=""
@@ -50,8 +50,8 @@ if [[ -z "$REPOS" ]]; then
     echo "Error: --repos is required." >&2; usage
 fi
 
-if ! command -v "$SPELUNK" &>/dev/null; then
-    echo "Error: spelunk not found in PATH." >&2; exit 1
+if ! command -v "$INKENTRY" &>/dev/null; then
+    echo "Error: inkentry not found in PATH." >&2; exit 1
 fi
 
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
@@ -69,7 +69,7 @@ echo "Output:        ${OUT_FILE}"
 echo "Host:          ${CPU_INFO}"
 echo ""
 
-RESULTS='{"benchmark":"perf_scale","host":"'"${HOST_INFO}"'","cpu":"'"${CPU_INFO}"'","spelunk_version":"'"$("$SPELUNK" --version 2>&1 | head -1)"'","timestamp":"'"$TIMESTAMP"'","repos":{}}'
+RESULTS='{"benchmark":"perf_scale","host":"'"${HOST_INFO}"'","cpu":"'"${CPU_INFO}"'","inkentry_version":"'"$("$INKENTRY" --version 2>&1 | head -1)"'","timestamp":"'"$TIMESTAMP"'","repos":{}}'
 
 # ── Parse repos ────────────────────────────────────────────────────────────
 IFS=',' read -ra REPO_ENTRIES <<< "$REPOS"
@@ -87,9 +87,9 @@ for entry in "${REPO_ENTRIES[@]}"; do
     # Cold-start: remove existing index so we time a full re-index
     INDEX_MODE="warm"
     if [[ "$COLD" == "true" ]]; then
-        if [[ -d "${REPO_DIR}/.spelunk" ]]; then
-            echo "  Removing existing .spelunk for cold-start..."
-            rm -rf "${REPO_DIR}/.spelunk"
+        if [[ -d "${REPO_DIR}/.inkentry" ]]; then
+            echo "  Removing existing .inkentry for cold-start..."
+            rm -rf "${REPO_DIR}/.inkentry"
         fi
         INDEX_MODE="cold"
     fi
@@ -97,15 +97,15 @@ for entry in "${REPO_ENTRIES[@]}"; do
     # Index it — timed
     echo "  Indexing (${INDEX_MODE})..."
     INDEX_START=$(python3 -c "import time; print(time.monotonic())")
-    if ! "$SPELUNK" index "$REPO_DIR" >/dev/null 2>&1; then
+    if ! "$INKENTRY" index "$REPO_DIR" >/dev/null 2>&1; then
         echo "    FAILED — skipping repo" >&2
         continue
     fi
     INDEX_ELAPSED=$(python3 -c "import time; print(round(time.monotonic() - $INDEX_START, 2))")
     echo "    done (${INDEX_ELAPSED}s)"
 
-    # Count files and chunks via spelunk status
-    STATS=$(cd "$REPO_DIR" && "$SPELUNK" status --format json 2>/dev/null || echo '{"files":0,"chunks":0}')
+    # Count files and chunks via inkentry status
+    STATS=$(cd "$REPO_DIR" && "$INKENTRY" status --format json 2>/dev/null || echo '{"files":0,"chunks":0}')
     FILES=$(echo "$STATS" | python3 -c "import json,sys; print(json.load(sys.stdin).get('file_count',0))")
     CHUNKS=$(echo "$STATS" | python3 -c "import json,sys; print(json.load(sys.stdin).get('chunk_count',0))")
     echo "    ${FILES} files, ${CHUNKS} chunks"
@@ -125,7 +125,7 @@ for q, label in queries:
     run_times = []
     for _ in range(${SEARCH_ITERS}):
         start = time.monotonic()
-        subprocess.run(['${SPELUNK}', 'search', q, '--mode', mode, '--limit', '5', '--format', 'json'],
+        subprocess.run(['${INKENTRY}', 'search', q, '--mode', mode, '--limit', '5', '--format', 'json'],
                        cwd='${REPO_DIR}', capture_output=True, timeout=30)
         elapsed = (time.monotonic() - start) * 1000
         run_times.append(elapsed)

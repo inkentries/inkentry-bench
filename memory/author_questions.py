@@ -3,16 +3,16 @@
 
 Produces a JSON file containing commit SHAs, subjects, and bodies from
 a repo's git history. The output is intended to be read by a human (or
-another LLM session) that has NO access to the spelunk memory database.
+another LLM session) that has NO access to the inkentry memory database.
 
 The resulting questions-<repo>.json file should be authored from this
-raw material, NOT from spelunk memory output.
+raw material, NOT from inkentry memory output.
 
 Usage:
-    python bench/memory/author_questions.py \\
+    python memory/author_questions.py \\
         --repo-path /path/to/repo \\
         --num-commits 500 \\
-        --out bench/memory/raw-commits-ripgrep.json
+        --out memory/raw-commits-ripgrep.json
 """
 
 import argparse
@@ -69,8 +69,8 @@ def main():
         "repo": str(repo_path),
         "num_commits_exported": len(commits),
         "instructions": (
-            "Author questions from the commits below. Do NOT consult spelunk "
-            "memory (spelunk memory list / spelunk memory search). Use the raw "
+            "Author questions from the commits below. Do NOT consult inkentry "
+            "memory (inkentry memory list / inkentry memory search). Use the raw "
             "commit subjects and bodies as your only source material. Record "
             "ground-truth commit SHAs for each question."
         ),

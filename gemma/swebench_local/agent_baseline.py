@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Baseline SWE-bench agent — Gemma via local OpenAI-compatible API, no spelunk.
+"""Baseline SWE-bench agent — Gemma via local OpenAI-compatible API, no inkentry.
 
-Mirrors bench/swebench/agent_baseline.py but uses the openai SDK pointed at a
+Mirrors swebench/agent_baseline.py but uses the openai SDK pointed at a
 local server instead of the Anthropic API.
 
 Usage:
-    python bench/gemma/swebench_local/agent_baseline.py \\
+    python gemma/swebench_local/agent_baseline.py \\
         --task-id django__django-11099 \\
         --repo-path /path/to/repo \\
         --issue "Issue description text..." \\
@@ -193,7 +193,7 @@ def run_agent(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Baseline SWE-bench agent (local model, no spelunk).")
+    parser = argparse.ArgumentParser(description="Baseline SWE-bench agent (local model, no inkentry).")
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--repo-path", required=True)
     parser.add_argument("--issue", required=True)

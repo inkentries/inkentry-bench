@@ -2,18 +2,18 @@
 """Batch run agent.py across tasks, writing results incrementally.
 
 RETIRED: swebench_run.sh is the canonical batch orchestrator for
-bench/agents/ (it also supports the --harness none|opencode|claude-code
-dimension — see bench/agents/README.md). This script hardcodes
-REPOS_DIR = ~/opensource/spelunk-bench/repos with no fallback/override and
+agents/ (it also supports the --harness none|opencode|claude-code
+dimension — see agents/README.md). This script hardcodes
+REPOS_DIR = ~/opensource/inkentry-bench/repos with no fallback/override and
 has drifted out of sync with setup_repos.sh's repo-dir convention. Kept only
 so old invocations in scrollback don't 404 — do not use it for new runs.
 
 Usage:
-    python3 bench/agents/batch_run.py \\
-        --condition spelunk_search \\
+    python3 agents/batch_run.py \\
+        --condition inkentry_search \\
         --tasks 50 \\
         --batch-size 5 \\
-        --out bench/results/swebench-spelunk_search.json
+        --out results/swebench-inkentry_search.json
 """
 
 import argparse
@@ -26,7 +26,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[1]
 TASKS_FILE = SCRIPT_DIR / "tasks_50.json"
-REPOS_DIR = Path.home() / "opensource" / "spelunk-bench" / "repos"
+REPOS_DIR = Path.home() / "opensource" / "inkentry-bench" / "repos"
 AGENT_SCRIPT = SCRIPT_DIR / "agent.py"
 
 
@@ -112,7 +112,7 @@ def main():
     parser.add_argument(
         "--condition",
         required=True,
-        choices=["baseline", "spelunk_search", "spelunk_full"],
+        choices=["baseline", "inkentry_search", "inkentry_full"],
     )
     parser.add_argument("--tasks", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=5)

@@ -1,7 +1,7 @@
 """Tests for aggregate_telemetry.py — grouping, cost math, legacy-none, projection.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 """
 
 from pathlib import Path
@@ -161,7 +161,7 @@ def test_projection_unpriced_model():
 
 
 def test_aggregation_over_committed_results():
-    """The committed bench/results contains legacy (harness none) examples plus a
+    """The committed results contains legacy (harness none) examples plus a
     harness-carrying fixture. Aggregation must produce both, priced with the real
     pricing.json."""
     prices = agg.load_prices(PRICING)

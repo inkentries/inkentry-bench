@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-"""Bench-local stdio MCP server re-exposing agent.py's spelunk tools.
+"""Bench-local stdio MCP server re-exposing agent.py's inkentry tools.
 
-Lets an external coding-agent harness (opencode, claude-code) run a spelunk
+Lets an external coding-agent harness (opencode, claude-code) run a inkentry
 condition, so `condition` and `harness` stay independent dimensions
-(bench/AGENTS.md principle #1) instead of `spelunk_*` being reachable only
+(AGENTS.md principle #1) instead of `inkentry_*` being reachable only
 through `--harness none`.
 
 Every tool function and JSON schema here is *imported* from agent.py, never
-reimplemented: the `spelunk` condition must mean the same capability
+reimplemented: the `inkentry` condition must mean the same capability
 whichever harness carries it, and importing makes that hold by construction
 rather than by review. Do not inline a tool body or copy a schema into this
 file — a second implementation is free to drift, and drift is exactly what
 would make a cross-harness comparison dishonest.
 
-spelunk itself ships no MCP server (there is no `spelunk mcp` subcommand);
+inkentry itself ships no MCP server (there is no `inkentry mcp` subcommand);
 this wrapper is bench scaffolding, not a product surface.
 
 Usage (spawned by an MCP client, not run by hand):
-    python spelunk_mcp_server.py \\
+    python inkentry_mcp_server.py \\
         --repo-path /path/to/repo \\
-        --condition spelunk_search|spelunk_full \\
+        --condition inkentry_search|inkentry_full \\
         [--telemetry-log /path/to/calls.jsonl]
 """
 
@@ -31,25 +31,25 @@ import sys
 import time
 from pathlib import Path
 
-# Every spelunk invocation must be keychain-free regardless of how the MCP
+# Every inkentry invocation must be keychain-free regardless of how the MCP
 # client spawned us; a macOS Keychain prompt has no TTY to answer it.
-os.environ.setdefault("SPELUNK_SECRET_STORE", "file")
+os.environ.setdefault("INKENTRY_SECRET_STORE", "file")
 
-# bench/agents/*.py are plain scripts, not an installed package, and an MCP
+# agents/*.py are plain scripts, not an installed package, and an MCP
 # client spawns this file by absolute path from an arbitrary cwd.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from agent import BASE_TOOLS, build_dispatch_table, build_tools  # noqa: E402
 
-SERVER_NAME = "spelunk"
+SERVER_NAME = "inkentry"
 
-# Conditions that expose spelunk tools. "baseline" is deliberately absent:
+# Conditions that expose inkentry tools. "baseline" is deliberately absent:
 # on baseline this server must never be spawned at all.
-SPELUNK_CONDITIONS = ("spelunk_search", "spelunk_full")
+INKENTRY_CONDITIONS = ("inkentry_search", "inkentry_full")
 
 
-def spelunk_tools_for_condition(condition: str) -> list[dict]:
-    """The spelunk tools agent.py would expose for this condition.
+def inkentry_tools_for_condition(condition: str) -> list[dict]:
+    """The inkentry tools agent.py would expose for this condition.
 
     Derived by subtracting agent.py's own BASE_TOOLS from build_tools() —
     never a hand-listed set, so this cannot drift from agent.py. The base
@@ -57,9 +57,9 @@ def spelunk_tools_for_condition(condition: str) -> list[dict]:
     already ships its own natively; re-exposing them over MCP would hand the
     model two of each.
     """
-    if condition not in SPELUNK_CONDITIONS:
+    if condition not in INKENTRY_CONDITIONS:
         raise ValueError(
-            f"condition must be one of {list(SPELUNK_CONDITIONS)} (got: {condition})"
+            f"condition must be one of {list(INKENTRY_CONDITIONS)} (got: {condition})"
         )
     base_names = {t["function"]["name"] for t in BASE_TOOLS}
     return [
@@ -69,7 +69,7 @@ def spelunk_tools_for_condition(condition: str) -> list[dict]:
 
 def tool_names_for_condition(condition: str) -> list[str]:
     """Bare tool names, as agent.py's model sees them."""
-    return [t["function"]["name"] for t in spelunk_tools_for_condition(condition)]
+    return [t["function"]["name"] for t in inkentry_tools_for_condition(condition)]
 
 
 def mcp_tool_names_for_condition(condition: str) -> list[str]:
@@ -91,7 +91,7 @@ def mcp_server_command(
     """argv an MCP client should spawn to get this server.
 
     Defaults to sys.executable, not a bare "python3": the harness runs under
-    `uv run --with-requirements bench/requirements.txt`, and only that
+    `uv run --with-requirements requirements.txt`, and only that
     interpreter has the `mcp` SDK. A bare "python3" would resolve to the
     host's system interpreter and fail to import.
     """
@@ -111,11 +111,11 @@ def mcp_server_command(
 # ---------------------------------------------------------------------------
 # Telemetry
 #
-# Separates three outcomes a spelunk-labelled cell can't otherwise be told
+# Separates three outcomes a inkentry-labelled cell can't otherwise be told
 # apart by: the server never spawned (wiring is broken, the cell is baseline
 # with extra latency), it spawned but the model never reached for a tool
 # (a real result), or it was used. Only the last two are publishable as
-# spelunk cells.
+# inkentry cells.
 # ---------------------------------------------------------------------------
 
 
@@ -165,9 +165,9 @@ def read_telemetry(telemetry_log: Path | None) -> dict:
                 by_tool[rec["tool"]] = by_tool.get(rec["tool"], 0) + 1
                 total += 1
     return {
-        "spelunk_mcp_server_spawned": spawned,
-        "spelunk_tool_calls": total,
-        "spelunk_tool_calls_by_tool": by_tool or None,
+        "inkentry_mcp_server_spawned": spawned,
+        "inkentry_tool_calls": total,
+        "inkentry_tool_calls_by_tool": by_tool or None,
     }
 
 
@@ -181,7 +181,7 @@ async def serve(condition: str, repo_path: Path, telemetry_log: Path | None) -> 
     from mcp.server import Server
     from mcp.server.stdio import stdio_server
 
-    tools = spelunk_tools_for_condition(condition)
+    tools = inkentry_tools_for_condition(condition)
     exposed = {t["function"]["name"] for t in tools}
     dispatch = build_dispatch_table(repo_path)
     server: Server = Server(SERVER_NAME)
@@ -209,7 +209,7 @@ async def serve(condition: str, repo_path: Path, telemetry_log: Path | None) -> 
         if name not in exposed:
             raise ValueError(f"Unknown tool for condition {condition}: {name}")
         log_tool_call(telemetry_log, name)
-        # dispatch entries shell out to spelunk synchronously; off-thread so
+        # dispatch entries shell out to inkentry synchronously; off-thread so
         # a slow search can't stall the stdio event loop.
         result = await asyncio.to_thread(dispatch[name], arguments or {})
         return [types.TextContent(type="text", text=result)]
@@ -222,15 +222,15 @@ async def serve(condition: str, repo_path: Path, telemetry_log: Path | None) -> 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Bench-local stdio MCP server exposing agent.py's spelunk tools."
+        description="Bench-local stdio MCP server exposing agent.py's inkentry tools."
     )
     parser.add_argument(
         "--repo-path",
         required=True,
-        help="Repo to run spelunk in. Explicit rather than inherited cwd — an "
+        help="Repo to run inkentry in. Explicit rather than inherited cwd — an "
         "MCP client's spawn cwd is not guaranteed.",
     )
-    parser.add_argument("--condition", required=True, choices=list(SPELUNK_CONDITIONS))
+    parser.add_argument("--condition", required=True, choices=list(INKENTRY_CONDITIONS))
     parser.add_argument(
         "--telemetry-log",
         default=None,

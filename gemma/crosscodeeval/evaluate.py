@@ -6,13 +6,13 @@ Four conditions for controlled comparison:
     baseline_single_shot — one API call, no tools, no loop
     multi_turn_no_tools — 5-turn loop, no tools (isolates loop from retrieval)
     naive_search        — 5-turn loop with read_file + run_grep tools
-    spelunk             — 5-turn loop with spelunk_search tool
+    inkentry             — 5-turn loop with inkentry_search tool
 
 Usage:
-    python bench/gemma/crosscodeeval/evaluate.py --condition baseline_single_shot
-    python bench/gemma/crosscodeeval/evaluate.py --condition multi_turn_no_tools
-    python bench/gemma/crosscodeeval/evaluate.py --condition naive_search --repo-path /path/to/repo
-    python bench/gemma/crosscodeeval/evaluate.py --condition spelunk --repo-path /path/to/repo
+    python gemma/crosscodeeval/evaluate.py --condition baseline_single_shot
+    python gemma/crosscodeeval/evaluate.py --condition multi_turn_no_tools
+    python gemma/crosscodeeval/evaluate.py --condition naive_search --repo-path /path/to/repo
+    python gemma/crosscodeeval/evaluate.py --condition inkentry --repo-path /path/to/repo
 """
 
 import argparse
@@ -44,7 +44,7 @@ VALID_CONDITIONS = (
     "baseline_single_shot",
     "multi_turn_no_tools",
     "naive_search",
-    "spelunk",
+    "inkentry",
 )
 
 # ---------------------------------------------------------------------------
@@ -71,9 +71,9 @@ SYSTEM_NAIVE = (
     "no markdown fences, no code fences."
 )
 
-SYSTEM_SPELUNK = (
+SYSTEM_INKENTRY = (
     "You are a code completion assistant. "
-    "Use spelunk_search to find relevant type definitions, function signatures, or constants "
+    "Use inkentry_search to find relevant type definitions, function signatures, or constants "
     "from other files in the codebase before completing the code. "
     "Output only the completion line, nothing else — no explanation, no markdown fences."
 )
@@ -82,10 +82,10 @@ SYSTEM_SPELUNK = (
 # Tool definitions (OpenAI function-calling format)
 # ---------------------------------------------------------------------------
 
-SPELUNK_TOOL = {
+INKENTRY_TOOL = {
     "type": "function",
     "function": {
-        "name": "spelunk_search",
+        "name": "inkentry_search",
         "description": (
             "Semantically search the indexed codebase for relevant code — type definitions, "
             "function signatures, constants, or class structures from other files."
@@ -188,19 +188,19 @@ def _run_grep(repo_path: Path, pattern: str, search_path: str = ".") -> str:
         return f"Error running grep: {e}"
 
 
-def _spelunk_search(repo_path: Path, query: str, limit: int = 5) -> str:
-    cmd = ["spelunk", "search", query, "--limit", str(limit), "--format", "json"]
+def _inkentry_search(repo_path: Path, query: str, limit: int = 5) -> str:
+    cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
     try:
         result = subprocess.run(
             cmd, cwd=repo_path, capture_output=True, text=True, timeout=30
         )
         output = result.stdout
         if result.returncode != 0:
-            return f"spelunk search failed: {result.stderr.strip()}"
+            return f"inkentry search failed: {result.stderr.strip()}"
     except FileNotFoundError:
-        return "Error: spelunk not found in PATH."
+        return "Error: inkentry not found in PATH."
     except subprocess.TimeoutExpired:
-        return "Error: spelunk search timed out."
+        return "Error: inkentry search timed out."
     if len(output) > MAX_OUTPUT_CHARS:
         output = output[:MAX_OUTPUT_CHARS] + "\n... (truncated)"
     return output or "(no results)"
@@ -234,9 +234,9 @@ def _dispatch_naive(repo_path: Path, name: str, args: dict) -> str:
     return f"Unknown tool: {name}"
 
 
-def _dispatch_spelunk(repo_path: Path, name: str, args: dict) -> str:
-    if name == "spelunk_search":
-        return _spelunk_search(repo_path, args["query"], args.get("limit", 5))
+def _dispatch_inkentry(repo_path: Path, name: str, args: dict) -> str:
+    if name == "inkentry_search":
+        return _inkentry_search(repo_path, args["query"], args.get("limit", 5))
     return f"Unknown tool: {name}"
 
 
@@ -269,7 +269,7 @@ def complete_baseline_single_shot(
 def complete_multi_turn_no_tools(
     client: OpenAI, model: str, prompt: str, seed: int
 ) -> tuple[str, int, int]:
-    """5-turn loop with no tools — same compute budget as spelunk, no retrieval."""
+    """5-turn loop with no tools — same compute budget as inkentry, no retrieval."""
     messages = [
         {"role": "system", "content": SYSTEM_MULTI_TURN},
         {"role": "user", "content": f"Complete the next line:\n\n{prompt}"},
@@ -374,12 +374,12 @@ def complete_naive_search(
     )
 
 
-def complete_spelunk(
+def complete_inkentry(
     client: OpenAI, model: str, prompt: str, repo_path: Path, seed: int
 ) -> tuple[str, int, int]:
-    """5-turn loop with spelunk_search tool."""
+    """5-turn loop with inkentry_search tool."""
     messages = [
-        {"role": "system", "content": SYSTEM_SPELUNK},
+        {"role": "system", "content": SYSTEM_INKENTRY},
         {"role": "user", "content": f"Complete the next line:\n\n{prompt}"},
     ]
     input_tokens = 0
@@ -391,7 +391,7 @@ def complete_spelunk(
             max_tokens=512,
             temperature=0.0,
             seed=seed,
-            tools=[SPELUNK_TOOL],
+            tools=[INKENTRY_TOOL],
             tool_choice="auto",
             messages=messages,
         )
@@ -406,7 +406,7 @@ def complete_spelunk(
 
         for tc in msg.tool_calls:
             args = json.loads(tc.function.arguments)
-            result = _dispatch_spelunk(repo_path, tc.function.name, args)
+            result = _dispatch_inkentry(repo_path, tc.function.name, args)
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
 
     messages.append({"role": "user", "content": "Now output only the completion line."})
@@ -447,10 +447,10 @@ def identifier_recall(pred: str, truth: str) -> float:
     return len(truth_ids & pred_ids) / len(truth_ids)
 
 
-def get_spelunk_version() -> str:
+def get_inkentry_version() -> str:
     try:
         r = subprocess.run(
-            ["spelunk", "--version"], capture_output=True, text=True, timeout=10
+            ["inkentry", "--version"], capture_output=True, text=True, timeout=10
         )
         return r.stdout.strip()
     except Exception:
@@ -461,7 +461,7 @@ def scaffold_hash() -> str:
     bench_dir = Path(__file__).parents[3]
     try:
         r = subprocess.run(
-            ["git", "log", "-1", "--format=%H", "--", "bench/"],
+            ["git", "log", "-1", "--format=%H", "--", ""],
             cwd=bench_dir,
             capture_output=True,
             text=True,
@@ -543,8 +543,8 @@ def evaluate_split(
                 pred, inp_tok, out_tok = complete_naive_search(
                     client, model, prompt, repo_path, seed
                 )
-            elif condition == "spelunk":
-                pred, inp_tok, out_tok = complete_spelunk(
+            elif condition == "inkentry":
+                pred, inp_tok, out_tok = complete_inkentry(
                     client, model, prompt, repo_path, seed
                 )
             else:
@@ -591,7 +591,7 @@ def main() -> None:
     parser.add_argument(
         "--repo-path",
         default=None,
-        help="Path to an indexed repo (required for naive_search and spelunk).",
+        help="Path to an indexed repo (required for naive_search and inkentry).",
     )
     parser.add_argument(
         "--split",
@@ -622,7 +622,7 @@ def main() -> None:
 
     if args.split not in VALID_SPLITS:
         parser.error(f"--split must be one of: {', '.join(VALID_SPLITS)}")
-    if args.condition in ("naive_search", "spelunk") and not args.repo_path:
+    if args.condition in ("naive_search", "inkentry") and not args.repo_path:
         parser.error(f"--repo-path is required for --condition {args.condition}")
 
     repo_path = Path(args.repo_path).resolve() if args.repo_path else None
@@ -674,7 +674,7 @@ def main() -> None:
         "model_source": "api",
         "api_base_url": args.api_base_url,
         "api_key_source": provenance_label,
-        "spelunk_version": get_spelunk_version(),
+        "inkentry_version": get_inkentry_version(),
         "scaffold_hash": args.scaffold_hash or scaffold_hash(),
         "repo_filter": args.repo_filter,
         "indexed_repo_overlap_pct": round(overlap_pct, 1),

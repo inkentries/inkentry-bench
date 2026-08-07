@@ -6,7 +6,7 @@ synthetic vectors so cosine/KNN ranking, recall/MRR, graceful-disable, and the
 provenance block are all exercised without I/O.
 
 Run:  python3 -m unittest bench.memory.tests.test_vanilla_rag   (from repo root)
-  or: python3 bench/memory/tests/test_vanilla_rag.py
+  or: python3 memory/tests/test_vanilla_rag.py
 """
 
 import importlib.util
@@ -14,7 +14,7 @@ import re
 import unittest
 from pathlib import Path
 
-# Load decision_archaeology.py by path (bench/ is not a package).
+# Load decision_archaeology.py by path ( is not a package).
 _MOD_PATH = Path(__file__).resolve().parents[1] / "decision_archaeology.py"
 _spec = importlib.util.spec_from_file_location("decision_archaeology", _MOD_PATH)
 da = importlib.util.module_from_spec(_spec)
@@ -193,7 +193,7 @@ class ProvenanceTest(unittest.TestCase):
     @staticmethod
     def _provenance(embedder_dim, vanilla_index, vanilla_error):
         return {
-            "backend": "spelunk-server /index/embed (native F2LLM-v2-330M)",
+            "backend": "inkentry-server /index/embed (native F2LLM-v2-330M)",
             "embedding_model": "codefuse-ai/F2LLM-v2-330M",
             "embedding_dim": embedder_dim,
             "method": "plain embed-and-KNN over raw commit messages (no harvest, no LLM extraction, no graph, no rerank)",
@@ -237,7 +237,7 @@ class PlainControlTest(unittest.TestCase):
 
     def test_search_only_uses_embed_and_cosine(self):
         lowered = _class_source("VanillaRagIndex").lower()
-        for forbidden in ("harvest", "llm", "graph", "rerank", "subprocess", "spelunk"):
+        for forbidden in ("harvest", "llm", "graph", "rerank", "subprocess", "inkentry"):
             self.assertNotIn(forbidden, lowered,
                              f"vanilla_rag path must not reference {forbidden!r}")
 

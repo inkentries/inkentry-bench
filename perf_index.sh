@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-# bench/perf_index.sh — spelunk indexing throughput benchmark
+# perf_index.sh — inkentry indexing throughput benchmark
 #
-# Times `spelunk index` on the project itself and reports files/second,
+# Times `inkentry index` on the project itself and reports files/second,
 # chunks/second, and peak memory.
 #
 # Usage:
-#   ./bench/perf_index.sh [REPO_PATH]
+#   ./perf_index.sh [REPO_PATH]
 #
 # Prerequisites:
-#   - spelunk binary in PATH
+#   - inkentry binary in PATH
 #   - /usr/bin/time (macOS: install gtime via `brew install gnu-time`)
 
 set -euo pipefail
 
-SPELUNK="${SPELUNK:-spelunk}"
+INKENTRY="${INKENTRY:-inkentry}"
 REPO="${1:-.}"
 TIME_CMD="time"
 
@@ -27,30 +27,30 @@ fi
 
 echo "=== Indexing throughput ==="
 echo "Repo:     ${REPO}"
-echo "Binary:   ${SPELUNK}"
+echo "Binary:   ${INKENTRY}"
 echo
 
 # Clean any existing index so we measure a fresh index
-rm -rf "${REPO}/.spelunk" 2>/dev/null || true
+rm -rf "${REPO}/.inkentry" 2>/dev/null || true
 
 echo "Indexing..."
 
 if [[ "$TIME_CMD" == "gtime" ]]; then
     # GNU time: -v for verbose
-    $TIME_CMD -v "$SPELUNK" index "$REPO" 2>&1 | tee /tmp/spelunk-perf-index.log
-    WALL=$(grep "Elapsed" /tmp/spelunk-perf-index.log | tail -1 | awk '{print $NF}' | tr -d ':')
-    MAX_RSS=$(grep "Maximum resident" /tmp/spelunk-perf-index.log | tail -1 | awk '{print $NF}')
+    $TIME_CMD -v "$INKENTRY" index "$REPO" 2>&1 | tee /tmp/inkentry-perf-index.log
+    WALL=$(grep "Elapsed" /tmp/inkentry-perf-index.log | tail -1 | awk '{print $NF}' | tr -d ':')
+    MAX_RSS=$(grep "Maximum resident" /tmp/inkentry-perf-index.log | tail -1 | awk '{print $NF}')
 else
     # macOS /usr/bin/time
-    $TIME_CMD -l "$SPELUNK" index "$REPO" 2>&1 | tee /tmp/spelunk-perf-index.log
-    WALL=$(grep "real" /tmp/spelunk-perf-index.log | tail -1 | awk '{print $2}')
-    MAX_RSS=$(grep "maximum resident" /tmp/spelunk-perf-index.log | tail -1 | awk '{print $1}')
+    $TIME_CMD -l "$INKENTRY" index "$REPO" 2>&1 | tee /tmp/inkentry-perf-index.log
+    WALL=$(grep "real" /tmp/inkentry-perf-index.log | tail -1 | awk '{print $2}')
+    MAX_RSS=$(grep "maximum resident" /tmp/inkentry-perf-index.log | tail -1 | awk '{print $1}')
 fi
 
-# Extract stats from spelunk output
-FILES=$(grep -o '[0-9,]* files' /tmp/spelunk-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
-CHUNKS=$(grep -o '[0-9,]* chunks' /tmp/spelunk-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
-EMBEDS=$(grep -o '[0-9,]* embeddings' /tmp/spelunk-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
+# Extract stats from inkentry output
+FILES=$(grep -o '[0-9,]* files' /tmp/inkentry-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
+CHUNKS=$(grep -o '[0-9,]* chunks' /tmp/inkentry-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
+EMBEDS=$(grep -o '[0-9,]* embeddings' /tmp/inkentry-perf-index.log | tail -1 | grep -o '[0-9,]*' | tr -d ',' || echo "?")
 
 # Parse wall time (format: "0m12.34s" or "12.34")
 WALL_SEC=$(echo "$WALL" | sed 's/m/ /' | awk '{split($0,a," "); print a[1]*60 + a[2]}' 2>/dev/null || echo "$WALL")
@@ -68,4 +68,4 @@ if [[ "$FILES" != "?" && "$WALL_SEC" != "?" && "$WALL_SEC" != "0" ]]; then
     echo "Throughput: ${FPS} files/s"
 fi
 
-rm -f /tmp/spelunk-perf-index.log
+rm -f /tmp/inkentry-perf-index.log

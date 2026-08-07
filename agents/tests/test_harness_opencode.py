@@ -1,7 +1,7 @@
-"""Tests for bench/agents/harness_opencode.py.
+"""Tests for agents/harness_opencode.py.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 
 Network-free, no DEEPSEEK_API_KEY, no opencode binary required (PATH lookup
 and npx fallback are exercised via monkeypatched shutil.which).
@@ -17,7 +17,7 @@ from harness_opencode import (
     write_provider_config,
 )
 
-SPELUNK_CONDITIONS = ["spelunk_search", "spelunk_full"]
+INKENTRY_CONDITIONS = ["inkentry_search", "inkentry_full"]
 
 
 def _config(repo_path, condition="baseline", telemetry_log=None):
@@ -52,7 +52,7 @@ class TestWriteProviderConfig:
 
         provider = config["provider"][PROVIDER_ID]
         assert provider["npm"] == "@ai-sdk/openai-compatible"
-        assert provider["name"] == "DeepSeek (spelunk-bench)"
+        assert provider["name"] == "DeepSeek (inkentry-bench)"
         assert provider["options"]["baseURL"] == api_base_url
         assert provider["options"]["apiKey"] == api_key
         assert provider["models"] == {model: {"name": model}}
@@ -89,22 +89,22 @@ class TestWriteProviderConfig:
 
 
 class TestMcpBlockIsConditionGated:
-    """The spelunk tools reach opencode through an `mcp` block in the same
+    """The inkentry tools reach opencode through an `mcp` block in the same
     generated, repo-scoped config. Gating is on the condition: a baseline arm
-    that silently gained spelunk tools would invalidate results just as badly
-    as a spelunk arm that never got them.
+    that silently gained inkentry tools would invalidate results just as badly
+    as a inkentry arm that never got them.
     """
 
-    def test_only_spelunk_conditions_declare_an_mcp_block(self, tmp_path):
+    def test_only_inkentry_conditions_declare_an_mcp_block(self, tmp_path):
         # One predicate, both directions: the absence below is only evidence
         # because the same check finds the block when it is present.
-        assert "mcp" in _config(tmp_path, condition="spelunk_search")
+        assert "mcp" in _config(tmp_path, condition="inkentry_search")
         assert "mcp" not in _config(tmp_path, condition="baseline")
 
     def test_default_condition_declares_no_mcp_block(self, tmp_path):
         assert "mcp" not in _config(tmp_path)
 
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
     def test_block_matches_the_documented_local_server_schema(self, condition, tmp_path):
         # Shape per opencode.ai/config.json: local entries require type +
         # command; environment/enabled are optional.
@@ -112,26 +112,26 @@ class TestMcpBlockIsConditionGated:
         assert block["type"] == "local"
         assert isinstance(block["command"], list)
         assert all(isinstance(part, str) for part in block["command"])
-        assert block["environment"] == {"SPELUNK_SECRET_STORE": "file"}
+        assert block["environment"] == {"INKENTRY_SECRET_STORE": "file"}
         assert block["enabled"] is True
 
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
     def test_command_spawns_the_bench_server_for_this_condition(self, condition, tmp_path):
         command = _config(tmp_path, condition=condition)["mcp"][SERVER_NAME]["command"]
-        assert command[1].endswith("spelunk_mcp_server.py")
+        assert command[1].endswith("inkentry_mcp_server.py")
         assert command[command.index("--condition") + 1] == condition
         assert command[command.index("--repo-path") + 1] == str(tmp_path.resolve())
 
     def test_telemetry_log_wired_through_when_requested(self, tmp_path):
         log = tmp_path / "calls.jsonl"
-        command = _config(tmp_path, condition="spelunk_full", telemetry_log=log)["mcp"][
+        command = _config(tmp_path, condition="inkentry_full", telemetry_log=log)["mcp"][
             SERVER_NAME
         ]["command"]
         assert command[command.index("--telemetry-log") + 1] == str(log)
 
-    def test_provider_block_survives_on_a_spelunk_condition(self, tmp_path):
+    def test_provider_block_survives_on_a_inkentry_condition(self, tmp_path):
         # The mcp block is a sibling of provider, not a replacement.
-        config = _config(tmp_path, condition="spelunk_full")
+        config = _config(tmp_path, condition="inkentry_full")
         assert config["provider"][PROVIDER_ID]["options"]["apiKey"] == "sk-test-123"
         assert config["$schema"] == "https://opencode.ai/config.json"
 

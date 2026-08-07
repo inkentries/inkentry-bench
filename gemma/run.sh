@@ -2,14 +2,14 @@
 # Orchestrate benchmarks (DeepSeek V4 Flash or any OpenAI-compatible API).
 #
 # Usage:
-#   bash bench/gemma/run.sh --suite crosscodeeval --condition spelunk --repo-path /path/to/repo
-#   bash bench/gemma/run.sh --suite swebench --condition spelunk_full
-#   bash bench/gemma/run.sh --suite all --condition spelunk --repo-path /path/to/repo
+#   bash gemma/run.sh --suite crosscodeeval --condition inkentry --repo-path /path/to/repo
+#   bash gemma/run.sh --suite swebench --condition inkentry_full
+#   bash gemma/run.sh --suite all --condition inkentry --repo-path /path/to/repo
 #
 # Options:
 #   --suite        crosscodeeval|swebench|all       (required)
-#   --condition    baseline|spelunk|spelunk_full     (required)
-#   --repo-path    PATH      path to indexed repo (required for spelunk conditions)
+#   --condition    baseline|inkentry|inkentry_full     (required)
+#   --repo-path    PATH      path to indexed repo (required for inkentry conditions)
 #   --samples      N         CrossCodeEval samples per language (default: 200)
 #   --tasks        N         SWE-bench tasks (default: 50)
 #   --model        MODEL     (default: deepseek-v4-flash)

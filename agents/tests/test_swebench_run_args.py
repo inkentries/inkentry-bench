@@ -1,7 +1,7 @@
-"""Argument-validation tests for bench/agents/swebench_run.sh.
+"""Argument-validation tests for agents/swebench_run.sh.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 
 These only exercise swebench_run.sh's arg-parsing / early-validation code
 paths (before any task loop, agent subprocess, or network call would
@@ -33,8 +33,8 @@ def run_script(args, env=None):
 @pytest.fixture(autouse=True)
 def _no_stray_results_artifacts():
     """Safety net: every test here is expected to fail validation before
-    swebench_run.sh's task loop ever creates bench/results/*.json or
-    bench/patches/<...>/ (arg-parsing/validation happens first in the
+    swebench_run.sh's task loop ever creates results/*.json or
+    patches/<...>/ (arg-parsing/validation happens first in the
     script). Snapshot before/after so a future shell-portability change
     (e.g. GNU head not erroring on `-n 0` the way BSD head does) can't
     leave stray artifacts in the repo without at least failing loudly here."""
@@ -78,23 +78,23 @@ class TestHarnessEnumValidation:
 
 class TestConditionValidatedAgainstConditionSet:
     """Every condition is valid for every harness: opencode/claude-code reach
-    the spelunk tools over the bench-local MCP server. --condition is
+    the inkentry tools over the bench-local MCP server. --condition is
     validated against the condition set alone, so a typo can't be recorded as
-    a real cell, but a spelunk condition is never rejected by harness.
+    a real cell, but a inkentry condition is never rejected by harness.
 
     Replaces an earlier rule that forced --condition=baseline for these two
-    harnesses, which made the spelunk arm unreachable for them."""
+    harnesses, which made the inkentry arm unreachable for them."""
 
     @pytest.mark.parametrize("harness", ["none", "opencode", "claude-code"])
     def test_rejects_unknown_condition(self, harness):
         result = run_script(
-            ["--condition", "spelunk_xxx", "--harness", harness, "--api-key", "fake-key"]
+            ["--condition", "inkentry_xxx", "--harness", harness, "--api-key", "fake-key"]
         )
         assert result.returncode != 0
-        assert "--condition must be one of baseline|spelunk_search|spelunk_full" in result.stderr
+        assert "--condition must be one of baseline|inkentry_search|inkentry_full" in result.stderr
 
     @pytest.mark.parametrize("harness", ["none", "opencode", "claude-code"])
-    @pytest.mark.parametrize("condition", ["baseline", "spelunk_search", "spelunk_full"])
+    @pytest.mark.parametrize("condition", ["baseline", "inkentry_search", "inkentry_full"])
     def test_accepts_every_condition_for_every_harness(self, harness, condition):
         result = run_script(
             ["--condition", condition, "--harness", harness, "--api-key", "fake-key", "--tasks", "0"]

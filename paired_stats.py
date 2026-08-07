@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Paired statistics for spelunk agentic benchmark comparisons (plan §6).
+"""Paired statistics for inkentry agentic benchmark comparisons (plan §6).
 
-Compares a baseline condition against a spelunk condition over the SAME tasks,
+Compares a baseline condition against a inkentry condition over the SAME tasks,
 paired by task_id. Emits a cell-labeled table with:
 
   - McNemar's exact test on discordant pairs (task-level binary outcomes)
@@ -12,7 +12,7 @@ paired by task_id. Emits a cell-labeled table with:
 Pure stdlib (statistics, random, math) - no scipy/numpy.
 
 Usage:
-    python bench/paired_stats.py <baseline.json> <condition.json> [--filter FILTER]
+    python paired_stats.py <baseline.json> <condition.json> [--filter FILTER]
 
 Each result file is either a JSON array of per-task records or a
 {"aggregate": ..., "tasks": [...]} dict (post-harness format). Per-task records
@@ -219,7 +219,7 @@ def compare(baseline_path: str, condition_path: str, instance_filter: str) -> st
 def main() -> None:
     parser = argparse.ArgumentParser(description="Paired benchmark statistics (§6).")
     parser.add_argument("baseline", help="baseline-condition result JSON")
-    parser.add_argument("condition", help="spelunk-condition result JSON")
+    parser.add_argument("condition", help="inkentry-condition result JSON")
     parser.add_argument(
         "--filter",
         default="all",

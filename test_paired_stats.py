@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Unit tests for bench/paired_stats.py - hand-computed fixtures.
+"""Unit tests for paired_stats.py - hand-computed fixtures.
 
-Run: python bench/test_paired_stats.py
+Run: python test_paired_stats.py
 """
 
 import json
@@ -198,14 +198,14 @@ class TestCellLabel(unittest.TestCase):
     def test_full_cell_fields(self):
         tasks = [
             {"task_id": "a", "model": "gemma", "benchmark": "swebench",
-             "condition": "spelunk", "seed": 42},
+             "condition": "inkentry", "seed": 42},
             {"task_id": "b", "model": "gemma", "benchmark": "swebench",
-             "condition": "spelunk", "seed": 43},
+             "condition": "inkentry", "seed": 43},
         ]
         label = ps.cell_label(tasks, "django-only")
         self.assertEqual(label["model"], "gemma")
         self.assertEqual(label["harness"], "swebench")
-        self.assertEqual(label["condition"], "spelunk")
+        self.assertEqual(label["condition"], "inkentry")
         self.assertEqual(label["instance_filter"], "django-only")
         self.assertEqual(label["n_tasks"], 2)
         self.assertEqual(label["seeds"], [42, 43])
@@ -223,7 +223,7 @@ class TestCellLabel(unittest.TestCase):
 
     def test_refuses_blended_condition(self):
         tasks = [self._base(task_id="a", condition="baseline"),
-                 self._base(task_id="b", condition="spelunk")]
+                 self._base(task_id="b", condition="inkentry")]
         with self.assertRaises(ValueError):
             ps.cell_label(tasks, "all")
 

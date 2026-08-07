@@ -1,7 +1,7 @@
-"""Tests for bench/agents/harness_claude_code.py.
+"""Tests for agents/harness_claude_code.py.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 
 Network-free, no DEEPSEEK_API_KEY, no claude binary required.
 """
@@ -16,10 +16,10 @@ from harness_claude_code import (
     build_claude_cmd,
     write_mcp_config,
 )
-from spelunk_mcp_server import mcp_tool_names_for_condition
+from inkentry_mcp_server import mcp_tool_names_for_condition
 
-CONDITIONS = ["baseline", "spelunk_search", "spelunk_full"]
-SPELUNK_CONDITIONS = ["spelunk_search", "spelunk_full"]
+CONDITIONS = ["baseline", "inkentry_search", "inkentry_full"]
+INKENTRY_CONDITIONS = ["inkentry_search", "inkentry_full"]
 
 
 class TestDeepseekAnthropicEnv:
@@ -90,7 +90,7 @@ def _cmd(condition, mcp_config_path=None):
 
 class TestStrictMcpConfig:
     """The bench host has its own MCP servers configured. Without
-    --strict-mcp-config they load into *both* arms, so baseline and spelunk
+    --strict-mcp-config they load into *both* arms, so baseline and inkentry
     are contaminated alike and the numbers are unpublishable. Verified on
     this host during adapter work: a host server appeared in the run's
     mcp_servers without the flag, and mcp_servers was empty with it.
@@ -106,22 +106,22 @@ class TestStrictMcpConfig:
 
 
 class TestMcpConfigIsConditionGated:
-    def test_only_spelunk_arms_load_the_bench_server(self, tmp_path):
+    def test_only_inkentry_arms_load_the_bench_server(self, tmp_path):
         # One predicate, both directions: the absence assertion below is only
         # evidence because the same check finds the flag when it is present.
         cfg = tmp_path / "mcp.json"
-        assert "--mcp-config" in _cmd("spelunk_search", cfg)
+        assert "--mcp-config" in _cmd("inkentry_search", cfg)
         assert "--mcp-config" not in _cmd("baseline", cfg)
 
     def test_baseline_ignores_a_config_path_it_was_handed(self, tmp_path):
         # Gating is on the condition, not on the caller remembering to pass
-        # None: a baseline arm that quietly gained spelunk tools would
+        # None: a baseline arm that quietly gained inkentry tools would
         # invalidate results in the opposite direction.
         cfg = tmp_path / "mcp.json"
         assert str(cfg) not in _cmd("baseline", cfg)
 
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
-    def test_spelunk_arms_point_at_the_written_config(self, condition, tmp_path):
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
+    def test_inkentry_arms_point_at_the_written_config(self, condition, tmp_path):
         cfg = tmp_path / "mcp.json"
         cmd = _cmd(condition, cfg)
         assert cmd[cmd.index("--mcp-config") + 1] == str(cfg)
@@ -131,38 +131,38 @@ class TestAllowedTools:
     """--permission-mode acceptEdits covers file edits, not MCP tool calls. A
     headless -p run that hits a permission prompt is a lost cell."""
 
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
     def test_names_every_exposed_tool_in_full(self, condition, tmp_path):
         cmd = _cmd(condition, tmp_path / "mcp.json")
         expected = mcp_tool_names_for_condition(condition)
         assert set(expected) <= set(cmd)
-        # Named individually rather than relying on the `mcp__spelunk`
+        # Named individually rather than relying on the `mcp__inkentry`
         # server-wide shorthand, which is unverified.
         assert f"mcp__{SERVER_NAME}" not in cmd
 
     def test_allow_list_is_condition_gated(self, tmp_path):
         cfg = tmp_path / "mcp.json"
-        search = _cmd("spelunk_search", cfg)
-        full = _cmd("spelunk_full", cfg)
-        assert f"mcp__{SERVER_NAME}__spelunk_graph" not in search
-        assert f"mcp__{SERVER_NAME}__spelunk_graph" in full
+        search = _cmd("inkentry_search", cfg)
+        full = _cmd("inkentry_full", cfg)
+        assert f"mcp__{SERVER_NAME}__inkentry_graph" not in search
+        assert f"mcp__{SERVER_NAME}__inkentry_graph" in full
 
     def test_absent_on_baseline(self, tmp_path):
         cfg = tmp_path / "mcp.json"
-        assert "--allowedTools" in _cmd("spelunk_search", cfg)
+        assert "--allowedTools" in _cmd("inkentry_search", cfg)
         assert "--allowedTools" not in _cmd("baseline", cfg)
 
 
 class TestWriteMcpConfig:
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
     def test_registers_the_bench_server_under_mcp_servers(self, condition, tmp_path):
         repo = tmp_path / "repo"
         repo.mkdir()
         path = write_mcp_config(tmp_path, condition, repo, None)
         server = json.loads(path.read_text())["mcpServers"][SERVER_NAME]
-        assert server["args"][0].endswith("spelunk_mcp_server.py")
+        assert server["args"][0].endswith("inkentry_mcp_server.py")
         assert server["args"][server["args"].index("--condition") + 1] == condition
-        assert server["env"]["SPELUNK_SECRET_STORE"] == "file"
+        assert server["env"]["INKENTRY_SECRET_STORE"] == "file"
 
     def test_written_outside_the_task_repo(self, tmp_path):
         # Anything written inside repo_path can land in the extracted patch.
@@ -170,5 +170,5 @@ class TestWriteMcpConfig:
         repo.mkdir()
         scratch = tmp_path / "scratch"
         scratch.mkdir()
-        path = write_mcp_config(scratch, "spelunk_search", repo, None)
+        path = write_mcp_config(scratch, "inkentry_search", repo, None)
         assert repo not in path.parents

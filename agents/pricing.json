@@ -1,5 +1,5 @@
 {
-  "_about": "Per-model token prices for bench/agents/aggregate_telemetry.py. Prices are published list prices in USD per million tokens. Every price carries verified_on; a null price is a placeholder that yields no cost estimate (never a silent zero). Cache-read effective rate defaults to cache_read_multiplier x input; override per model with cache_read_per_mtok.",
+  "_about": "Per-model token prices for agents/aggregate_telemetry.py. Prices are published list prices in USD per million tokens. Every price carries verified_on; a null price is a placeholder that yields no cost estimate (never a silent zero). Cache-read effective rate defaults to cache_read_multiplier x input; override per model with cache_read_per_mtok.",
   "cache_read_multiplier": 0.1,
   "prices": {
     "claude-sonnet-5": {

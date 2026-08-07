@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Decision archaeology benchmark — measure spelunk memory retrieval vs grep.
+"""Decision archaeology benchmark — measure inkentry memory retrieval vs grep.
 
 Five conditions compared against the same question set:
 
@@ -9,13 +9,13 @@ Five conditions compared against the same question set:
     vanilla_rag     — plain embed-and-KNN over raw commit messages (generic
                       "any embedding store" control: no harvest, no LLM
                       extraction, no graph, no rerank). Deterministic, n=1.
-    memory_search   — spelunk memory search (semantic over harvested entries)
+    memory_search   — inkentry memory search (semantic over harvested entries)
 
 Usage:
-    python bench/memory/decision_archaeology.py \\
+    python memory/decision_archaeology.py \\
         --repo-path /path/to/repo \\
-        --questions bench/memory/questions-ripgrep.json \\
-        --out bench/results/archaeology.json
+        --questions memory/questions-ripgrep.json \\
+        --out results/archaeology.json
 
 Questions file format (JSON):
     [
@@ -25,7 +25,7 @@ Questions file format (JSON):
         }
     ]
 
-See bench/memory/README.md for the authoring protocol.
+See memory/README.md for the authoring protocol.
 """
 
 import argparse
@@ -84,7 +84,7 @@ def extract_keywords(question: str) -> list[str]:
 
 def run_memory_search(repo_path: Path, query: str, limit: int = 10) -> list[dict]:
     cmd = [
-        "spelunk",
+        "inkentry",
         "memory",
         "search",
         query,
@@ -156,7 +156,7 @@ def run_grep_keywords(repo_path: Path, query: str, limit: int = 10) -> list[dict
 
 
 def _build_fts_index(repo_path: Path, rebuild: bool = False) -> Path:
-    db_path = repo_path / ".git" / "spelunk_fts_commits.db"
+    db_path = repo_path / ".git" / "inkentry_fts_commits.db"
     if rebuild and db_path.exists():
         db_path.unlink()
     if db_path.exists():
@@ -244,7 +244,7 @@ def run_fts_commit_messages(
 # message (title + body, the same corpus fts_commit_messages indexes) and the
 # question with the same embedder, then ranks by cosine similarity. Deliberately
 # no harvesting, LLM extraction, graph, or reranking — those would stop it being
-# a control. Backend: spelunk-server's /index/embed endpoint (native F2LLM
+# a control. Backend: inkentry-server's /index/embed endpoint (native F2LLM
 # embedder), reused so no extra model dependency is introduced.
 # ---------------------------------------------------------------------------
 
@@ -254,7 +254,7 @@ EMBED_BATCH = 64
 
 
 class VanillaRagEmbedder:
-    """POSTs raw text to spelunk-server /index/embed; parses the f32 byte blob.
+    """POSTs raw text to inkentry-server /index/embed; parses the f32 byte blob.
 
     No query prefix is applied (the endpoint embeds documents verbatim), so
     commit messages and the question are embedded identically — the plainest
@@ -373,10 +373,10 @@ def check_hit(results: list[dict], commit: str) -> tuple[bool, int | None]:
 # ---------------------------------------------------------------------------
 
 
-def get_spelunk_version() -> str:
+def get_inkentry_version() -> str:
     try:
         r = subprocess.run(
-            ["spelunk", "--version"], capture_output=True, text=True, timeout=5
+            ["inkentry", "--version"], capture_output=True, text=True, timeout=5
         )
         return r.stdout.strip()
     except Exception:
@@ -402,7 +402,7 @@ def main() -> None:
     parser.add_argument(
         "--embed-url",
         default="http://127.0.0.1:7777",
-        help="spelunk-server base URL for vanilla_rag embeddings.",
+        help="inkentry-server base URL for vanilla_rag embeddings.",
     )
     parser.add_argument(
         "--embed-project",
@@ -483,12 +483,12 @@ def main() -> None:
     output: dict = {
         "benchmark": "decision_archaeology",
         "repo": str(repo_path),
-        "spelunk_version": get_spelunk_version(),
+        "inkentry_version": get_inkentry_version(),
         "fts_rebuilt": args.rebuild_fts,
         "timestamp": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
         "num_questions": len(questions),
         "vanilla_rag_provenance": {
-            "backend": "spelunk-server /index/embed (native F2LLM-v2-330M)",
+            "backend": "inkentry-server /index/embed (native F2LLM-v2-330M)",
             "embedding_model": "codefuse-ai/F2LLM-v2-330M",
             "embedding_dim": embedder.dim,
             "method": "plain embed-and-KNN over raw commit messages (no harvest, no LLM extraction, no graph, no rerank)",

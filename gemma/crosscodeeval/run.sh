@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 # Run RepoBench-Python cross-file completion benchmark for Gemma.
 #
-# Normal usage (spelunk condition against committed baseline):
-#   bash bench/gemma/crosscodeeval/run.sh --condition spelunk --repo-path /path/to/repo
+# Normal usage (inkentry condition against committed baseline):
+#   bash gemma/crosscodeeval/run.sh --condition inkentry --repo-path /path/to/repo
 #
 # Regenerate the committed baseline:
-#   bash bench/gemma/crosscodeeval/run.sh --condition baseline --samples 400
+#   bash gemma/crosscodeeval/run.sh --condition baseline --samples 400
 #
 # Options:
-#   --condition    baseline_single_shot|multi_turn_no_tools|naive_search|spelunk  (required)
-#   --repo-path    PATH                      path to indexed repo (required for naive_search, spelunk)
+#   --condition    baseline_single_shot|multi_turn_no_tools|naive_search|inkentry  (required)
+#   --repo-path    PATH                      path to indexed repo (required for naive_search, inkentry)
 #   --split        cross_file_first|cross_file_random|in_file  (default: cross_file_first)
 #   --samples      N                         samples (default: 100)
 #   --model        MODEL                     model name (default: deepseek-v4-flash)
 #   --api-base-url URL                       (default: https://api.deepseek.com/v1)
 #   --api-key      KEY                       API key (falls back to DEEPSEEK_API_KEY)
-#   --out          FILE                      output path (default: bench/results/...)
+#   --out          FILE                      output path (default: results/...)
 
 set -euo pipefail
 
@@ -58,7 +58,7 @@ done
 if [[ -z "$CONDITION" ]]; then
     echo "Error: --condition is required." >&2; usage
 fi
-VALID=(baseline_single_shot multi_turn_no_tools naive_search spelunk)
+VALID=(baseline_single_shot multi_turn_no_tools naive_search inkentry)
 if [[ ! " ${VALID[*]} " =~ " ${CONDITION} " ]]; then
     echo "Error: --condition must be one of: ${VALID[*]}" >&2; exit 1
 fi
@@ -69,16 +69,16 @@ if [[ -z "$OUT_FILE" ]]; then
     OUT_FILE="${BENCH_DIR}/results/repobench-${CONDITION}-${TIMESTAMP}.json"
 fi
 
-# Compute scaffold_hash from last commit touching bench/
-SCAFFOLD_HASH="$(git -C "${REPO_ROOT}" log -1 --format="%H" -- bench/ 2>/dev/null || echo "unknown")"
+# Compute scaffold_hash from last commit touching 
+SCAFFOLD_HASH="$(git -C "${REPO_ROOT}" log -1 --format="%H" --  2>/dev/null || echo "unknown")"
 
-# Warn if the committed baseline is stale (spelunk condition only)
-if [[ "$CONDITION" == "spelunk" ]]; then
+# Warn if the committed baseline is stale (inkentry condition only)
+if [[ "$CONDITION" == "inkentry" ]]; then
     if [[ -f "$BASELINE_FILE" ]]; then
         BASELINE_HASH="$(python3 -c "import json; d=json.load(open('${BASELINE_FILE}')); print(d.get('scaffold_hash','unknown'))")"
         if [[ "$BASELINE_HASH" != "$SCAFFOLD_HASH" && "$BASELINE_HASH" != "unknown" ]]; then
             echo "Warning: committed baseline scaffold_hash (${BASELINE_HASH}) does not match"
-            echo "         current bench/ HEAD (${SCAFFOLD_HASH})."
+            echo "         current  HEAD (${SCAFFOLD_HASH})."
             echo "         Consider regenerating: bash $0 --condition baseline"
             echo ""
         fi
@@ -116,8 +116,8 @@ uv run --with-requirements "${BENCH_DIR}/requirements.txt" \
     --out "$OUT_FILE" \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}
 
-# If spelunk condition and baseline exists, print comparison
-if [[ "$CONDITION" == "spelunk" && -f "$BASELINE_FILE" ]]; then
+# If inkentry condition and baseline exists, print comparison
+if [[ "$CONDITION" == "inkentry" && -f "$BASELINE_FILE" ]]; then
     echo ""
     echo "=== Comparison vs committed baseline ==="
     uv run --with-requirements "${BENCH_DIR}/requirements.txt" \

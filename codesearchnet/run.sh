@@ -2,10 +2,10 @@
 # Thin wrapper around evaluate.py that adds a timestamp to the output filename.
 #
 # Usage:
-#   bash bench/codesearchnet/run.sh [--languages python,java] [--samples 1000] [--out FILE]
+#   bash codesearchnet/run.sh [--languages python,java] [--samples 1000] [--out FILE]
 #
 # All arguments are forwarded to evaluate.py. If --out is not given, a
-# timestamped filename is generated under bench/results/.
+# timestamped filename is generated under results/.
 
 set -euo pipefail
 
@@ -26,7 +26,7 @@ done
 
 # Build default output path with timestamp if --out not supplied
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-DEFAULT_OUT="${BENCH_DIR}/results/codesearchnet-spelunk-${TIMESTAMP}.json"
+DEFAULT_OUT="${BENCH_DIR}/results/codesearchnet-inkentry-${TIMESTAMP}.json"
 
 # Check whether the caller passed --out
 HAS_OUT=0

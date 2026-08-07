@@ -5,12 +5,12 @@
 # pre-fix commit, plus an ISSUE.txt with the problem statement.
 #
 # Usage:
-#   bash bench/setup_repos.sh [options]
+#   bash setup_repos.sh [options]
 #
 # Options:
-#   --tasks-file FILE   path to tasks JSON array  (default: bench/agents/tasks_50.json)
+#   --tasks-file FILE   path to tasks JSON array  (default: agents/tasks_50.json)
 #   --tasks N           only set up first N tasks  (default: all)
-#   --repos-dir DIR     checkout root              (default: bench/repos)
+#   --repos-dir DIR     checkout root              (default: repos)
 #   --dataset SLUG      HuggingFace dataset        (default: princeton-nlp/SWE-bench)
 #                       NOTE: full split used (not SWE-bench_Verified) so all 50 tasks
 #                       in tasks_50.json resolve — see issue #252.
@@ -26,9 +26,9 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 TASKS_FILE="${SCRIPT_DIR}/agents/tasks_50.json"
 TASKS=0          # 0 = all
 
-# Default to the shared spelunk-bench checkout if it exists
-if [[ -d "${HOME}/opensource/spelunk-bench/repos" ]]; then
-    REPOS_DIR="${HOME}/opensource/spelunk-bench/repos"
+# Default to the shared inkentry-bench checkout if it exists
+if [[ -d "${HOME}/opensource/inkentry-bench/repos" ]]; then
+    REPOS_DIR="${HOME}/opensource/inkentry-bench/repos"
 else
     REPOS_DIR="${SCRIPT_DIR}/repos"
 fi
@@ -93,7 +93,7 @@ retry() {
     local attempt=1
     local delay=5
     local rc=0
-    local errfile="/tmp/spelunk-setup-git-stderr.$$"
+    local errfile="/tmp/inkentry-setup-git-stderr.$$"
     while [[ $attempt -le $attempts ]]; do
         "$@" 2>"$errfile" && return 0
         rc=$?
@@ -122,7 +122,7 @@ fetch_metadata() {
 
     while [[ $attempt -le $max_attempts ]]; do
         local result
-        result="$(uv run --with datasets --with huggingface_hub python3 - <<PYEOF 2>/tmp/spelunk-setup-hf-stderr.$$
+        result="$(uv run --with datasets --with huggingface_hub python3 - <<PYEOF 2>/tmp/inkentry-setup-hf-stderr.$$
 import json, sys
 from datasets import load_dataset
 
@@ -153,7 +153,7 @@ PYEOF
         fi
         if [[ $attempt -lt $max_attempts ]]; then
             echo "  WARNING: dataset fetch failed (attempt ${attempt}/${max_attempts}), retrying in ${delay}s..." >&2
-            echo "  stderr: $(head -5 /tmp/spelunk-setup-hf-stderr.$$ 2>/dev/null || true)" >&2
+            echo "  stderr: $(head -5 /tmp/inkentry-setup-hf-stderr.$$ 2>/dev/null || true)" >&2
             sleep "$delay"
             delay=$((delay * 2))
             [[ $delay -gt 60 ]] && delay=60
@@ -290,5 +290,5 @@ if [[ ${#FAILED_TASKS[@]} -gt 0 ]]; then
     done
     echo ""
     echo "Re-run to retry:"
-    echo "  bash bench/setup_repos.sh --retries 5 --git-timeout 300"
+    echo "  bash setup_repos.sh --retries 5 --git-timeout 300"
 fi

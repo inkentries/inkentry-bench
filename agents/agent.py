@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Unified SWE-bench agent — any OpenAI-compatible API, with or without spelunk.
+"""Unified SWE-bench agent — any OpenAI-compatible API, with or without inkentry.
 
-Replaces bench/swebench/agent_*.py (Anthropic, deleted) and
-bench/gemma/swebench_local/agent_*.py (local Gemma, kept as templates).
+Replaces swebench/agent_*.py (Anthropic, deleted) and
+gemma/swebench_local/agent_*.py (local Gemma, kept as templates).
 
 Three conditions, specified via --condition:
 
     baseline         read_file, run_bash, write_file
-    spelunk_search   baseline + spelunk_search (semantic code retrieval)
-    spelunk_full     baseline + spelunk_search + spelunk_graph + spelunk_memory_search
+    inkentry_search   baseline + inkentry_search (semantic code retrieval)
+    inkentry_full     baseline + inkentry_search + inkentry_graph + inkentry_memory_search
 
 Usage:
-    python bench/agents/agent.py \\
-        --condition spelunk_full \\
+    python agents/agent.py \\
+        --condition inkentry_full \\
         --task-id django__django-11099 \\
         --repo-path /path/to/repo \\
         --issue "Issue description..." \\
@@ -103,12 +103,12 @@ BASE_TOOLS = [
     },
 ]
 
-SPELUNK_SEARCH_TOOL = {
+INKENTRY_SEARCH_TOOL = {
     "type": "function",
     "function": {
-        "name": "spelunk_search",
+        "name": "inkentry_search",
         "description": (
-            "Semantically search the codebase using spelunk. Returns the most "
+            "Semantically search the codebase using inkentry. Returns the most "
             "relevant code chunks for the given query. Use this to quickly locate "
             "relevant functions, classes, or logic without manually browsing files."
         ),
@@ -130,12 +130,12 @@ SPELUNK_SEARCH_TOOL = {
     },
 }
 
-SPELUNK_GRAPH_TOOL = {
+INKENTRY_GRAPH_TOOL = {
     "type": "function",
     "function": {
-        "name": "spelunk_graph",
+        "name": "inkentry_graph",
         "description": (
-            "Query the spelunk code graph for a given symbol (function, struct, "
+            "Query the inkentry code graph for a given symbol (function, struct, "
             "class, etc.). Returns callers, callees, and import relationships. "
             "Use this to trace how a symbol is used across the codebase."
         ),
@@ -154,12 +154,12 @@ SPELUNK_GRAPH_TOOL = {
     },
 }
 
-SPELUNK_MEMORY_SEARCH_TOOL = {
+INKENTRY_MEMORY_SEARCH_TOOL = {
     "type": "function",
     "function": {
-        "name": "spelunk_memory_search",
+        "name": "inkentry_memory_search",
         "description": (
-            "Search spelunk project memory for decisions, notes, handoffs, and "
+            "Search inkentry project memory for decisions, notes, handoffs, and "
             "other contextual information. Use this to find prior design decisions, "
             "architectural context, or notes left by previous sessions."
         ),
@@ -194,10 +194,10 @@ SYSTEM_PROMPT_BASE = (
     "and apply the fix. When you are done, briefly summarise what you changed."
 )
 
-SYSTEM_PROMPT_SPELUNK = (
+SYSTEM_PROMPT_INKENTRY = (
     "You are an expert software engineer. You are given a GitHub issue and a "
     "repository checkout. Your goal is to produce a minimal patch that fixes the "
-    "issue. You have access to spelunk tools for fast semantic code search, "
+    "issue. You have access to inkentry tools for fast semantic code search, "
     "code graph traversal, and project memory retrieval — use them to locate "
     "relevant code and context before diving into files. When you are done, "
     "briefly summarise what you changed."
@@ -252,9 +252,9 @@ def write_file(repo_path: Path, path: str, content: str) -> str:
         return f"Error writing file: {e}"
 
 
-def _run_spelunk(repo_path: Path, args: list[str], timeout: int = 30) -> str:
-    """Run a spelunk command in repo_path, return stdout or error message."""
-    cmd = ["spelunk"] + args
+def _run_inkentry(repo_path: Path, args: list[str], timeout: int = 30) -> str:
+    """Run a inkentry command in repo_path, return stdout or error message."""
+    cmd = ["inkentry"] + args
     try:
         result = subprocess.run(
             cmd, cwd=repo_path, capture_output=True, text=True, timeout=timeout
@@ -266,30 +266,30 @@ def _run_spelunk(repo_path: Path, args: list[str], timeout: int = 30) -> str:
             output = result.stdout or "(no results)"
         else:
             return (
-                f"spelunk {' '.join(args)} failed (exit {result.returncode}): "
+                f"inkentry {' '.join(args)} failed (exit {result.returncode}): "
                 f"{result.stderr.strip()}"
             )
     except FileNotFoundError:
-        return "Error: spelunk not found in PATH."
+        return "Error: inkentry not found in PATH."
     except subprocess.TimeoutExpired:
-        return "Error: spelunk command timed out."
+        return "Error: inkentry command timed out."
     if len(output) > MAX_OUTPUT_CHARS:
         output = output[:MAX_OUTPUT_CHARS] + "\n... (output truncated)"
     return output or "(no results)"
 
 
-def spelunk_search(repo_path: Path, query: str, limit: int = 10) -> str:
-    return _run_spelunk(
+def inkentry_search(repo_path: Path, query: str, limit: int = 10) -> str:
+    return _run_inkentry(
         repo_path, ["search", query, "--limit", str(limit), "--format", "json"]
     )
 
 
-def spelunk_graph(repo_path: Path, symbol: str) -> str:
-    return _run_spelunk(repo_path, ["graph", symbol, "--format", "json"])
+def inkentry_graph(repo_path: Path, symbol: str) -> str:
+    return _run_inkentry(repo_path, ["graph", symbol, "--format", "json"])
 
 
-def spelunk_memory_search(repo_path: Path, query: str, limit: int = 10) -> str:
-    return _run_spelunk(
+def inkentry_memory_search(repo_path: Path, query: str, limit: int = 10) -> str:
+    return _run_inkentry(
         repo_path,
         ["memory", "search", query, "--limit", str(limit), "--format", "json"],
     )
@@ -301,11 +301,11 @@ def build_dispatch_table(repo_path: Path) -> dict:
         "read_file": lambda args: read_file(repo_path, args["path"]),
         "run_bash": lambda args: run_bash(repo_path, args["command"]),
         "write_file": lambda args: write_file(repo_path, args["path"], args["content"]),
-        "spelunk_search": lambda args: spelunk_search(
+        "inkentry_search": lambda args: inkentry_search(
             repo_path, args["query"], args.get("limit", 10)
         ),
-        "spelunk_graph": lambda args: spelunk_graph(repo_path, args["symbol"]),
-        "spelunk_memory_search": lambda args: spelunk_memory_search(
+        "inkentry_graph": lambda args: inkentry_graph(repo_path, args["symbol"]),
+        "inkentry_memory_search": lambda args: inkentry_memory_search(
             repo_path, args["query"], args.get("limit", 10)
         ),
     }
@@ -321,13 +321,13 @@ def build_tools(condition: str) -> list[dict]:
     base = list(BASE_TOOLS)
     if condition == "baseline":
         return base
-    elif condition == "spelunk_search":
-        return base + [SPELUNK_SEARCH_TOOL]
-    elif condition == "spelunk_full":
+    elif condition == "inkentry_search":
+        return base + [INKENTRY_SEARCH_TOOL]
+    elif condition == "inkentry_full":
         return base + [
-            SPELUNK_SEARCH_TOOL,
-            SPELUNK_GRAPH_TOOL,
-            SPELUNK_MEMORY_SEARCH_TOOL,
+            INKENTRY_SEARCH_TOOL,
+            INKENTRY_GRAPH_TOOL,
+            INKENTRY_MEMORY_SEARCH_TOOL,
         ]
     else:
         raise ValueError(f"Unknown condition: {condition}")
@@ -337,14 +337,14 @@ def get_system_prompt(condition: str) -> str:
     """Return the appropriate system prompt for the condition."""
     if condition == "baseline":
         return SYSTEM_PROMPT_BASE
-    return SYSTEM_PROMPT_SPELUNK
+    return SYSTEM_PROMPT_INKENTRY
 
 
-def get_spelunk_version() -> str:
-    """Return spelunk version string, or 'unknown' if not available."""
+def get_inkentry_version() -> str:
+    """Return inkentry version string, or 'unknown' if not available."""
     try:
         result = subprocess.run(
-            ["spelunk", "--version"],
+            ["inkentry", "--version"],
             capture_output=True,
             text=True,
             timeout=5,
@@ -456,7 +456,7 @@ def main() -> None:
     parser.add_argument(
         "--condition",
         required=True,
-        choices=["baseline", "spelunk_search", "spelunk_full"],
+        choices=["baseline", "inkentry_search", "inkentry_full"],
     )
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--repo-path", required=True)
@@ -478,7 +478,7 @@ def main() -> None:
     args = parser.parse_args()
 
     # Lazy on purpose: importing this module must not require the LLM stack, so
-    # the tool schemas stay reachable offline (spelunk_mcp_server.py, tests).
+    # the tool schemas stay reachable offline (inkentry_mcp_server.py, tests).
     from dotenv import load_dotenv
     from openai import OpenAI
 
@@ -525,12 +525,12 @@ def main() -> None:
         try:
             # Stage only known source file extensions so that tooling/runtime
             # artifacts never end up in the saved patch. Without this, junk
-            # like `.spelunk/index.db` (binary, written by `spelunk index`),
+            # like `.inkentry/index.db` (binary, written by `inkentry index`),
             # `ISSUE.txt` (written by setup_repos.sh), `uv.lock` (created by
             # `uv run`), and similar files end up in the saved patch and
             # either fail to apply in the SWE-bench Docker container or
             # pollute the diff, causing otherwise-correct fixes to be marked
-            # unresolved. A denylist approach (:!.spelunk :!ISSUE.txt
+            # unresolved. A denylist approach (:!.inkentry :!ISSUE.txt
             # :!uv.lock ...) is fragile: shell-mangled filenames such as
             # "=2.6.0," (from a botched `pip install` output redirected into
             # a file) slip through. An allowlist is strictly safer; anything
@@ -600,7 +600,7 @@ def main() -> None:
     #
     # harness/harness_version/endpoint_kind/run_seed and the
     # question_set_version/instance_filter/judge_* fields are part of the
-    # harness-matrix provenance extension (bench/agents/README.md
+    # harness-matrix provenance extension (agents/README.md
     # "Provenance contract") — additive-only, so pre-existing consumers
     # (export_patches.py, report.py) that only read specific keys via
     # dict.get() are unaffected. This is the harness=none, "component-clean"
@@ -615,7 +615,7 @@ def main() -> None:
         # harness=none has no effort/thinking concept of its own (that's a
         # claude-code-harness-only knob) -- always null here so every
         # harness's result JSON is a strict key-superset of the documented
-        # provenance contract (bench/agents/README.md "Reproducibility /
+        # provenance contract (agents/README.md "Reproducibility /
         # provenance contract"), never a per-harness subset.
         "effort": None,
         "thinking": None,
@@ -623,7 +623,7 @@ def main() -> None:
         "model_source": "api",
         "api_base_url": args.api_base_url,
         "api_key_source": provenance_label,
-        "spelunk_version": get_spelunk_version(),
+        "inkentry_version": get_inkentry_version(),
         "seed": args.seed,
         "run_seed": args.seed,
         "max_turns": args.max_turns,

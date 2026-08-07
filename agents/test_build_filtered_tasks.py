@@ -6,7 +6,7 @@ synthetic instance-id set, and --labels / --overlap-with are synthetic tmp files
 Stdlib unittest only (no pytest / datasets dependency).
 
     python -m unittest bench.agents.test_build_filtered_tasks   # from repo root
-    python bench/agents/test_build_filtered_tasks.py            # direct
+    python agents/test_build_filtered_tasks.py            # direct
 """
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
-# bench/AGENTS.md — Benchmark Coding Conventions
+# AGENTS.md — Benchmark Coding Conventions
 
-Operational findings and coding conventions for the `bench/` directory.
+Operational findings and coding conventions for the `` directory.
 Companion to `AGENTS.md` at the repo root.
 
 ---
@@ -10,9 +10,9 @@ Companion to `AGENTS.md` at the repo root.
 These emerged from the benchmarking overhaul (issues #224–#232) and the
 original review in `tmp/benchmark-fix-plan.md`:
 
-1. **Every claim needs a control.** Multi-turn-with-spelunk must be compared
-   against multi-turn-without-spelunk, not against single-shot. A lift that
-   disappears when the baseline gets the same compute budget is not spelunk's lift.
+1. **Every claim needs a control.** Multi-turn-with-inkentry must be compared
+   against multi-turn-without-inkentry, not against single-shot. A lift that
+   disappears when the baseline gets the same compute budget is not inkentry's lift.
 2. **No question-from-corpus circularity.** Questions used to evaluate retrieval
    must be authored by a party that has not seen what is in the memory store.
 3. **Correctness > activity.** "Turns used" and "tokens spent" without a
@@ -39,9 +39,9 @@ follow-up issue for the content-authoring half. This pattern was used for:
 ## Python Benchmark Scripts
 
 ### Dependency management
-- Use `uv run --quiet --with-requirements bench/requirements.txt` for all Python
-  scripts under `bench/`. Never assume `python3` has the needed packages.
-- `bench/requirements.txt` is the single source of truth for Python deps.
+- Use `uv run --quiet --with-requirements requirements.txt` for all Python
+  scripts under ``. Never assume `python3` has the needed packages.
+- `requirements.txt` is the single source of truth for Python deps.
 
 ### Secrets
 - API keys live in `.env.local` (gitignored). Load via `python-dotenv` at
@@ -58,7 +58,7 @@ follow-up issue for the content-authoring half. This pattern was used for:
 
 ### Reproducibility contract
 Every result JSON must include: `benchmark`, `condition`, `model`,
-`model_source`, `api_base_url`, `spelunk_version`, `seed`, `timestamp`.
+`model_source`, `api_base_url`, `inkentry_version`, `seed`, `timestamp`.
 Add `scaffold_hash` for committed baselines.
 
 ### Seed plumbing
@@ -84,25 +84,25 @@ PATH="${entry#*:}"
 REPO_DIR="${entry#*:}"
 ```
 
-### spelunk status for aggregate counts
+### inkentry status for aggregate counts
 ```bash
-# WRONG — spelunk chunks wants a file, not a directory
-CHUNKS=$(spelunk chunks --format json "$DIR" ...)
+# WRONG — inkentry chunks wants a file, not a directory
+CHUNKS=$(inkentry chunks --format json "$DIR" ...)
 
-# RIGHT — spelunk status gives file_count and chunk_count
-STATS=$(cd "$DIR" && spelunk status --format json)
+# RIGHT — inkentry status gives file_count and chunk_count
+STATS=$(cd "$DIR" && inkentry status --format json)
 FILES=$(echo "$STATS" | python3 -c "import json,sys; print(json.load(sys.stdin).get('file_count',0))")
 CHUNKS=$(echo "$STATS" | python3 -c "import json,sys; print(json.load(sys.stdin).get('chunk_count',0))")
 ```
 
 ### Verify field names against actual output
-Always smoke-test spelunk commands to confirm JSON field names before
+Always smoke-test inkentry commands to confirm JSON field names before
 committing. `file_count` vs `files` was a silent-zero bug caught in review.
 
 ### set -euo pipefail with explicit failure handling
 ```bash
 # Prefer explicit failure over || true
-if ! "$SPELUNK" index "$REPO_DIR" >/dev/null 2>&1; then
+if ! "$INKENTRY" index "$REPO_DIR" >/dev/null 2>&1; then
     echo "FAILED — skipping repo" >&2
     continue
 fi
@@ -130,22 +130,22 @@ Smoke tests catch them; code review often misses them.
 ## Project-Specific Conventions
 
 ### Directory layout
-- `bench/agents/` — SWE-bench agent and evaluation
-- `bench/memory/` — decision archaeology and cross-session handoff
-- `bench/graph/` — code-graph retrieval
-- `bench/codesearchnet/` — CodeSearchNet retrieval
-- `bench/gemma/crosscodeeval/` — RepoBench cross-file completion
-- `bench/perf_*.sh` — performance benchmarks
+- `agents/` — SWE-bench agent and evaluation
+- `memory/` — decision archaeology and cross-session handoff
+- `graph/` — code-graph retrieval
+- `codesearchnet/` — CodeSearchNet retrieval
+- `gemma/crosscodeeval/` — RepoBench cross-file completion
+- `perf_*.sh` — performance benchmarks
 
 ### Graph benchmark repo references
-`bench/graph/tasks.json` stores a `"repo"` slug (e.g. `"ripgrep"`) rather than
-a path. The evaluator resolves it against `--repos-dir` / `$SPELUNK_BENCH_REPOS`
+`graph/tasks.json` stores a `"repo"` slug (e.g. `"ripgrep"`) rather than
+a path. The evaluator resolves it against `--repos-dir` / `$INKENTRY_BENCH_REPOS`
 at runtime. Repos must live **outside** this repository — cloning them under the
-repo root would pollute the spelunk index. See `bench/README.md` for setup.
+repo root would pollute the inkentry index. See `README.md` for setup.
 
 ### Output paths
-- Scratch results: `bench/results/` (gitignored except `.gitignore`)
-- Committed baselines: `baselines/` (outside `bench/` so scaffold hash is stable)
+- Scratch results: `results/` (gitignored except `.gitignore`)
+- Committed baselines: `baselines/` (outside `` so scaffold hash is stable)
 - Plans and reports: `tmp/` (gitignored; use `git add -f` to commit)
 
 ### Configuration priority for API scripts

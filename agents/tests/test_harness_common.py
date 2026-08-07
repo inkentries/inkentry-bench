@@ -1,7 +1,7 @@
-"""Tests for bench/agents/harness_common.py.
+"""Tests for agents/harness_common.py.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 
 Network-free, no DEEPSEEK_API_KEY, no opencode/claude binaries required.
 Uses throwaway git repos under tmp_path (pytest's built-in tmp dir fixture).
@@ -15,9 +15,9 @@ import pytest
 
 import agent
 from harness_claude_code import CLAUDE_CODE_PROMPT_PREFIX
-from harness_common import SPELUNK_GUIDANCE_CORE, build_system_prompt, extract_patch
+from harness_common import INKENTRY_GUIDANCE_CORE, build_system_prompt, extract_patch
 from harness_opencode import OPENCODE_SYSTEM_PROMPT
-from spelunk_mcp_server import SPELUNK_CONDITIONS, mcp_tool_names_for_condition
+from inkentry_mcp_server import INKENTRY_CONDITIONS, mcp_tool_names_for_condition
 
 BASE_PROMPTS = [OPENCODE_SYSTEM_PROMPT, CLAUDE_CODE_PROMPT_PREFIX]
 
@@ -41,8 +41,8 @@ def _init_repo(repo: Path) -> None:
 
 class TestBuildSystemPrompt:
     """Tools the model is never told about are a handicap, not a condition:
-    agent.py's spelunk arm swaps its whole prompt, so an adapter that kept a
-    baseline-flavoured prompt would hand the spelunk arm tools it never uses.
+    agent.py's inkentry arm swaps its whole prompt, so an adapter that kept a
+    baseline-flavoured prompt would hand the inkentry arm tools it never uses.
 
     An adapter can only restate that delta (agent.py exposes whole prompts,
     not the difference), so the restatement is pinned to agent.py's own text
@@ -50,10 +50,10 @@ class TestBuildSystemPrompt:
     """
 
     def test_guidance_core_is_still_an_exact_substring_of_agent_pys_prompt(self):
-        assert SPELUNK_GUIDANCE_CORE in agent.SYSTEM_PROMPT_SPELUNK
+        assert INKENTRY_GUIDANCE_CORE in agent.SYSTEM_PROMPT_INKENTRY
 
     def test_the_two_mcp_harnesses_share_one_base_prompt(self):
-        # What makes opencode-vs-claude-code spelunk uplift prompt-clean, and
+        # What makes opencode-vs-claude-code inkentry uplift prompt-clean, and
         # what the README states. Diverge these and that comparison silently
         # gains a confound: the base no longer cancels across harnesses.
         assert OPENCODE_SYSTEM_PROMPT == CLAUDE_CODE_PROMPT_PREFIX
@@ -63,26 +63,26 @@ class TestBuildSystemPrompt:
         assert build_system_prompt(base, "baseline", []) == base
 
     @pytest.mark.parametrize("base", BASE_PROMPTS)
-    @pytest.mark.parametrize("condition", SPELUNK_CONDITIONS)
-    def test_spelunk_prompt_names_every_tool_the_model_can_see(self, base, condition):
+    @pytest.mark.parametrize("condition", INKENTRY_CONDITIONS)
+    def test_inkentry_prompt_names_every_tool_the_model_can_see(self, base, condition):
         names = mcp_tool_names_for_condition(condition)
         prompt = build_system_prompt(base, condition, names)
         assert base in prompt
-        assert SPELUNK_GUIDANCE_CORE in prompt
+        assert INKENTRY_GUIDANCE_CORE in prompt
         for name in names:
             assert name in prompt
 
     @pytest.mark.parametrize("base", BASE_PROMPTS)
     def test_prompt_never_advertises_a_tool_the_condition_withholds(self, base):
-        # Positive control below: the same name is present for spelunk_full.
+        # Positive control below: the same name is present for inkentry_full.
         search = build_system_prompt(
-            base, "spelunk_search", mcp_tool_names_for_condition("spelunk_search")
+            base, "inkentry_search", mcp_tool_names_for_condition("inkentry_search")
         )
         full = build_system_prompt(
-            base, "spelunk_full", mcp_tool_names_for_condition("spelunk_full")
+            base, "inkentry_full", mcp_tool_names_for_condition("inkentry_full")
         )
-        assert "spelunk_graph" not in search
-        assert "spelunk_graph" in full
+        assert "inkentry_graph" not in search
+        assert "inkentry_graph" in full
 
 
 class TestExtractPatchNormalCase:

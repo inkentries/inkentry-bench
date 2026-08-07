@@ -1,6 +1,6 @@
-# spelunk Benchmarks
+# inkentry Benchmarks
 
-Developer-only scripts for measuring whether spelunk improves agent task completion and retrieval accuracy. Run manually before releases or after significant changes to the indexer, chunker, or embedding pipeline.
+Developer-only scripts for measuring whether inkentry improves agent task completion and retrieval accuracy. Run manually before releases or after significant changes to the indexer, chunker, or embedding pipeline.
 
 ---
 
@@ -18,7 +18,7 @@ Developer-only scripts for measuring whether spelunk improves agent task complet
 
 ## Committed baselines
 
-Baseline results (no-spelunk condition) live in `baselines/` at the repo root and are committed to git. Normal runs execute only the spelunk condition and auto-compare against the baseline. See `baselines/README.md` for when and how to regenerate.
+Baseline results (no-inkentry condition) live in `baselines/` at the repo root and are committed to git. Normal runs execute only the inkentry condition and auto-compare against the baseline. See `baselines/README.md` for when and how to regenerate.
 
 ---
 
@@ -27,15 +27,15 @@ Baseline results (no-spelunk condition) live in `baselines/` at the repo root an
 **For Gemma benchmarks (primary):**
 - `uv` in PATH - run scripts use `uv run` and install Python deps automatically
 - Local OpenAI-compatible server at `http://127.0.0.1:1234` with `gemma-4-e2b-it` loaded
-- `spelunk` in PATH (build: `cargo build --release`)
+- `inkentry` in PATH (build: `cargo build --release`)
 - Docker (SWE-bench only)
 
 ## SWE-bench repo setup
 
-The SWE-bench local scripts expect each task's repo cloned at the pre-fix commit under `bench/repos/<task_id>/`, with an `ISSUE.txt` alongside. Run once before benchmarking:
+The SWE-bench local scripts expect each task's repo cloned at the pre-fix commit under `repos/<task_id>/`, with an `ISSUE.txt` alongside. Run once before benchmarking:
 
 ```bash
-bash bench/setup_repos.sh
+bash setup_repos.sh
 ```
 
 This fetches task metadata from HuggingFace (`princeton-nlp/SWE-bench_Verified`) and clones each repo at the correct base commit. Re-running is idempotent; already-correct checkouts are skipped. Requires internet access and `uv`.
@@ -52,14 +52,14 @@ Options: `--tasks N` (first N only) · `--repos-dir DIR` · `--dataset SLUG`
 
 ## RepoBench (cross-file completion)
 
-Measures whether `spelunk_search` helps complete lines that require symbols from other files. Uses [RepoBench-Python](https://huggingface.co/datasets/tianyang/repobench_python_v1.1), `cross_file_first` split: the completion point requires a symbol introduced in another file, making it the most relevant split for measuring spelunk's retrieval benefit.
+Measures whether `inkentry_search` helps complete lines that require symbols from other files. Uses [RepoBench-Python](https://huggingface.co/datasets/tianyang/repobench_python_v1.1), `cross_file_first` split: the completion point requires a symbol introduced in another file, making it the most relevant split for measuring inkentry's retrieval benefit.
 
 ```bash
-# Spelunk condition — compares against committed baseline automatically
-bash bench/gemma/crosscodeeval/run.sh --condition spelunk --repo-path /path/to/indexed/repo
+# Inkentry condition — compares against committed baseline automatically
+bash gemma/crosscodeeval/run.sh --condition inkentry --repo-path /path/to/indexed/repo
 
 # Regenerate baseline (run once after scaffold changes)
-bash bench/gemma/crosscodeeval/run.sh --condition baseline --samples 400
+bash gemma/crosscodeeval/run.sh --condition baseline --samples 400
 ```
 
 **Options:** `--split cross_file_first|cross_file_random|in_file` · `--samples 200` · `--model gemma-4-e2b-it` · `--api-base-url http://127.0.0.1:1234/v1`
@@ -70,31 +70,31 @@ bash bench/gemma/crosscodeeval/run.sh --condition baseline --samples 400
 
 ## SWE-bench (local model)
 
-Measures whether `spelunk_search` helps fix real GitHub issues. Uses the same 50-task slice as the Claude variant so results are directly comparable.
+Measures whether `inkentry_search` helps fix real GitHub issues. Uses the same 50-task slice as the Claude variant so results are directly comparable.
 
 ```bash
 # Run agent + Docker harness in one step (recommended)
-bash bench/agents/swebench_run.sh \
-    --condition spelunk_search \
+bash agents/swebench_run.sh \
+    --condition inkentry_search \
     --model gemma-4-e2b-it \
     --api-base-url http://127.0.0.1:1234/v1 \
     --eval
 
 # Agent run only (then eval separately)
-bash bench/agents/swebench_run.sh \
-    --condition spelunk_search \
+bash agents/swebench_run.sh \
+    --condition inkentry_search \
     --model gemma-4-e2b-it \
     --api-base-url http://127.0.0.1:1234/v1
 
 # Evaluate a prior agent run
-bash bench/agents/swebench_eval.sh \
-    --results bench/results/swebench-spelunk_search-<timestamp>.json \
-    --patches-dir bench/patches/spelunk_search-<timestamp>
+bash agents/swebench_eval.sh \
+    --results results/swebench-inkentry_search-<timestamp>.json \
+    --patches-dir patches/inkentry_search-<timestamp>
 ```
 
-Repo checkouts are expected at `bench/repos/<task_id>/` (via `bench/setup_repos.sh`). Each directory must contain an `ISSUE.txt`. Patches are saved to `bench/patches/<condition>-<timestamp>/` during the agent run. Pass `--eval` to automatically invoke the Docker harness after all tasks complete.
+Repo checkouts are expected at `repos/<task_id>/` (via `setup_repos.sh`). Each directory must contain an `ISSUE.txt`. Patches are saved to `patches/<condition>-<timestamp>/` during the agent run. Pass `--eval` to automatically invoke the Docker harness after all tasks complete.
 
-> **Note:** `bench/gemma/swebench_local/run.sh` is retired; it always outputs `resolved=0` because it never ran the Docker harness. Use `bench/agents/swebench_run.sh` instead.
+> **Note:** `gemma/swebench_local/run.sh` is retired; it always outputs `resolved=0` because it never ran the Docker harness. Use `agents/swebench_run.sh` instead.
 
 **Metrics:** `resolve_rate` (via harness), `median_tokens_per_task`, `median_wall_seconds`
 
@@ -103,46 +103,46 @@ Repo checkouts are expected at `bench/repos/<task_id>/` (via `bench/setup_repos.
 ## SWE-bench (Claude) - secondary
 
 ```bash
-bash bench/swebench/run.sh --condition baseline --tasks 50
-bash bench/swebench/run.sh --condition spelunk  --tasks 50
+bash swebench/run.sh --condition baseline --tasks 50
+bash swebench/run.sh --condition inkentry  --tasks 50
 ```
 
-Requires `ANTHROPIC_API_KEY`. Results go to `bench/results/swebench-{condition}-{timestamp}.json`.
+Requires `ANTHROPIC_API_KEY`. Results go to `results/swebench-{condition}-{timestamp}.json`.
 
 ---
 
 ## Code-graph - call graph retrieval quality
 
-Model-agnostic. Measures how well `spelunk graph` retrieves files containing callers/callees/implementers of a symbol, compared against `git grep` and `spelunk search` as baselines.
+Model-agnostic. Measures how well `inkentry graph` retrieves files containing callers/callees/implementers of a symbol, compared against `git grep` and `inkentry search` as baselines.
 
-**Repo setup:** clone the benchmark repos somewhere *outside* this repository (to avoid polluting the spelunk index), then point the evaluator at them:
+**Repo setup:** clone the benchmark repos somewhere *outside* this repository (to avoid polluting the inkentry index), then point the evaluator at them:
 
 ```bash
-mkdir -p ~/spelunk-bench/repos
-git clone https://github.com/BurntSushi/ripgrep      ~/spelunk-bench/repos/ripgrep
-git clone https://github.com/django/django            ~/spelunk-bench/repos/django__django-12125
-git clone https://github.com/sympy/sympy              ~/spelunk-bench/repos/sympy__sympy-20590
+mkdir -p ~/inkentry-bench/repos
+git clone https://github.com/BurntSushi/ripgrep      ~/inkentry-bench/repos/ripgrep
+git clone https://github.com/django/django            ~/inkentry-bench/repos/django__django-12125
+git clone https://github.com/sympy/sympy              ~/inkentry-bench/repos/sympy__sympy-20590
 ```
 
-Index each repo with spelunk before running:
+Index each repo with inkentry before running:
 
 ```bash
-for repo in ~/spelunk-bench/repos/*/; do spelunk index "$repo"; done
+for repo in ~/inkentry-bench/repos/*/; do inkentry index "$repo"; done
 ```
 
 **Run:**
 
 ```bash
 # via --repos-dir flag
-python bench/graph/evaluate.py \
-    --tasks bench/graph/tasks.json \
-    --repos-dir ~/spelunk-bench/repos \
+python graph/evaluate.py \
+    --tasks graph/tasks.json \
+    --repos-dir ~/inkentry-bench/repos \
     --k 10 \
-    --out bench/results/graph.json
+    --out results/graph.json
 
 # or via environment variable
-export SPELUNK_BENCH_REPOS=~/spelunk-bench/repos
-python bench/graph/evaluate.py --tasks bench/graph/tasks.json --k 10
+export INKENTRY_BENCH_REPOS=~/inkentry-bench/repos
+python graph/evaluate.py --tasks graph/tasks.json --k 10
 ```
 
 **Metrics:** `precision@k`, `recall@k`, `F1` (averaged across all 42 tasks in three repos: ripgrep, django, sympy).
@@ -151,13 +151,13 @@ python bench/graph/evaluate.py --tasks bench/graph/tasks.json --k 10
 
 ## CodeSearchNet — retrieval quality
 
-Model-agnostic. Measures how accurately `spelunk search` retrieves relevant code for natural-language queries.
+Model-agnostic. Measures how accurately `inkentry search` retrieves relevant code for natural-language queries.
 
 ```bash
-bash bench/codesearchnet/run.sh --languages python --samples 1000
+bash codesearchnet/run.sh --languages python --samples 1000
 ```
 
-The target repo must be indexed before running: `spelunk index /path/to/repo`.
+The target repo must be indexed before running: `inkentry index /path/to/repo`.
 
 **Metrics:** `mrr_at_10`, `recall_at_5`, `recall_at_10`
 
@@ -166,17 +166,17 @@ The target repo must be indexed before running: `spelunk index /path/to/repo`.
 ## Comparing results
 
 ```bash
-python bench/report.py baselines/crosscodeeval-gemma-4-e2b-it-baseline.json bench/results/crosscodeeval-spelunk-<ts>.json
+python report.py baselines/crosscodeeval-gemma-4-e2b-it-baseline.json results/crosscodeeval-inkentry-<ts>.json
 ```
 
-The spelunk run scripts print this comparison automatically when a baseline exists. You can also compare any two result files directly.
+The inkentry run scripts print this comparison automatically when a baseline exists. You can also compare any two result files directly.
 
 Example output:
 ```
 | benchmark      | condition | model                    | exact_match | edit_sim | id_recall | med_wall_s |
 |----------------|-----------|--------------------------|-------------|----------|-----------|------------|
 | crosscodeeval  | baseline  | gemma-4-e2b-it (local)  | 0.170       | 0.481    | 0.224     | 3.800      |
-| crosscodeeval  | spelunk   | gemma-4-e2b-it (local)  | 0.210       | 0.541    | 0.291     | 4.100      |
+| crosscodeeval  | inkentry   | gemma-4-e2b-it (local)  | 0.210       | 0.541    | 0.291     | 4.100      |
 ```
 
 ---
@@ -189,9 +189,9 @@ standards over per-task result files (arrays of records, or the post-harness
 `{"aggregate": ..., "tasks": [...]}` form).
 
 ```bash
-python bench/paired_stats.py \
-    bench/results/examples/swebench-local-baseline.json \
-    bench/results/examples/swebench-local-spelunk.json
+python paired_stats.py \
+    results/examples/swebench-local-baseline.json \
+    results/examples/swebench-local-inkentry.json
 ```
 
 What it computes:
@@ -214,8 +214,8 @@ What it computes:
 **Power note:** the 50-task slice can only detect large effects (about +/-15pp).
 Headline claims must come from the filtered subset or the 150+ question set.
 
-Committed example fixtures live in `bench/results/examples/`; real runs land in
-`bench/results/` (gitignored).
+Committed example fixtures live in `results/examples/`; real runs land in
+`results/` (gitignored).
 
 ---
 

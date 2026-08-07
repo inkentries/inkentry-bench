@@ -5,8 +5,8 @@ Runs 20 queries, collects top-10 results + latency for both algorithms,
 writes results JSON for labelling, then computes metrics if labels exist.
 
 Usage:
-  python3 bench/linearrag/run_eval.py collect   # collect results
-  python3 bench/linearrag/run_eval.py metrics   # compute metrics from labelled results
+  python3 linearrag/run_eval.py collect   # collect results
+  python3 linearrag/run_eval.py metrics   # compute metrics from labelled results
 """
 
 import json
@@ -16,8 +16,8 @@ import time
 import os
 from pathlib import Path
 
-BINARY = "./target/release/spelunk"
-OUT_DIR = Path("bench/linearrag")
+BINARY = "./target/release/inkentry"
+OUT_DIR = Path("linearrag")
 RESULTS_FILE = OUT_DIR / "results.json"
 LABELS_FILE = OUT_DIR / "labels.json"
 
@@ -139,7 +139,7 @@ def collect():
     with open(RESULTS_FILE, "w") as f:
         json.dump(all_results, f, indent=2)
     print(f"\nResults written to {RESULTS_FILE}")
-    print("Next: label relevant chunks in bench/linearrag/labels.json, then run: python3 bench/linearrag/run_eval.py metrics")
+    print("Next: label relevant chunks in linearrag/labels.json, then run: python3 linearrag/run_eval.py metrics")
     generate_label_template(all_results)
 
 
@@ -292,7 +292,7 @@ def metrics():
     # Index size
     try:
         res = subprocess.run(
-            ["sqlite3", ".spelunk/index.db",
+            ["sqlite3", ".inkentry/index.db",
              "SELECT kind, COUNT(*) FROM graph_edges GROUP BY kind ORDER BY kind"],
             capture_output=True, text=True
         )

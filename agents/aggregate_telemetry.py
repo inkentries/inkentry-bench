@@ -8,15 +8,15 @@ are grouped by cell; per cell we report task count and mean/median input tokens,
 output tokens, turns, and wall seconds. Given a committed price config, we also
 extrapolate cost per cell and project cost for prospective (not-yet-run) cells.
 
-Provenance contract: rows follow bench/agents/README.md "Reproducibility /
+Provenance contract: rows follow agents/README.md "Reproducibility /
 provenance contract" (harness-matrix fields land via the harness
 adapters). Legacy rows with no `harness` field are treated as harness "none".
 
 Reported as tokens-to-outcome, never a headline "tokens saved" (binding P8).
 
 Usage:
-    python bench/agents/aggregate_telemetry.py \
-        [--results-dir bench/results] [--prices bench/agents/pricing.json] \
+    python agents/aggregate_telemetry.py \
+        [--results-dir results] [--prices agents/pricing.json] \
         [--json-out out.json] [--md-out out.md]
 """
 
@@ -313,12 +313,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--results-dir",
         default=str(here.parent / "results"),
-        help="Directory of result JSONs (default: bench/results).",
+        help="Directory of result JSONs (default: results).",
     )
     parser.add_argument(
         "--prices",
         default=str(here / "pricing.json"),
-        help="Price config JSON (default: bench/agents/pricing.json).",
+        help="Price config JSON (default: agents/pricing.json).",
     )
     parser.add_argument("--json-out", help="Write machine-readable report JSON here.")
     parser.add_argument("--md-out", help="Write the markdown table here.")

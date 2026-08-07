@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
-"""Own-repo retrieval eval for spelunk (in-domain golden set).
+"""Own-repo retrieval eval for inkentry (in-domain golden set).
 
 Builds a golden set straight from the *indexed* project: every embedded chunk
 that has a symbol name and a docstring becomes one (query, target) pair, where
 the query is the docstring and the target is that chunk (matched by file path +
 symbol name, so name collisions across files don't create false hits).
 
-For each query it runs `spelunk search` and records the 1-based rank of the
+For each query it runs `inkentry search` and records the 1-based rank of the
 target, then reports MRR@10, Recall@5, Recall@10, and median wall time — same
-shape as bench/codesearchnet/evaluate.py so bench/report.py can diff them.
+shape as codesearchnet/evaluate.py so report.py can diff them.
 
 This is the "own-repo golden set" path: in-domain, no downloads, runs against
 whatever model currently backs the index.
 
-NOTE on leakage: spelunk's Chunk::embedding_text() includes the docstring in the
+NOTE on leakage: inkentry's Chunk::embedding_text() includes the docstring in the
 embedded text, so a docstring query is an easy hit. That's fine for *calibration*
 (does the pipeline produce sane, non-zero, model-discriminating numbers?) and for
 *relative* model comparison (every model gets the same advantage). For a stricter
 absolute number, re-embed with docstrings stripped from embedding_text.
 
-Prereq: the target project is indexed; `spelunk` is in PATH. Read-only on the DB.
+Prereq: the target project is indexed; `inkentry` is in PATH. Read-only on the DB.
 
 Usage:
-    python bench/ownrepo/golden_eval.py \
-        --db .spelunk/index.db \
+    python ownrepo/golden_eval.py \
+        --db .inkentry/index.db \
         [--samples 150] [--seed 0] [--mode semantic] [--model-label nomic-v1.5] \
-        [--out bench/results/ownrepo-nomic.json]
+        [--out results/ownrepo-nomic.json]
 """
 
 import argparse
@@ -112,8 +112,8 @@ def load_golden(db_path: str, samples: int, seed: int) -> list[dict]:
     return items[:samples]
 
 
-def spelunk_search(query: str, mode: str, limit: int = 10) -> list[dict]:
-    cmd = ["spelunk", "search", query, "--limit", str(limit), "--format", "json"]
+def inkentry_search(query: str, mode: str, limit: int = 10) -> list[dict]:
+    cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
     if mode != "hybrid":
         cmd.extend(["--mode", mode])
     try:
@@ -137,7 +137,7 @@ def find_rank(results: list[dict], name: str, path: str) -> int | None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Own-repo golden-set retrieval eval.")
-    ap.add_argument("--db", default=".spelunk/index.db")
+    ap.add_argument("--db", default=".inkentry/index.db")
     ap.add_argument("--samples", type=int, default=150)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--mode", default="semantic", help="semantic | hybrid | text (comma-separated ok)")
@@ -157,7 +157,7 @@ def main() -> None:
             if not q:
                 continue
             t0 = time.monotonic()
-            res = spelunk_search(q, mode=mode)
+            res = inkentry_search(q, mode=mode)
             walls.append(time.monotonic() - t0)
             rank = find_rank(res, it["name"], it["path"])
             rr.append(1.0 / rank if rank else 0.0)

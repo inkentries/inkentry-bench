@@ -9,26 +9,26 @@ agents.
 
 ```bash
 # 1. Set up repos (one-time)
-bash bench/setup_repos.sh --tasks 5
+bash setup_repos.sh --tasks 5
 
 # 2. Run the agent on a single task (harness=none, the component-clean cell)
-python bench/agents/agent.py \
+python agents/agent.py \
     --condition baseline \
     --task-id django__django-11099 \
-    --repo-path bench/repos/django__django-11099 \
-    --issue bench/repos/django__django-11099/ISSUE.txt \
+    --repo-path repos/django__django-11099 \
+    --issue repos/django__django-11099/ISSUE.txt \
     --api-key "$DEEPSEEK_API_KEY"
 
 # 3. Run the full 50-task benchmark + Docker evaluation in one step
-bash bench/agents/swebench_run.sh \
-    --condition spelunk_full \
+bash agents/swebench_run.sh \
+    --condition inkentry_full \
     --harness none \
     --api-key "$DEEPSEEK_API_KEY" \
     --eval
 
 # 3b. Agent run only (evaluate later)
-bash bench/agents/swebench_run.sh \
-    --condition spelunk_full \
+bash agents/swebench_run.sh \
+    --condition inkentry_full \
     --harness none \
     --api-key "$DEEPSEEK_API_KEY"
 # The script prints the swebench_eval.sh command to run next.
@@ -36,7 +36,7 @@ bash bench/agents/swebench_run.sh \
 
 `swebench_run.sh` is the **canonical batch orchestrator** for this
 directory. `batch_run.py` is a retired duplicate (it hardcoded
-`~/opensource/spelunk-bench/repos` with no override and had drifted out of
+`~/opensource/inkentry-bench/repos` with no override and had drifted out of
 sync with `setup_repos.sh`'s repo-dir convention) — do not use it for new
 runs; it is kept only so old invocations in scrollback don't 404.
 
@@ -45,24 +45,24 @@ runs; it is kept only so old invocations in scrollback don't 404.
 | Condition | Tools |
 |-----------|-------|
 | `baseline` | `read_file`, `run_bash`, `write_file` |
-| `spelunk_search` | baseline + `spelunk_search` (semantic code retrieval) |
-| `spelunk_full` | baseline + `spelunk_search` + `spelunk_graph` + `spelunk_memory_search` |
+| `inkentry_search` | baseline + `inkentry_search` (semantic code retrieval) |
+| `inkentry_full` | baseline + `inkentry_search` + `inkentry_graph` + `inkentry_memory_search` |
 
 `condition` and `harness` are independent dimensions — vary exactly one
-at a time between comparisons (bench/AGENTS.md principle #1). All three
+at a time between comparisons (AGENTS.md principle #1). All three
 conditions run under all three harnesses. `--harness none` (`agent.py`) calls
-the spelunk tools in-process; opencode and claude-code reach the same tools
-over `spelunk_mcp_server.py`, a bench-local stdio MCP server that *imports*
+the inkentry tools in-process; opencode and claude-code reach the same tools
+over `inkentry_mcp_server.py`, a bench-local stdio MCP server that *imports*
 `agent.py`'s tool functions and schemas rather than reimplementing them, so
-the capability behind a `spelunk` condition cannot drift between harnesses.
+the capability behind a `inkentry` condition cannot drift between harnesses.
 Each harness's result JSON records `condition` from `--condition`, so the
 value in the JSON always matches what was requested. (The
 DeepSeek-vs-native-Claude distinction for the claude-code harness lives in
 `endpoint_kind`, not `condition` — see the provenance table below.)
 
 **Tool names differ by harness; capability does not.** Under `--harness none`
-the model sees `spelunk_search`; under the MCP harnesses it sees
-`mcp__spelunk__spelunk_search`. Names, descriptions, and schemas are
+the model sees `inkentry_search`; under the MCP harnesses it sees
+`mcp__inkentry__inkentry_search`. Names, descriptions, and schemas are
 otherwise identical because they are the same objects. Transport differs,
 capability does not.
 
@@ -76,17 +76,17 @@ directly by editing files in the repository"). That clause is load-bearing, so
 the prompts are deliberately *not* unified: giving either harness the other's
 sentence would describe an edit mechanism it does not have.
 
-On a spelunk condition each harness appends a guidance sentence naming its own
-tool names rather than reusing `agent.py`'s whole `SYSTEM_PROMPT_SPELUNK`. The
-sentence is held as an exact substring of `SYSTEM_PROMPT_SPELUNK` and asserted
+On a inkentry condition each harness appends a guidance sentence naming its own
+tool names rather than reusing `agent.py`'s whole `SYSTEM_PROMPT_INKENTRY`. The
+sentence is held as an exact substring of `SYSTEM_PROMPT_INKENTRY` and asserted
 by the offline suite, so an upstream reword fails loudly.
 
 What that means when reading a result:
 
-- *Within* a harness the baseline/spelunk contrast is clean. The baseline arm
-  gets that harness's base prompt verbatim, the spelunk arm gets the same base
+- *Within* a harness the baseline/inkentry contrast is clean. The baseline arm
+  gets that harness's base prompt verbatim, the inkentry arm gets the same base
   plus the guidance sentence, so the base cancels out of the uplift.
-- `opencode` vs `claude-code` spelunk uplift is also prompt-clean: identical
+- `opencode` vs `claude-code` inkentry uplift is also prompt-clean: identical
   base, identical guidance core, differing only in tool names, which MCP
   namespacing forces.
 - Only comparisons *against* `--harness none` carry the one-clause difference,
@@ -96,18 +96,18 @@ What that means when reading a result:
 **MCP hygiene (`--strict-mcp-config`).** The claude-code adapter passes
 `--strict-mcp-config` in *both* arms, so only the bench's own `--mcp-config`
 is loaded. A dev host with its own MCP servers configured would otherwise
-leak them into baseline *and* spelunk, contaminating both. opencode has no
+leak them into baseline *and* inkentry, contaminating both. opencode has no
 equivalent flag; its generated `opencode.json` is repo-scoped, and on
 v1.17.20 `mcp` servers declared in a global `~/.config/opencode/` config were
 observed not to spawn for a repo-scoped run. That is an observed behaviour,
 not a documented guarantee. Unlike `--strict-mcp-config`, nothing enforces it,
 so re-check it when bumping opencode.
 
-**Tool-invocation telemetry.** Runs on a spelunk condition report
-`spelunk_mcp_server_spawned` plus `spelunk_tool_calls` /
-`spelunk_tool_calls_by_tool`. These separate three outcomes that otherwise
+**Tool-invocation telemetry.** Runs on a inkentry condition report
+`inkentry_mcp_server_spawned` plus `inkentry_tool_calls` /
+`inkentry_tool_calls_by_tool`. These separate three outcomes that otherwise
 look alike: the server never spawned (broken wiring, i.e. a baseline run with
-extra latency, not a spelunk cell), it spawned but the model never reached
+extra latency, not a inkentry cell), it spawned but the model never reached
 for a tool (a real result), or it was used.
 
 ## Harnesses
@@ -125,8 +125,8 @@ patch-extraction convention across all three — only the harness varies.
 ### `agent.py` — Single-task runner (harness=none)
 
 ```bash
-python bench/agents/agent.py \
-    --condition baseline|spelunk_search|spelunk_full \
+python agents/agent.py \
+    --condition baseline|inkentry_search|inkentry_full \
     --task-id <task_id> \
     --repo-path /path/to/repo \
     --issue "Issue text or path to ISSUE.txt" \
@@ -142,7 +142,7 @@ argument points to an existing file, its contents are read as the issue text.
 ### `harness_opencode.py` — Single-task runner (harness=opencode)
 
 ```bash
-python bench/agents/harness_opencode.py \
+python agents/harness_opencode.py \
     --task-id <task_id> \
     --repo-path /path/to/repo \
     --issue "Issue text or path to ISSUE.txt" \
@@ -154,16 +154,16 @@ python bench/agents/harness_opencode.py \
 
 DeepSeek is wired in via opencode's own native custom-provider mechanism, not
 a compat shim: the script writes a scratch `opencode.json` into the task repo
-(removed again once the run finishes) registering a `spelunk-bench-deepseek`
+(removed again once the run finishes) registering a `inkentry-bench-deepseek`
 provider —
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
   "provider": {
-    "spelunk-bench-deepseek": {
+    "inkentry-bench-deepseek": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "DeepSeek (spelunk-bench)",
+      "name": "DeepSeek (inkentry-bench)",
       "options": { "baseURL": "https://api.deepseek.com/v1", "apiKey": "..." },
       "models": { "deepseek-v4-flash": { "name": "deepseek-v4-flash" } }
     }
@@ -171,7 +171,7 @@ provider —
 }
 ```
 
-— then runs `opencode run --dir <repo> --model spelunk-bench-deepseek/<model>
+— then runs `opencode run --dir <repo> --model inkentry-bench-deepseek/<model>
 --format json --auto <prompt>`. `--auto` auto-approves permissions (required
 for a headless run — there is no TTY to answer a permission prompt).
 Patch extraction is the same git-diff-of-the-working-tree approach as
@@ -199,7 +199,7 @@ Patch extraction is the same git-diff-of-the-working-tree approach as
 ### `harness_claude_code.py` — Single-task runner (harness=claude-code)
 
 ```bash
-python bench/agents/harness_claude_code.py \
+python agents/harness_claude_code.py \
     --task-id <task_id> \
     --repo-path /path/to/repo \
     --issue "Issue text or path to ISSUE.txt" \
@@ -261,53 +261,53 @@ without a separate schema change.
 ## swebench_run.sh — Batch orchestrator
 
 ```bash
-bash bench/agents/swebench_run.sh \
-    --condition spelunk_full \
+bash agents/swebench_run.sh \
+    --condition inkentry_full \
     --harness none \
     --model deepseek-v4-flash \
     --api-key "$DEEPSEEK_API_KEY" \
     [--tasks 50] [--max-turns 20] [--seed 42] [--skip-index] [--eval]
 
 # opencode harness
-bash bench/agents/swebench_run.sh \
+bash agents/swebench_run.sh \
     --condition baseline --harness opencode \
     --api-key "$DEEPSEEK_API_KEY" --tasks 5
 
 # claude-code harness, DeepSeek via the Anthropic-compat endpoint
-bash bench/agents/swebench_run.sh \
+bash agents/swebench_run.sh \
     --condition baseline --harness claude-code \
     --api-key "$DEEPSEEK_API_KEY" --effort high --tasks 5
 
 # claude-code harness, native Claude model (no DeepSeek)
-bash bench/agents/swebench_run.sh \
+bash agents/swebench_run.sh \
     --condition baseline --harness claude-code --no-deepseek \
     --model claude-sonnet-5 --effort high --tasks 5
 ```
 
-Reads `bench/agents/tasks_50.json`, expects repos checked out at
-`bench/repos/<task_id>/` by default — or, if
-`~/opensource/spelunk-bench/repos` exists, that shared checkout instead
-(same convention as `bench/setup_repos.sh`, so both scripts always agree on
+Reads `agents/tasks_50.json`, expects repos checked out at
+`repos/<task_id>/` by default — or, if
+`~/opensource/inkentry-bench/repos` exists, that shared checkout instead
+(same convention as `setup_repos.sh`, so both scripts always agree on
 where repos live without needing `--repos-dir` on every invocation).
 Override either with `--repos-dir`.
 
-For `spelunk_search`/`spelunk_full` conditions, runs `spelunk index` (and,
-for `spelunk_full`, `spelunk memory harvest`) on each repo before the agent,
+For `inkentry_search`/`inkentry_full` conditions, runs `inkentry index` (and,
+for `inkentry_full`, `inkentry memory harvest`) on each repo before the agent,
 unless `--skip-index` is set. This is gated on the condition, not the
-harness: every harness reaches the same tools on a spelunk condition, and
-without the index the spelunk arm is a silent no-op that scores like
+harness: every harness reaches the same tools on a inkentry condition, and
+without the index the inkentry arm is a silent no-op that scores like
 baseline.
 
 Each task's patch is saved to
-`bench/patches/<condition>-<timestamp>/<task_id>.patch` for `--harness none`,
-or `bench/patches/<condition>-<harness>-<timestamp>/<task_id>.patch` for the
+`patches/<condition>-<timestamp>/<task_id>.patch` for `--harness none`,
+or `patches/<condition>-<harness>-<timestamp>/<task_id>.patch` for the
 other two (override either with `--patches-dir`). These patches are required
 for the Docker harness.
 
-Results are written to `bench/results/swebench-<condition>-<timestamp>.json`
+Results are written to `results/swebench-<condition>-<timestamp>.json`
 for `--harness none` (unchanged filename convention — additive only, so
 existing tooling/scripts that glob for this pattern keep working), or
-`bench/results/swebench-<condition>-<harness>-<timestamp>.json` for
+`results/swebench-<condition>-<harness>-<timestamp>.json` for
 `opencode`/`claude-code`.
 
 Pass `--eval` to automatically invoke `swebench_eval.sh` after the agent run
@@ -325,7 +325,7 @@ unaffected):
 ```json
 {
     "benchmark": "swebench-verified",
-    "condition": "spelunk_full",
+    "condition": "inkentry_full",
     "harness": "none",
     "harness_version": null,
     "endpoint_kind": "native",
@@ -335,12 +335,12 @@ unaffected):
     "model_source": "api",
     "api_base_url": "https://api.deepseek.com/v1",
     "api_key_source": "env:DEEPSEEK_API_KEY",
-    "spelunk_version": "0.9.2",
+    "inkentry_version": "0.9.2",
     "seed": 42,
     "run_seed": 42,
     "max_turns": 20,
     "task_id": "django__django-11099",
-    "patch_file": "bench/patches/spelunk_full-20260704T120000Z/django__django-11099.patch",
+    "patch_file": "patches/inkentry_full-20260704T120000Z/django__django-11099.patch",
     "question_set_version": null,
     "instance_filter": null,
     "judge_model": null,
@@ -373,13 +373,13 @@ New fields:
 
 `harness=none` rows keep `harness_version: null`, `effort: null`,
 `thinking: null` — there is no separate "harness" version to report beyond
-`spelunk_version` (already present), and no effort/thinking concept in
+`inkentry_version` (already present), and no effort/thinking concept in
 agent.py's own loop.
 
 Anyone with a DeepSeek API key can reproduce a harness=none run:
 ```bash
 export DEEPSEEK_API_KEY=sk-...
-bash bench/agents/swebench_run.sh --condition spelunk_full --harness none --seed 42
+bash agents/swebench_run.sh --condition inkentry_full --harness none --seed 42
 ```
 
 ## Contamination control: leakage-filtered instances
@@ -409,10 +409,10 @@ side by side.
 writes `tasks_filtered.json` (with a provenance header):
 
 ```bash
-python bench/agents/build_filtered_tasks.py \
+python agents/build_filtered_tasks.py \
     --labels swebench_plus_verified_exclude.json \
     --labels-source "arXiv:2410.06992 replication pkg, rev <sha/date>" \
-    --out bench/agents/tasks_filtered.json
+    --out agents/tasks_filtered.json
 ```
 
 `--labels` is the SWE-Bench+ per-instance leakage/suspicious label set for
@@ -432,7 +432,7 @@ counts and the `tasks_50.json` overlap without writing.
 Of the 50-slice, **24** instances are in SWE-bench Verified (the other 26 come
 from the SWE-bench *full* split; see `setup_repos.sh`, issue #252). Only those
 24 can ever survive the filter; the survivor subset is reported by
-`build_filtered_tasks.py --overlap-with bench/agents/tasks_50.json` once the
+`build_filtered_tasks.py --overlap-with agents/tasks_50.json` once the
 label set is available.
 
 ## DeepSeek endpoint verification
@@ -461,13 +461,13 @@ through both endpoints and diff tool-call behaviour:
 export DEEPSEEK_API_KEY=sk-...
 
 # Native OpenAI-compatible endpoint, via harness=none
-python bench/agents/agent.py --condition baseline \
+python agents/agent.py --condition baseline \
     --task-id <task_id> --repo-path <repo> --issue <repo>/ISSUE.txt \
     --model deepseek-v4-flash --api-base-url https://api.deepseek.com/v1 \
     --api-key "$DEEPSEEK_API_KEY" --seed 42
 
 # Anthropic-compat endpoint, via harness=claude-code
-python bench/agents/harness_claude_code.py \
+python agents/harness_claude_code.py \
     --task-id <task_id> --repo-path <repo> --issue <repo>/ISSUE.txt \
     --model deepseek-v4-flash --api-key "$DEEPSEEK_API_KEY" --seed 42
 ```
@@ -479,10 +479,10 @@ section is a placeholder for that write-up, not a result.
 
 ## Testing
 
-The harness matrix is covered by a pytest suite in `bench/agents/tests/`:
+The harness matrix is covered by a pytest suite in `agents/tests/`:
 
 ```bash
-uv run --with pytest pytest bench/agents/tests/ -v
+uv run --with pytest pytest agents/tests/ -v
 ```
 
 Tests are fully offline — no API keys, network, or external harness binaries
@@ -494,14 +494,14 @@ Tests are fully offline — no API keys, network, or external harness binaries
 
 ## aggregate_telemetry.py — per-cell token/cost table
 
-Turns the raw result JSONs in `bench/results/` into a per-cell telemetry and
+Turns the raw result JSONs in `results/` into a per-cell telemetry and
 cost table. Pure Python, stdlib only — no API keys, no DB, no network.
 
 ```bash
-python bench/agents/aggregate_telemetry.py            # prints the markdown table
-python bench/agents/aggregate_telemetry.py \
-    --results-dir bench/results \
-    --prices bench/agents/pricing.json \
+python agents/aggregate_telemetry.py            # prints the markdown table
+python agents/aggregate_telemetry.py \
+    --results-dir results \
+    --prices agents/pricing.json \
     --json-out telemetry.json --md-out telemetry.md
 ```
 
@@ -516,7 +516,7 @@ Framed as tokens-to-outcome, never a headline "tokens saved" (binding P8).
 
 ### Cost extrapolation and pricing
 
-Prices live in a committed config (`bench/agents/pricing.json`, override with
+Prices live in a committed config (`agents/pricing.json`, override with
 `--prices`). Every price carries a `verified_on` date; a `null` price is a
 placeholder that yields **no** cost estimate (the cell is marked `Priced: no`)
 rather than a silent zero — prices are never hardcoded in the script. The
@@ -539,9 +539,9 @@ config includes `Sonnet-5 × 50-slice × 2 conditions × 3 seeds`. Per-task toke
 counts there are **estimates** — replace with measured means from a pilot cell
 before quoting a figure.
 
-Tests: `uv run --with pytest pytest bench/agents/tests/ -v` (offline; covers
+Tests: `uv run --with pytest pytest agents/tests/ -v` (offline; covers
 grouping, legacy-none handling, cost/cache math, and projection). The committed
-`bench/results/examples/swebench-harness-matrix-fixture.json` carries the
+`results/examples/swebench-harness-matrix-fixture.json` carries the
 harness-matrix provenance fields so aggregation over a harness-carrying file is
 exercised end to end.
 
@@ -550,16 +550,16 @@ exercised end to end.
 - `resolved` is always `false` in agent output from every runner — resolution
   comes from the SWE-bench Docker harness. Use `--eval` on `swebench_run.sh`
   or run `swebench_eval.sh` separately to populate real resolve rates.
-- The spelunk CLI must be in PATH for `--harness none`. The agent handles
+- The inkentry CLI must be in PATH for `--harness none`. The agent handles
   exit code 1 (no results) gracefully.
 - DeepSeek API may have rate limits — the orchestrator pauses 1 s between tasks.
 - **Infrastructure vs. resolve_rate:** Infrastructure fixes (Phase 3) unblock
   benchmarks by ensuring tasks run without crashes. They do not improve
   `resolve_rate` — that requires a capable model (deepseek-v4-flash).
-- **spelunk_full vs spelunk_search:** For SWE-bench repos checked out at single
-  commits, `spelunk memory harvest` has no git history — memory tools return
-  empty results. `spelunk_full` is equivalent to `spelunk_search` for these
-  repos. The condition differentiates only on repos with prior spelunk memory
+- **inkentry_full vs inkentry_search:** For SWE-bench repos checked out at single
+  commits, `inkentry memory harvest` has no git history — memory tools return
+  empty results. `inkentry_full` is equivalent to `inkentry_search` for these
+  repos. The condition differentiates only on repos with prior inkentry memory
   (Phase 6 benchmarks).
-- **Phase 6a prerequisite:** `spelunk context` (#201) must be merged before the
+- **Phase 6a prerequisite:** `inkentry context` (#201) must be merged before the
   cross-session handoff benchmark can be scripted as described in the plan.

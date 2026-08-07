@@ -4,18 +4,18 @@
 Three conditions for Session 2:
     s2a_cold_start   — fresh clone, no S1 files, no memory
     s2b_files_present — S1 file changes on disk, no memory tools
-    s2c_with_memory  — S1 files + spelunk memory access
+    s2c_with_memory  — S1 files + inkentry memory access
 
 Each task has a verify_cmd that produces a binary pass/fail signal.
-Tasks are defined in bench/memory/handoff_tasks.json.
+Tasks are defined in memory/handoff_tasks.json.
 
 Usage:
-    python bench/memory/cross_session_handoff.py \\
-        --tasks bench/memory/handoff_tasks.json \\
+    python memory/cross_session_handoff.py \\
+        --tasks memory/handoff_tasks.json \\
         --model deepseek-v4-flash \\
         --session-1-turns 5 \\
         --session-2-turns 15 \\
-        --out bench/results/handoff.json
+        --out results/handoff.json
 """
 
 import argparse
@@ -121,7 +121,7 @@ def run_verify(repo_path: Path, cmd: str) -> tuple[bool, str]:
 def store_handoff(repo_path: Path, task: str, turns: int) -> None:
     subprocess.run(
         [
-            "spelunk",
+            "inkentry",
             "memory",
             "add",
             "--kind",
@@ -142,10 +142,10 @@ def store_handoff(repo_path: Path, task: str, turns: int) -> None:
     )
 
 
-def get_spelunk_version() -> str:
+def get_inkentry_version() -> str:
     try:
         r = subprocess.run(
-            ["spelunk", "--version"], capture_output=True, text=True, timeout=5
+            ["inkentry", "--version"], capture_output=True, text=True, timeout=5
         )
         return r.stdout.strip()
     except Exception:
@@ -234,12 +234,12 @@ def main():
                     timeout=120,
                 )
 
-        # Index s1 and s2c for spelunk
+        # Index s1 and s2c for inkentry
         subprocess.run(
-            ["spelunk", "index", str(clones["s1"])], capture_output=True, timeout=120
+            ["inkentry", "index", str(clones["s1"])], capture_output=True, timeout=120
         )
         subprocess.run(
-            ["spelunk", "index", str(clones["s2c"])], capture_output=True, timeout=120
+            ["inkentry", "index", str(clones["s2c"])], capture_output=True, timeout=120
         )
 
         # Pre-flight: verify_cmd must FAIL on unmodified clone
@@ -280,7 +280,7 @@ def main():
                 shutil.rmtree(clones[key])
             shutil.copytree(str(clones["s1"]), str(clones[key]), symlinks=True)
             if key == "s2b":
-                shutil.rmtree(clones[key] / ".spelunk", ignore_errors=True)
+                shutil.rmtree(clones[key] / ".inkentry", ignore_errors=True)
                 subprocess.run(
                     [
                         "git",
@@ -331,7 +331,7 @@ def main():
         s2c = run_agent(
             clones["s2c"],
             task_name,
-            "spelunk_search",
+            "inkentry_search",
             args.model,
             args.api_base_url,
             api_key,
@@ -391,7 +391,7 @@ def main():
         "session_1_turns": args.session_1_turns,
         "session_2_turns": args.session_2_turns,
         "seed": args.seed,
-        "spelunk_version": get_spelunk_version(),
+        "inkentry_version": get_inkentry_version(),
         "num_tasks": len(all_results),
         "aggregate": aggregate,
         "results": all_results,

@@ -2,7 +2,7 @@
   {
     "task_id": "astropy__astropy-12907",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -15,7 +15,7 @@
   {
     "task_id": "django__django-11099",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -28,7 +28,7 @@
   {
     "task_id": "django__django-11133",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -41,7 +41,7 @@
   {
     "task_id": "django__django-11179",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -54,7 +54,7 @@
   {
     "task_id": "django__django-11564",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -67,7 +67,7 @@
   {
     "task_id": "matplotlib__matplotlib-22711",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -80,7 +80,7 @@
   {
     "task_id": "matplotlib__matplotlib-23049",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -93,7 +93,7 @@
   {
     "task_id": "psf__requests-1963",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -106,7 +106,7 @@
   {
     "task_id": "psf__requests-2317",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -119,7 +119,7 @@
   {
     "task_id": "pylint-dev__pylint-4551",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -132,7 +132,7 @@
   {
     "task_id": "sympy__sympy-20590",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -145,7 +145,7 @@
   {
     "task_id": "sympy__sympy-21379",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 42,
@@ -158,7 +158,7 @@
   {
     "task_id": "astropy__astropy-12907",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -171,7 +171,7 @@
   {
     "task_id": "django__django-11099",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -184,7 +184,7 @@
   {
     "task_id": "django__django-11133",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -197,7 +197,7 @@
   {
     "task_id": "django__django-11179",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -210,7 +210,7 @@
   {
     "task_id": "django__django-11564",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -223,7 +223,7 @@
   {
     "task_id": "matplotlib__matplotlib-22711",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -236,7 +236,7 @@
   {
     "task_id": "matplotlib__matplotlib-23049",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -249,7 +249,7 @@
   {
     "task_id": "psf__requests-1963",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -262,7 +262,7 @@
   {
     "task_id": "psf__requests-2317",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -275,7 +275,7 @@
   {
     "task_id": "pylint-dev__pylint-4551",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -288,7 +288,7 @@
   {
     "task_id": "sympy__sympy-20590",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -301,7 +301,7 @@
   {
     "task_id": "sympy__sympy-21379",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 43,
@@ -314,7 +314,7 @@
   {
     "task_id": "astropy__astropy-12907",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -327,7 +327,7 @@
   {
     "task_id": "django__django-11099",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -340,7 +340,7 @@
   {
     "task_id": "django__django-11133",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -353,7 +353,7 @@
   {
     "task_id": "django__django-11179",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -366,7 +366,7 @@
   {
     "task_id": "django__django-11564",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -379,7 +379,7 @@
   {
     "task_id": "matplotlib__matplotlib-22711",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -392,7 +392,7 @@
   {
     "task_id": "matplotlib__matplotlib-23049",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -405,7 +405,7 @@
   {
     "task_id": "psf__requests-1963",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -418,7 +418,7 @@
   {
     "task_id": "psf__requests-2317",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -431,7 +431,7 @@
   {
     "task_id": "pylint-dev__pylint-4551",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -444,7 +444,7 @@
   {
     "task_id": "sympy__sympy-20590",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,
@@ -457,7 +457,7 @@
   {
     "task_id": "sympy__sympy-21379",
     "benchmark": "swebench-local",
-    "condition": "spelunk_search",
+    "condition": "inkentry_search",
     "model": "gemma-4-e2b-it",
     "model_source": "local",
     "seed": 44,

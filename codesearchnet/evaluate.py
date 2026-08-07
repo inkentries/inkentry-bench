@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Evaluate spelunk retrieval accuracy using the CodeSearchNet dataset.
+"""Evaluate inkentry retrieval accuracy using the CodeSearchNet dataset.
 
-For each sampled (docstring query, function) pair, runs `spelunk search`
+For each sampled (docstring query, function) pair, runs `inkentry search`
 and checks whether the ground-truth function name appears in any of the
 top-10 results. Computes MRR@10, Recall@5, and Recall@10.
 
 Prerequisites:
-  - spelunk must be in PATH and the target project must already be indexed.
+  - inkentry must be in PATH and the target project must already be indexed.
   - pip install datasets tqdm numpy
 
 Usage:
-    python bench/codesearchnet/evaluate.py \
+    python codesearchnet/evaluate.py \
         [--languages python,java,go] \
         [--samples 1000] \
-        [--out bench/results/csn-run.json]
+        [--out results/csn-run.json]
 """
 
 import argparse
@@ -27,11 +27,11 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 
-def get_spelunk_version() -> str:
-    """Return the installed spelunk version string."""
+def get_inkentry_version() -> str:
+    """Return the installed inkentry version string."""
     try:
         result = subprocess.run(
-            ["spelunk", "--version"],
+            ["inkentry", "--version"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -41,15 +41,15 @@ def get_spelunk_version() -> str:
         return "unknown"
 
 
-def spelunk_search(
+def inkentry_search(
     query: str,
     limit: int = 10,
     mode: str = "hybrid",
     graph: bool = False,
     graph_limit: int = 10,
 ) -> list[dict]:
-    """Run spelunk search and return parsed results."""
-    cmd = ["spelunk", "search", query, "--limit", str(limit), "--format", "json"]
+    """Run inkentry search and return parsed results."""
+    cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
     if mode != "hybrid":
         cmd.extend(["--mode", mode])
     if graph:
@@ -110,7 +110,7 @@ def evaluate_language(
             continue
 
         start = time.monotonic()
-        results = spelunk_search(query, limit=10, mode=mode, graph=graph)
+        results = inkentry_search(query, limit=10, mode=mode, graph=graph)
         elapsed = time.monotonic() - start
         wall_times.append(elapsed)
 
@@ -127,7 +127,7 @@ def evaluate_language(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Evaluate spelunk retrieval accuracy using CodeSearchNet."
+        description="Evaluate inkentry retrieval accuracy using CodeSearchNet."
     )
     parser.add_argument(
         "--languages",
@@ -159,7 +159,7 @@ def main() -> None:
 
     modes = [m.strip() for m in args.mode.split(",") if m.strip()]
     languages = [lang.strip() for lang in args.languages.split(",") if lang.strip()]
-    spelunk_version = get_spelunk_version()
+    inkentry_version = get_inkentry_version()
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     all_outputs = []
@@ -201,7 +201,7 @@ def main() -> None:
             "condition": condition,
             "search_mode": search_mode,
             "graph": use_graph,
-            "spelunk_version": spelunk_version,
+            "inkentry_version": inkentry_version,
             "languages": languages,
             "samples": len(all_rr),
             "mrr_at_10": round(mrr_at_10, 4),

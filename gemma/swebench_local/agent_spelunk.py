@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""SWE-bench agent with spelunk — Gemma via local OpenAI-compatible API.
+"""SWE-bench agent with inkentry — Gemma via local OpenAI-compatible API.
 
-Identical to agent_baseline.py but adds a spelunk_search tool.
+Identical to agent_baseline.py but adds a inkentry_search tool.
 
 Usage:
-    python bench/gemma/swebench_local/agent_spelunk.py \\
+    python gemma/swebench_local/agent_inkentry.py \\
         --task-id django__django-11099 \\
         --repo-path /path/to/repo \\
         --issue "Issue description text..." \\
@@ -68,9 +68,9 @@ TOOLS = [
     {
         "type": "function",
         "function": {
-            "name": "spelunk_search",
+            "name": "inkentry_search",
             "description": (
-                "Semantically search the codebase using spelunk. Returns the most relevant "
+                "Semantically search the codebase using inkentry. Returns the most relevant "
                 "code chunks for the given query. Use this to quickly locate relevant "
                 "functions, classes, or logic without manually browsing files."
             ),
@@ -91,7 +91,7 @@ MAX_OUTPUT_CHARS = 10_000
 SYSTEM_PROMPT = (
     "You are an expert software engineer. You are given a GitHub issue and a "
     "repository checkout. Your goal is to produce a minimal patch that fixes the "
-    "issue. You have access to spelunk_search for fast semantic code search — use "
+    "issue. You have access to inkentry_search for fast semantic code search — use "
     "it to locate relevant code before diving into files. When you are done, "
     "briefly summarise what you changed."
 )
@@ -134,17 +134,17 @@ def write_file(repo_path: Path, path: str, content: str) -> str:
         return f"Error writing file: {e}"
 
 
-def spelunk_search(repo_path: Path, query: str, limit: int = 10) -> str:
-    cmd = ["spelunk", "search", query, "--limit", str(limit), "--format", "json"]
+def inkentry_search(repo_path: Path, query: str, limit: int = 10) -> str:
+    cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
     try:
         result = subprocess.run(cmd, cwd=repo_path, capture_output=True, text=True, timeout=30)
         output = result.stdout
         if result.returncode != 0:
-            return f"spelunk search failed (exit {result.returncode}): {result.stderr.strip()}"
+            return f"inkentry search failed (exit {result.returncode}): {result.stderr.strip()}"
     except FileNotFoundError:
-        return "Error: spelunk not found in PATH."
+        return "Error: inkentry not found in PATH."
     except subprocess.TimeoutExpired:
-        return "Error: spelunk search timed out."
+        return "Error: inkentry search timed out."
     if len(output) > MAX_OUTPUT_CHARS:
         output = output[:MAX_OUTPUT_CHARS] + "\n... (output truncated)"
     return output or "(no results)"
@@ -158,8 +158,8 @@ def dispatch_tool(repo_path: Path, name: str, arguments: str) -> str:
         return run_bash(repo_path, args["command"])
     elif name == "write_file":
         return write_file(repo_path, args["path"], args["content"])
-    elif name == "spelunk_search":
-        return spelunk_search(repo_path, args["query"], args.get("limit", 10))
+    elif name == "inkentry_search":
+        return inkentry_search(repo_path, args["query"], args.get("limit", 10))
     return f"Unknown tool: {name}"
 
 
@@ -230,7 +230,7 @@ def run_agent(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="SWE-bench agent with spelunk (local model).")
+    parser = argparse.ArgumentParser(description="SWE-bench agent with inkentry (local model).")
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--repo-path", required=True)
     parser.add_argument("--issue", required=True)

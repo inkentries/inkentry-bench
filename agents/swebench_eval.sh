@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bench/agents/swebench_eval.sh — run SWE-bench Docker evaluation
+# agents/swebench_eval.sh — run SWE-bench Docker evaluation
 #
 # Converts agent patches to SWE-bench prediction format, runs the
 # official Docker harness, and merges resolve data back into the
@@ -79,7 +79,7 @@ META_FILE="${PREDICTIONS_FILE%.json}.meta.json"
 if [[ -f "$META_FILE" ]]; then
     CONDITION=$(python3 -c "import json; print(json.load(open('${META_FILE}')).get('condition','unknown'))" 2>/dev/null || echo "unknown")
 fi
-RUN_ID="spelunk-${CONDITION}-${TIMESTAMP}"
+RUN_ID="inkentry-${CONDITION}-${TIMESTAMP}"
 
 echo ""
 echo "--- Running Docker evaluation ---"

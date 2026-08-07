@@ -1,11 +1,11 @@
 """Provenance additive-only contract test.
 
 Run:
-    uv run --with pytest pytest bench/agents/tests/ -v
+    uv run --with pytest pytest agents/tests/ -v
 
 Verifies each harness's result JSON still carries the pre-existing
 (pre-harness-matrix) reproducibility fields, plus the new harness-matrix
-fields -- additive only, per bench/agents/README.md "Reproducibility /
+fields -- additive only, per agents/README.md "Reproducibility /
 provenance contract". Exercised against all three harnesses: agent.py
 (harness=none), harness_opencode.py, and harness_claude_code.py.
 
@@ -50,7 +50,7 @@ HARNESS_OPENCODE = AGENTS_DIR / "harness_opencode.py"
 AGENT_PY = AGENTS_DIR / "agent.py"
 
 # Fields that existed in the result JSON before the harness-matrix change
-# (agent.py's original reproducibility contract, see bench/agents/README.md
+# (agent.py's original reproducibility contract, see agents/README.md
 # and the git history of agent.py's final `output = {...}` dict).
 PRE_EXISTING_FIELDS = {
     "benchmark",
@@ -59,7 +59,7 @@ PRE_EXISTING_FIELDS = {
     "model_source",
     "api_base_url",
     "api_key_source",
-    "spelunk_version",
+    "inkentry_version",
     "seed",
     "max_turns",
     "task_id",
@@ -204,10 +204,10 @@ class TestProvenanceAdditiveContract:
         # condition defaults to "baseline" (not a harness-specific hardcoded
         # string like the old "claude_code_native"/"claude_code_deepseek").
         assert payload["condition"] == "baseline"
-        # No spelunk tools wired in on baseline, so provenance must not claim
+        # No inkentry tools wired in on baseline, so provenance must not claim
         # a version. Positive control:
-        # TestSpelunkProvenance.test_version_recorded_on_spelunk_condition.
-        assert payload["spelunk_version"] is None
+        # TestInkentryProvenance.test_version_recorded_on_inkentry_condition.
+        assert payload["inkentry_version"] is None
 
     def test_condition_flows_from_flag_not_hardcoded(
         self, fake_claude_on_path, throwaway_repo, tmp_path
@@ -232,7 +232,7 @@ class TestProvenanceAdditiveContract:
                 str(issue_file),
                 "--no-deepseek",
                 "--condition",
-                "spelunk_search",
+                "inkentry_search",
             ],
             capture_output=True,
             text=True,
@@ -243,15 +243,15 @@ class TestProvenanceAdditiveContract:
         assert result.returncode == 0, result.stderr
         line = [l for l in result.stdout.splitlines() if l.startswith("{")][-1]
         payload = json.loads(line)
-        assert payload["condition"] == "spelunk_search"
+        assert payload["condition"] == "inkentry_search"
 
 
-class TestSpelunkProvenance:
-    """A spelunk cell whose provenance lies about what was wired in is worse
+class TestInkentryProvenance:
+    """A inkentry cell whose provenance lies about what was wired in is worse
     than no cell. Driven through the fake `claude` shim, which never spawns
     the MCP server, so the telemetry here is the never-spawned case."""
 
-    def test_version_recorded_on_spelunk_condition(
+    def test_version_recorded_on_inkentry_condition(
         self, fake_claude_on_path, throwaway_repo, tmp_path
     ):
         issue_file = tmp_path / "ISSUE.txt"
@@ -269,7 +269,7 @@ class TestSpelunkProvenance:
                 str(issue_file),
                 "--no-deepseek",
                 "--condition",
-                "spelunk_full",
+                "inkentry_full",
             ],
             capture_output=True,
             text=True,
@@ -281,17 +281,17 @@ class TestSpelunkProvenance:
         payload = json.loads(
             [l for l in result.stdout.splitlines() if l.startswith("{")][-1]
         )
-        # Real version string if spelunk is installed, "unknown" if not.
-        # Never None on a spelunk condition, which is the old bug: both
+        # Real version string if inkentry is installed, "unknown" if not.
+        # Never None on a inkentry condition, which is the old bug: both
         # harnesses hardcoded None and the record disagreed with the wiring.
-        assert payload["spelunk_version"] is not None
-        assert payload["condition"] == "spelunk_full"
+        assert payload["inkentry_version"] is not None
+        assert payload["condition"] == "inkentry_full"
 
     def test_telemetry_reports_a_server_that_never_spawned(
         self, fake_claude_on_path, throwaway_repo, tmp_path
     ):
         # The fake shim ignores --mcp-config entirely, so this is exactly the
-        # "spelunk-labelled cell that is really baseline with extra latency"
+        # "inkentry-labelled cell that is really baseline with extra latency"
         # case the telemetry exists to expose.
         issue_file = tmp_path / "ISSUE.txt"
         issue_file.write_text("Fix the bug.")
@@ -308,7 +308,7 @@ class TestSpelunkProvenance:
                 str(issue_file),
                 "--no-deepseek",
                 "--condition",
-                "spelunk_search",
+                "inkentry_search",
             ],
             capture_output=True,
             text=True,
@@ -320,8 +320,8 @@ class TestSpelunkProvenance:
         payload = json.loads(
             [l for l in result.stdout.splitlines() if l.startswith("{")][-1]
         )
-        assert payload["spelunk_mcp_server_spawned"] is False
-        assert payload["spelunk_tool_calls"] == 0
+        assert payload["inkentry_mcp_server_spawned"] is False
+        assert payload["inkentry_tool_calls"] == 0
 
 
 class TestOpencodeProvenanceAdditiveContract:
