@@ -26,7 +26,7 @@ BASELINES_DIR="${REPO_ROOT}/baselines"
 BASELINE_FILE="${BASELINES_DIR}/repobench-gemma-4-e2b-it-baseline.json"
 
 usage() {
-    grep '^#' "$0" | grep -v '#!/' | sed 's/^# \?//'
+    grep '^#' "$0" | grep -v '#!/' | sed 's/^#[[:space:]]\{0,1\}//'
     exit 1
 }
 

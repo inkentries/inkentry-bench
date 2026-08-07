@@ -38,7 +38,7 @@ MAX_RETRIES=3
 GIT_TIMEOUT=120
 
 usage() {
-    grep '^#' "$0" | grep -v '#!/' | sed 's/^# \?//'
+    grep '^#' "$0" | grep -v '#!/' | sed 's/^#[[:space:]]\{0,1\}//'
     exit 1
 }
 

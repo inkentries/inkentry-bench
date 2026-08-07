@@ -50,7 +50,7 @@ BASELINES_DIR="${REPO_ROOT}/baselines"
 TASKS_FILE="${BENCH_DIR}/agents/tasks_50.json"
 
 usage() {
-    grep '^#' "$0" | grep -v '#!/' | sed 's/^# \?//'
+    grep '^#' "$0" | grep -v '#!/' | sed 's/^#[[:space:]]\{0,1\}//'
     exit 1
 }
 
