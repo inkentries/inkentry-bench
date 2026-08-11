@@ -1,2 +1,4 @@
 *
 !.gitignore
+!flash-harness-matrix/
+!flash-harness-matrix/**
