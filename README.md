@@ -122,16 +122,23 @@ not for a published figure.
 
 ## Baselines
 
-There are no committed baselines in this repository. Every benchmark here
-predates the rename from the previous product, and its recorded numbers were
-measured against that product's index, embedding model and ranking — they are
-not inkentry numbers and comparing against them would be misleading. Capture
-your own "before" run and keep the file.
+One committed baseline exists, for CodeSearchNet retrieval:
+`results/codesearchnet-baseline/`. It is the median of three repeats against a
+recorded product commit, taken before the unified-search rank-fusion change,
+and it is the reference point for ranking work measured against that commit.
+Read its README before comparing anything to it — in particular, a comparison
+is only meaningful at the same `--seed` and sample count.
+
+Every other benchmark here predates the rename from the previous product, and
+its recorded numbers were measured against that product's index, embedding
+model and ranking — they are not inkentry numbers and comparing against them
+would be misleading. Capture your own "before" run and keep the file.
 
 The two places where pre-rename measurements survive are labelled as such:
 `linearrag/results.json` and `linearrag/labels.json` (see `linearrag/README.md`).
-Fabricated test fixtures live in `tests/fixtures/` and are labelled too. Real
-runs land in `results/`, which is gitignored.
+Fabricated test fixtures live in `tests/fixtures/` and are labelled too. Other
+runs land in `results/`, which is gitignored apart from the committed
+baselines.
 
 ## SWE-bench repo setup
 
