@@ -10,8 +10,15 @@
 #                             [--reuse-corpus] [--reuse-index]
 #
 # Two runs are comparable only if --languages, --samples and --seed match.
-# Indexing is the slow part; --reuse-index skips it when only the query side
-# changed, and --reuse-corpus keeps an already-materialized corpus.
+#
+# Indexing is the slow part. Both modes that index delete the corpus's existing
+# index first, because indexing is content-hash incremental: left in place, an
+# unchanged corpus is entirely hash-skipped and the run re-measures the index
+# that was already on disk — possibly one built by a different binary.
+#
+#   (no flag)        re-sample the corpus, delete the index, index, evaluate
+#   --reuse-corpus   keep the corpus, delete the index, index, evaluate
+#   --reuse-index    keep the corpus and the index, evaluate only
 
 set -euo pipefail
 
@@ -80,6 +87,15 @@ if [[ "$REUSE_CORPUS" -eq 0 ]]; then
 fi
 
 if [[ "$REUSE_INDEX" -eq 0 ]]; then
+    # Re-materializing the corpus is not enough to force a re-index: the same
+    # --seed writes byte-identical files, so every one of them is hash-skipped
+    # and the "new" index is the old one. Delete it and mean it.
+    for index_dir in "${CORPUS_DIR}/corpus/.inkentry" "${CORPUS_DIR}/corpus/.spelunk"; do
+        if [[ -d "$index_dir" ]]; then
+            echo "==> removing previous index at ${index_dir}"
+            rm -rf "$index_dir"
+        fi
+    done
     echo "==> indexing corpus (this is the slow phase)"
     "$INKENTRY_BIN" index "${CORPUS_DIR}/corpus"
 fi

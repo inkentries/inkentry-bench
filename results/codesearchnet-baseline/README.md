@@ -45,10 +45,12 @@ Each repeat used the **same materialized corpus** and a **freshly built index**,
 so what varies between them is the indexing and ranking pipeline rather than
 which functions were sampled.
 
-Note that `--reuse-corpus` alone does not achieve this. Indexing is content-hash
-incremental: with the previous index still on disk, every file is hash-skipped
-and the "repeat" re-measures the index the previous repeat built. Each repeat
-here therefore deletes the corpus's `.inkentry/` directory first.
+When these repeats were taken, `--reuse-corpus` alone did not achieve that.
+Indexing is content-hash incremental: with the previous index still on disk
+every file was hash-skipped, so the "repeat" re-measured the index the previous
+repeat had built. Each repeat here therefore deleted the corpus's `.inkentry/`
+directory by hand first. `run.sh` now performs that deletion itself, so a plain
+`--reuse-corpus` reproduces what was done here.
 
 Embeddings were served by a dedicated `inkentry-server` built from the same
 commit, on an ephemeral loopback port, with its own database and an offline
