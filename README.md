@@ -37,20 +37,38 @@ Compare with:
 python3 report.py results/codesearchnet-hybrid-<before>.json results/codesearchnet-hybrid-<after>.json
 ```
 
-### Cost, and how to spend less of it
+### The three run modes
 
 Indexing is the slow phase — it embeds every chunk, and on a laptop CPU that is
 minutes for 500 functions and hours for a full repository. The query phase is
-seconds.
+seconds. What you may skip depends on what you are comparing:
 
-- `--reuse-index` re-queries an existing corpus index. Use it to compare
-  `--mode hybrid` against `--mode text` or `--mode semantic` without paying to
-  index again. It is **not** valid for a before/after comparison of a change
-  that affects indexing, chunking or embedding — those need a fresh index.
-- `--reuse-corpus` keeps the materialized files but re-indexes them. This is
-  the right flag for a ranking change: identical corpus, new index.
-- `--samples 100` gives a fast smoke number. It is too small to trust for a
-  reported figure — expect several points of noise.
+| Invocation | Corpus | Index | Use it for |
+|---|---|---|---|
+| no flag | re-sampled | **deleted, rebuilt** | the first run, or a new `--seed`, `--samples` or `--languages` |
+| `--reuse-corpus` | kept | **deleted, rebuilt** | a before/after of an indexing, chunking, embedding or ranking change, and repeats for variance |
+| `--reuse-index` | kept | kept | comparing `--mode hybrid` against `--mode text` or `--mode semantic` over one index |
+
+The two rebuilding modes delete `<corpus-dir>/corpus/.inkentry` before
+indexing, and that deletion is what makes them mean anything. Indexing is
+content-hash incremental: an unchanged file is skipped, and the same `--seed`
+re-materializes byte-identical files. With the previous index still on disk,
+every file is hash-skipped and the run silently re-measures the index that was
+already there — a repeat that measures nothing, or worse, a "fresh" number
+taken from an index some older binary built.
+
+`--reuse-index` keeps the index on purpose, so it is the one mode where that
+risk remains. It is **not** valid for a before/after comparison of a change to
+indexing, chunking or embedding: nothing about the index is rebuilt, so no such
+change can show up. (It implies `--reuse-corpus`.)
+
+`--samples 100` gives a fast smoke number. It is too small to trust for a
+reported figure — expect several points of noise.
+
+Repeated runs are not bit-identical even over a byte-identical index: ranking
+ties break differently between runs. Two runs at 120 samples over one untouched
+index differed by 0.008 on Recall@10. Treat differences of that order as noise,
+not signal.
 
 ### Options
 
