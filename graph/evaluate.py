@@ -6,9 +6,9 @@ measures how well each retrieves the ground-truth set of files containing
 callers/callees/implementers of that symbol.
 
 Conditions:
-    grep           — git grep <symbol> over the repo
-    inkentry_search — inkentry search <symbol> (semantic)
-    inkentry_graph  — inkentry graph <symbol> --format json
+    grep             git grep <symbol> over the repo
+    inkentry_search  inkentry search <symbol> --only-code (semantic)
+    inkentry_graph   inkentry plumbing graph-edges --symbol <symbol>
 
 Metrics: precision@k, recall@k, F1. No LLM, no API costs.
 
@@ -61,42 +61,89 @@ def run_grep(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
         return set()
 
 
+def search_file_paths(results: list) -> set[str]:
+    """File paths from a `search --format json` payload, either envelope shape.
+
+    Results arrive as a fusion envelope, one entry per hit:
+    `{type, fused_rank, fused_score, corpus_rank, code|memory: {…}}`, with the
+    chunk fields nested under `code`. Older builds emitted them flat. Reading
+    the top level unconditionally against a current binary yields an empty set
+    and scores a silent zero, so unwrap when the nested object is present.
+    """
+    paths: set[str] = set()
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        nested = item.get("code")
+        payload = nested if isinstance(nested, dict) else item
+        path = payload.get("file_path", "")
+        if path:
+            paths.add(path)
+    return paths
+
+
 def run_inkentry_search(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
     """Return set of file paths from inkentry search results."""
     try:
         result = subprocess.run(
-            ["inkentry", "search", symbol, "--limit", str(limit), "--format", "json"],
+            [
+                "inkentry",
+                "search",
+                symbol,
+                "--only-code",
+                "--limit",
+                str(limit),
+                "--format",
+                "json",
+            ],
             cwd=repo_path,
             capture_output=True,
             text=True,
             timeout=30,
         )
         if result.returncode == 0 and result.stdout.strip():
-            results = json.loads(result.stdout)
-            return {r.get("file_path", "") for r in results if r.get("file_path")}
+            return search_file_paths(json.loads(result.stdout))
+        if result.returncode not in (0, 1):
+            print(
+                f"  search: exit {result.returncode} for {symbol}: "
+                f"{result.stderr.strip()[:200]}",
+                file=sys.stderr,
+            )
         return set()
-    except Exception:
+    except Exception as e:
+        print(f"  search: failed for {symbol}: {e}", file=sys.stderr)
         return set()
 
 
 def run_inkentry_graph(repo_path: Path, symbol: str, limit: int = 10) -> set[str]:
-    """Return set of file paths from inkentry graph results."""
+    """Return set of file paths from the code graph edges touching a symbol."""
     try:
         result = subprocess.run(
-            ["inkentry", "graph", symbol, "--format", "json"],
+            ["inkentry", "plumbing", "graph-edges", "--symbol", symbol],
             cwd=repo_path,
             capture_output=True,
             text=True,
             timeout=30,
         )
-        if result.returncode == 0 and result.stdout.strip():
-            # Output is a flat list of edge objects: {source_file, source_name,
+        if result.returncode not in (0, 1):
+            print(
+                f"  graph: exit {result.returncode} for {symbol}: "
+                f"{result.stderr.strip()[:200]}",
+                file=sys.stderr,
+            )
+            return set()
+        if result.stdout.strip():
+            # JSONL, one edge object per line: {source_file, source_name,
             # target_name, kind, line}. Collect unique source_file values in
             # order of first appearance.
-            edges = json.loads(result.stdout)
+            edges = [
+                json.loads(line)
+                for line in result.stdout.splitlines()
+                if line.strip()
+            ]
             seen: set[str] = set()
             files_ordered: list[str] = []
-            for edge in edges if isinstance(edges, list) else []:
+            for edge in edges:
                 f = edge.get("source_file", "")
                 if f and f not in seen:
                     seen.add(f)

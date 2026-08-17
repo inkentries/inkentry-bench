@@ -6,8 +6,11 @@
 #
 # Usage:
 #   bash codesearchnet/run.sh [--languages python] [--samples 500] [--seed 0]
-#                             [--mode hybrid] [--corpus-dir DIR] [--out FILE]
+#                             [--only-text] [--corpus-dir DIR] [--out FILE]
 #                             [--reuse-corpus] [--reuse-index]
+#
+# Queries run against the code corpus with the best-available ranking. Pass
+# --only-text for the full-text-only condition, which needs no inference server.
 #
 # Two runs are comparable only if --languages, --samples and --seed match.
 #
@@ -34,7 +37,8 @@ export INKENTRY_BIN
 LANGUAGES="python"
 SAMPLES="500"
 SEED="0"
-MODE="hybrid"
+ONLY_TEXT=0
+CONDITION="hybrid"
 CORPUS_DIR="${HOME}/.cache/inkentry-bench/codesearchnet"
 OUT=""
 REUSE_CORPUS=0
@@ -50,7 +54,13 @@ while [[ $# -gt 0 ]]; do
         --languages) LANGUAGES="$2"; shift 2 ;;
         --samples) SAMPLES="$2"; shift 2 ;;
         --seed) SEED="$2"; shift 2 ;;
-        --mode) MODE="$2"; shift 2 ;;
+        --only-text) ONLY_TEXT=1; CONDITION="text"; shift ;;
+        --mode)
+            echo "--mode was removed from inkentry search; this harness no longer takes it." >&2
+            echo "  --mode text                 ->  --only-text" >&2
+            echo "  --mode semantic|hybrid|auto ->  no flag; that is the default" >&2
+            exit 1
+            ;;
         --corpus-dir) CORPUS_DIR="$2"; shift 2 ;;
         --out) OUT="$2"; shift 2 ;;
         --reuse-corpus) REUSE_CORPUS=1; shift ;;
@@ -67,7 +77,7 @@ fi
 
 if [[ -z "$OUT" ]]; then
     TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-    OUT="${REPO_DIR}/results/codesearchnet-${MODE}-${TIMESTAMP}.json"
+    OUT="${REPO_DIR}/results/codesearchnet-${CONDITION}-${TIMESTAMP}.json"
 fi
 mkdir -p "$(dirname "$OUT")"
 
@@ -100,8 +110,9 @@ if [[ "$REUSE_INDEX" -eq 0 ]]; then
     "$INKENTRY_BIN" index "${CORPUS_DIR}/corpus"
 fi
 
-echo "==> evaluating (mode: ${MODE})"
-"${PY[@]}" "${SCRIPT_DIR}/evaluate.py" \
-    --corpus-dir "$CORPUS_DIR" \
-    --mode "$MODE" \
-    --out "$OUT"
+echo "==> evaluating (condition: ${CONDITION})"
+EVAL_ARGS=(--corpus-dir "$CORPUS_DIR" --out "$OUT")
+if [[ "$ONLY_TEXT" -eq 1 ]]; then
+    EVAL_ARGS+=(--only-text)
+fi
+"${PY[@]}" "${SCRIPT_DIR}/evaluate.py" "${EVAL_ARGS[@]}"

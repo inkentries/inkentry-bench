@@ -113,31 +113,43 @@ for entry in "${REPO_ENTRIES[@]}"; do
     # Search latency — 2/7/16 word queries
     echo "  Search latency..."
     SEARCH_RESULT=$(python3 -c "
-import json, subprocess, time, statistics
+import json, subprocess, sys, time, statistics
 queries = [
     ('error handling', '2 words'),
     ('how does authentication and session management work', '7 words'),
     ('find all functions that parse command line arguments and validate user input configuration', '16 words'),
 ]
-mode = 'hybrid'
+# Code corpus only: these are source repos with no memory entries, so the
+# interleaved default would time an extra query embed against nothing.
+search_flags = ['--only-code']
 all_times = []
 for q, label in queries:
     run_times = []
+    failures = 0
     for _ in range(${SEARCH_ITERS}):
         start = time.monotonic()
-        subprocess.run(['${INKENTRY}', 'search', q, '--mode', mode, '--limit', '5', '--format', 'json'],
-                       cwd='${REPO_DIR}', capture_output=True, timeout=30)
+        proc = subprocess.run(['${INKENTRY}', 'search', q] + search_flags + ['--limit', '5', '--format', 'json'],
+                              cwd='${REPO_DIR}', capture_output=True, timeout=30)
         elapsed = (time.monotonic() - start) * 1000
+        if proc.returncode != 0:
+            failures += 1
         run_times.append(elapsed)
     run_times.sort()
-    all_times.append({
+    entry = {
         'query': q, 'words': label, 'iterations': len(run_times),
         'p50_ms': round(run_times[len(run_times)//2], 1),
         'p95_ms': round(run_times[int(len(run_times)*0.95)], 1),
         'mean_ms': round(statistics.mean(run_times), 1),
-    })
+    }
+    # A rejected invocation returns in microseconds and would otherwise be
+    # recorded as a spectacular latency win. Carry the count so the result
+    # reads as a failure rather than as a number.
+    if failures:
+        entry['failed_iterations'] = failures
+        print('    WARNING: %d/%d search runs exited non-zero' % (failures, len(run_times)), file=sys.stderr)
+    all_times.append(entry)
 print(json.dumps({'search': all_times}))
-" 2>/dev/null || echo '{"search":[]}')
+" || echo '{"search":[]}')
 
     RESULTS=$(python3 -c "
 import json

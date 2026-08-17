@@ -12,7 +12,7 @@ database. The protocol:
 
 1. **Source material:** Read raw `git log` output for the target repo. Use
    `git log --format="%H %s"` or GitHub PR/commit pages. Do NOT run
-   `inkentry memory list` or `inkentry memory search`.
+   `inkentry memory list` or `inkentry search --only-memory`.
 2. **Question authoring:** Write natural-language questions a developer would
    genuinely ask about the codebase's history. Examples:
    - "How does error handling work in the parser?"
@@ -95,7 +95,7 @@ python memory/decision_archaeology.py \
 | `grep_keywords` | Regex-extracted keywords | `git log --grep` per keyword |
 | `fts_commit_messages` | Full question | SQLite FTS5 over all commit messages |
 | `vanilla_rag` | Full question | Plain embed-and-KNN over raw commit messages |
-| `memory_search` | Full question | `inkentry memory search` (semantic) |
+| `memory_search` | Full question | `inkentry search --only-memory` (semantic) |
 
 `vanilla_rag` is the generic "any embedding store could do this" control: it
 embeds each raw commit message and the question with the same embedder, then

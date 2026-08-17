@@ -53,8 +53,41 @@ QUERIES = [
 LATENCY_REPS = 5  # repeat each query N times to get stable latency
 
 
+def unwrap(item: dict) -> dict:
+    """Chunk fields of one search result, from either envelope shape.
+
+    Search returns a fusion envelope with the chunk fields nested under `code`.
+    The committed results.json predates that and is flat, so fall through when
+    the nested object is absent.
+    """
+    nested = item.get("code")
+    return nested if isinstance(nested, dict) else item
+
+
+def summarize(results: list) -> list[dict]:
+    out = []
+    for r, item in enumerate(results):
+        x = unwrap(item)
+        out.append(
+            {
+                "rank": r + 1,
+                "chunk_id": x["chunk_id"],
+                "file": x["file_path"],
+                "name": x.get("name"),
+                "start": x["start_line"],
+                "end": x["end_line"],
+                "snippet": x["content"][:120].replace("\n", " "),
+            }
+        )
+    return out
+
+
 def run_query(query: str, algo: str, limit: int = 10) -> tuple[list, float]:
-    """Run a query and return (results, latency_ms)."""
+    """Run a query and return (results, latency_ms).
+
+    `--retrieval` is a research flag: it is not in any released binary, so this
+    script only runs against a build that carries it. See README.md.
+    """
     cmd = [
         BINARY, "search", query,
         "--retrieval", algo,
@@ -113,22 +146,12 @@ def collect():
             "cat": cat,
             "query": q,
             "knn": {
-                "results": [
-                    {"rank": r+1, "chunk_id": x["chunk_id"], "file": x["file_path"],
-                     "name": x.get("name"), "start": x["start_line"], "end": x["end_line"],
-                     "snippet": x["content"][:120].replace("\n", " ")}
-                    for r, x in enumerate(knn_results)
-                ],
+                "results": summarize(knn_results),
                 "latency_p50_ms": knn_times[LATENCY_REPS // 2],
                 "latency_p95_ms": knn_times[int(LATENCY_REPS * 0.95)] if LATENCY_REPS >= 20 else knn_times[-1],
             },
             "linearrag": {
-                "results": [
-                    {"rank": r+1, "chunk_id": x["chunk_id"], "file": x["file_path"],
-                     "name": x.get("name"), "start": x["start_line"], "end": x["end_line"],
-                     "snippet": x["content"][:120].replace("\n", " ")}
-                    for r, x in enumerate(lr_results)
-                ],
+                "results": summarize(lr_results),
                 "latency_p50_ms": lr_times[LATENCY_REPS // 2],
                 "latency_p95_ms": lr_times[int(LATENCY_REPS * 0.95)] if LATENCY_REPS >= 20 else lr_times[-1],
             },

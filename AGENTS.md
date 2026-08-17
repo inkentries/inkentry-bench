@@ -96,6 +96,68 @@ CHUNKS=$(echo "$STATS" | python3 -c "import json,sys; print(json.load(sys.stdin)
 Always smoke-test inkentry commands to confirm JSON field names before
 committing. `file_count` vs `files` was a silent-zero bug caught in review.
 
+---
+
+## The `search --format json` shape harnesses must unwrap
+
+This is the shape the harnesses in this repo parse. It is not the canonical
+contract; that lives with the CLI. Re-check it against a real binary before
+trusting it.
+
+`inkentry search --format json` returns a flat list of fusion envelopes, one
+per hit. The chunk fields sit **nested**, under `code` or `memory` according
+to `type`:
+
+```json
+[
+  {
+    "type": "code",
+    "fused_rank": 1,
+    "fused_score": 0.0163,
+    "corpus_rank": 1,
+    "code": {
+      "chunk_id": 71, "file_path": "batch_run.py", "name": "main",
+      "language": "python", "node_type": "verbatim",
+      "start_line": 110, "end_line": 171, "content": "...",
+      "distance": 0.049, "from_graph": false, "token_count": 509
+    }
+  }
+]
+```
+
+Read `item["code"]["file_path"]`, never `item["file_path"]`. Earlier builds
+emitted those fields flat at the top level, so unwrap tolerantly. That keeps
+a harness able to re-read results captured by an older binary:
+
+```python
+nested = item.get("code")
+payload = nested if isinstance(nested, dict) else item
+name, path = payload.get("name"), payload.get("file_path")
+```
+
+### Picking a corpus
+
+Search covers code and memory in one ranked list. Every benchmark here that
+measures code retrieval passes `--only-code`, for two reasons: the corpora are
+source checkouts with no memory entries, so the unified default spends an extra
+query embed on nothing (measured at roughly 70ms against 55ms per query), and
+in the SWE-bench conditions it keeps `inkentry_search` from quietly becoming a
+partial `inkentry_full`. Use `--only-memory` for memory retrieval and
+`--only-text` for the full-text-only condition.
+
+### Commands that moved
+
+| Reach for | Use |
+|---|---|
+| a search mode | no flag (best-available); `--only-text` for full-text only |
+| memory retrieval | `inkentry search <q> --only-memory` |
+| a symbol plus neighbours | `inkentry search <sym> --graph` |
+| raw graph edges (JSONL) | `inkentry plumbing graph-edges --symbol <sym>` |
+
+The removed spellings exit 2 with a migration hint on stderr and print nothing
+on stdout, so a harness that ignores the exit code records a whole run of empty
+results at a few milliseconds each.
+
 ### set -euo pipefail with explicit failure handling
 ```bash
 # Prefer explicit failure over || true
@@ -121,6 +183,8 @@ Smoke tests catch them; code review often misses them.
 | `git diff` misses untracked files | Agent creates new files via `write_file` | `git add -A && git diff --cached HEAD` |
 | `source_ref` vs `commit` field | Memory entries use different SHA field | Check both with prefix match |
 | Wrong harness output filename | SWE-bench version drift | Glob for file containing `"resolved"` key |
+| Removed CLI flag, exit code ignored | `--mode` after it was dropped | Check the exit code; every query returning in ~4ms is the tell |
+| Envelope change read as a flat object | `item["file_path"]` against a nested `code` payload | Unwrap `item["code"]`; real latency with zero hits is the tell |
 
 ---
 

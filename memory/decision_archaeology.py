@@ -83,11 +83,18 @@ def extract_keywords(question: str) -> list[str]:
 
 
 def run_memory_search(repo_path: Path, query: str, limit: int = 10) -> list[dict]:
+    """Memory entries for a query, unwrapped from the search envelope.
+
+    Memory is searched through `search --only-memory`; results come back as a
+    fusion envelope with the entry fields nested under `memory`. Callers here
+    expect the flat entry objects the old command returned, so unwrap before
+    handing them back.
+    """
     cmd = [
         "inkentry",
-        "memory",
         "search",
         query,
+        "--only-memory",
         "--limit",
         str(limit),
         "--format",
@@ -97,10 +104,24 @@ def run_memory_search(repo_path: Path, query: str, limit: int = 10) -> list[dict
         result = subprocess.run(
             cmd, cwd=repo_path, capture_output=True, text=True, timeout=30
         )
-        if result.returncode == 0 and result.stdout.strip():
-            return json.loads(result.stdout)
-        return []
-    except (subprocess.TimeoutExpired, json.JSONDecodeError, Exception):
+        if result.returncode not in (0, 1):
+            print(
+                f"memory search exited {result.returncode}: "
+                f"{result.stderr.strip()[:200]}",
+                file=sys.stderr,
+            )
+            return []
+        if not result.stdout.strip():
+            return []
+        entries = []
+        for item in json.loads(result.stdout):
+            if not isinstance(item, dict):
+                continue
+            nested = item.get("memory")
+            entries.append(nested if isinstance(nested, dict) else item)
+        return entries
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, OSError) as e:
+        print(f"memory search failed: {e}", file=sys.stderr)
         return []
 
 

@@ -279,19 +279,27 @@ def _run_inkentry(repo_path: Path, args: list[str], timeout: int = 30) -> str:
 
 
 def inkentry_search(repo_path: Path, query: str, limit: int = 10) -> str:
+    # --only-code keeps the conditions separable: memory retrieval is what the
+    # inkentry_memory_search tool measures, and letting it leak into this tool
+    # would make the inkentry_search condition a partial inkentry_full.
     return _run_inkentry(
-        repo_path, ["search", query, "--limit", str(limit), "--format", "json"]
+        repo_path,
+        ["search", query, "--only-code", "--limit", str(limit), "--format", "json"],
     )
 
 
 def inkentry_graph(repo_path: Path, symbol: str) -> str:
-    return _run_inkentry(repo_path, ["graph", symbol, "--format", "json"])
+    # The code graph is reached through search rather than a top-level graph
+    # command. This tool wants the edges themselves, not ranked chunks, so it
+    # uses the plumbing command; the JSONL fields match what a graph query
+    # returned before.
+    return _run_inkentry(repo_path, ["plumbing", "graph-edges", "--symbol", symbol])
 
 
 def inkentry_memory_search(repo_path: Path, query: str, limit: int = 10) -> str:
     return _run_inkentry(
         repo_path,
-        ["memory", "search", query, "--limit", str(limit), "--format", "json"],
+        ["search", query, "--only-memory", "--limit", str(limit), "--format", "json"],
     )
 
 

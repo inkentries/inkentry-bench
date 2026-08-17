@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # perf_search.sh — inkentry search latency benchmark
 #
-# Times `inkentry search` across different query lengths and modes,
-# reporting p50/p95/p99 latency.
+# Times `inkentry search` across different query lengths and retrieval
+# conditions, reporting p50/p95/p99 latency.
 #
 # Usage:
 #   ./perf_search.sh [REPO_PATH]
@@ -28,10 +28,28 @@ QUERIES=(
     "find all functions that parse command line arguments and validate user input"
 )
 
-MODES=("hybrid" "text")
+# Retrieval conditions, as "label:flags". An empty flag list is the default
+# best-available ranking over both corpora.
+CONDITIONS=("hybrid:" "code-only:--only-code" "text:--only-text")
 
-for mode in "${MODES[@]}"; do
-    echo "--- Mode: ${mode} ---"
+for entry in "${CONDITIONS[@]}"; do
+    label="${entry%%:*}"
+    # Written so an empty flag list stays safe under `set -u` on bash 3.2,
+    # where expanding an empty array is an unbound-variable error.
+    flags=()
+    if [[ -n "${entry#*:}" ]]; then
+        flags=("${entry#*:}")
+    fi
+    echo "--- Condition: ${label} ---"
+
+    # A removed or renamed flag exits non-zero in microseconds, which reads as
+    # a spectacular latency win rather than as a failure. Prove the invocation
+    # works once before timing it ten times.
+    if ! "$INKENTRY" search "${QUERIES[0]}" ${flags[@]+"${flags[@]}"} --limit 5 --format json > /dev/null; then
+        echo "  invocation failed for condition ${label}, skipping" >&2
+        echo
+        continue
+    fi
 
     TIMES=()
     for q in "${QUERIES[@]}"; do
@@ -41,7 +59,7 @@ for mode in "${MODES[@]}"; do
 
         for _ in $(seq 1 $ITER); do
             start=$(python3 -c "import time; print(int(time.time()*1000))")
-            "$INKENTRY" search "$q" --mode "$mode" --limit 5 --format json > /dev/null 2>&1
+            "$INKENTRY" search "$q" ${flags[@]+"${flags[@]}"} --limit 5 --format json > /dev/null 2>&1
             end=$(python3 -c "import time; print(int(time.time()*1000))")
             elapsed=$(( end - start ))
             RUN_TIMES+=("$elapsed")
