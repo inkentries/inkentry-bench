@@ -551,8 +551,7 @@ Tests: `uv run --with pytest pytest agents/tests/ -v` (offline; covers
 grouping, legacy-none handling, the loadable document shapes, cost/cache math,
 and projection). The committed `tests/fixtures/swebench-harness-matrix.json`
 carries the harness-matrix provenance fields so aggregation over a
-harness-carrying file is
-exercised end to end.
+harness-carrying file is exercised end to end.
 
 ## Notes
 

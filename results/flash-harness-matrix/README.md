@@ -17,7 +17,9 @@ at the time; the prose below uses this repo's current terminology.
 - **Conditions:** `baseline` (the shared base tool set, with none of the three
   inkentry tools added), `spelunk_search` (base tools plus semantic code
   search), `spelunk_full` (base tools plus semantic code search, code graph
-  traversal, and project memory retrieval).
+  traversal, and project memory retrieval). The two tool arms also share a
+  system prompt that `baseline` does not get, so `baseline` differs by more
+  than its tools: see the attribution caveat below.
 - **n=3 seeds per cell**, 18 runs total.
 - **harness=claude-code excluded from this pass**: a real auth-isolation bug
   blocked it (a stored login was silently overriding an injected API token)
@@ -76,15 +78,15 @@ python agents/aggregate_telemetry.py --results-dir results/flash-harness-matrix
 
 Token, turn and wall figures are per-task mean (median) over all three seeds of
 a cell, so `Tasks` is 49 evaluated tasks x 3 seeds, less the two `opencode`
-task attempts that hit the 900 s harness timeout and recorded no measurement,
-and one task skipped per file. `Raw $` is
-the whole-cell total, extrapolated from the committed `deepseek-v4-flash` list
-price in `agents/pricing.json` (verified 2026-07-10); per task that is $0.0909
-(`none`/`baseline`), $0.0960 (`none`/`spelunk_search`), $0.0811
-(`none`/`spelunk_full`), and, for the three `opencode` cells, $0.0046 (`baseline`), $0.0041
-(`spelunk_full`) and $0.0045 (`spelunk_search`). No row in this matrix carries `cache_read_input_tokens`, so effective
-cost equals raw cost throughout. The tool's prospective-cost projection for a
-not-yet-run cell is omitted here, being unrelated to this run.
+task attempts that hit the 900 s harness timeout and recorded no measurement.
+`Raw $` is the whole-cell total, extrapolated from the committed
+`deepseek-v4-flash` list price in `agents/pricing.json` (verified 2026-07-10);
+per task that is $0.0909 (`none`/`baseline`), $0.0960
+(`none`/`spelunk_search`), $0.0811 (`none`/`spelunk_full`), and, for the three
+`opencode` cells, $0.0046 (`baseline`), $0.0041 (`spelunk_full`) and $0.0045
+(`spelunk_search`). No row in this matrix carries `cache_read_input_tokens`,
+so effective cost equals raw cost throughout. The tool's prospective-cost
+projection for a not-yet-run cell is omitted here, being unrelated to this run.
 
 Read these as tokens-to-outcome, never as a token saving. Under `harness=none`,
 `spelunk_full` reached 87.8% at 560,938 input tokens and $0.0811 per task,
