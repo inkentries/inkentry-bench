@@ -97,7 +97,7 @@ itself a claim about efficiency.
 The two harnesses differ by roughly 26x in input tokens per task (about 630k
 under `harness=none` against about 24k under `opencode`, for the same model on
 the same tasks). That is a large difference in how much context each harness
-feeds the model, and it is worth holding next to the second caveat below, which
+feeds the model, and it is worth holding next to the last caveat below, which
 flags `opencode`'s resolve-rate gap as needing independent scrutiny before it
 is read as a harness-quality finding.
 
