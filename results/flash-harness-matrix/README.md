@@ -76,12 +76,13 @@ python agents/aggregate_telemetry.py --results-dir results/flash-harness-matrix
 
 Token, turn and wall figures are per-task mean (median) over all three seeds of
 a cell, so `Tasks` is 49 evaluated tasks x 3 seeds, less the two `opencode`
-runs that hit the 900 s harness timeout and recorded no measurement. `Raw $` is
+task attempts that hit the 900 s harness timeout and recorded no measurement,
+and one task skipped per file. `Raw $` is
 the whole-cell total, extrapolated from the committed `deepseek-v4-flash` list
 price in `agents/pricing.json` (verified 2026-07-10); per task that is $0.0909
 (`none`/`baseline`), $0.0960 (`none`/`spelunk_search`), $0.0811
-(`none`/`spelunk_full`), and $0.0046/$0.0045/$0.0041 for the three `opencode`
-cells. No row in this matrix carries `cache_read_input_tokens`, so effective
+(`none`/`spelunk_full`), and, for the three `opencode` cells, $0.0046 (`baseline`), $0.0041
+(`spelunk_full`) and $0.0045 (`spelunk_search`). No row in this matrix carries `cache_read_input_tokens`, so effective
 cost equals raw cost throughout. The tool's prospective-cost projection for a
 not-yet-run cell is omitted here, being unrelated to this run.
 
@@ -118,17 +119,32 @@ is read as a harness-quality finding.
   `spelunk_full` arm adds three tools at once to the shared base tool set:
   semantic code search, code graph traversal, and project memory retrieval.
   `baseline` is that same base tool set with none of the three added, and
-  `spelunk_search` adds only the first. Nothing in the design varies the three
-  independently, so the +26.5pp is a whole-tool-set effect measured against a
-  baseline that had none of them. It is not a memory result and it is not a
-  search result; separating them needs one condition per tool.
+  `spelunk_search` adds only the first.
+
+    Two things differ between `baseline` and `spelunk_full`, not one. Besides
+    the tools, the two arms get different system prompts: `baseline` gets the
+    plain one, and both tool arms get a variant naming the three tools and
+    directing the model to use them before opening files (`agents/agent.py`,
+    `get_system_prompt`). So the +26.5pp is what that whole treatment bought,
+    and this run cannot say how much of it was the tools and how much was
+    being told to search first. It is not a memory result, not a search
+    result, and not a tools-alone result.
+
+    The cleaner contrast is `spelunk_search` to `spelunk_full`, which holds
+    the prompt constant and varies two tools, graph traversal and memory. Note
+    the prompt names all three tools in both arms, so the search arm is told
+    about two it does not have. Isolating any single tool needs one condition
+    per tool, with the prompt held fixed across all of them.
   - Memory was **not** structurally empty in this run. `setup_repos.sh` clones
     each task repo blobless (`--filter=blob:none --no-checkout`, which carries
     the complete commit graph) or falls back to a full clone, neither path
     using `--depth`, and only then checks out the task's base commit, leaving
     full ancestry in `.git`. `swebench_run.sh` runs
     `inkentry memory harvest --git-range HEAD~50..HEAD` per task on the
-    `spelunk_full` arm, so harvest had 50 real upstream commits to work from.
+    `spelunk_full` arm, so harvest was pointed at up to 50 real upstream commits
+    rather than at an empty history. How many each base commit actually had,
+    and whether any harvest call succeeded, is not recoverable from what was
+    recorded.
   - What was not recorded is how much memory actually reached the model on any
     given run: per-run memory contents and per-tool call counts are absent from
     the result rows, and harvest failures were swallowed by

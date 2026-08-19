@@ -549,9 +549,9 @@ before quoting a figure.
 
 Tests: `uv run --with pytest pytest agents/tests/ -v` (offline; covers
 grouping, legacy-none handling, the loadable document shapes, cost/cache math,
-and projection). The committed
-`tests/fixtures/swebench-harness-matrix.json` carries the
-harness-matrix provenance fields so aggregation over a harness-carrying file is
+and projection). The committed `tests/fixtures/swebench-harness-matrix.json`
+carries the harness-matrix provenance fields so aggregation over a
+harness-carrying file is
 exercised end to end.
 
 ## Notes
@@ -574,8 +574,10 @@ exercised end to end.
   `HEAD~50..HEAD` per task, so the memory tools have real history behind them.
   The flash harness matrix measured the difference: under `harness=none`,
   `inkentry_full` beat `inkentry_search` on every seed (0.898 / 0.898 / 0.837
-  against 0.633 / 0.653 / 0.653). Because the three tools vary together in one
-  condition, that gap is a whole-tool-set effect and cannot be attributed to any
-  single tool. See `results/flash-harness-matrix/README.md`.
+  against 0.633 / 0.653 / 0.653). Both arms share the same system prompt and
+  both have code search, so that gap varies two tools, graph traversal and
+  memory, and cannot be attributed to either alone. It is a cleaner contrast
+  than `baseline` to `inkentry_full`, which varies the prompt as well. See
+  `results/flash-harness-matrix/README.md`.
 - **Phase 6a prerequisite:** `inkentry context` must exist before the
   cross-session handoff benchmark can be scripted as described in the plan.
