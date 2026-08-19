@@ -14,8 +14,10 @@ at the time; the prose below uses this repo's current terminology.
 
 - **Model:** `deepseek-v4-flash`, via its native `/v1` endpoint (`harness=none`)
   and via [opencode](https://opencode.ai) (`harness=opencode`).
-- **Conditions:** `baseline` (no inkentry tools), `spelunk_search` (semantic
-  code search only), `spelunk_full` (search + project memory).
+- **Conditions:** `baseline` (the shared base tool set, with none of the three
+  inkentry tools added), `spelunk_search` (base tools plus semantic code
+  search), `spelunk_full` (base tools plus semantic code search, code graph
+  traversal, and project memory retrieval).
 - **n=3 seeds per cell**, 18 runs total.
 - **harness=claude-code excluded from this pass**: a real auth-isolation bug
   blocked it (a stored login was silently overriding an injected API token)
@@ -45,10 +47,59 @@ Only one of the four baseline comparisons is significant at this sample size
 A 50-task slice only reliably detects large effects (roughly ±15pp): the
 `spelunk_search` deltas above are real directionally but this slice cannot
 confirm them statistically, and a larger question set would be needed for
-that. `opencode` starts from a much higher baseline (95.2%), which leaves far
-less room for `spelunk_full`'s memory-context uplift to show up as a
-resolve-rate delta; that is the likely explanation for the flat/slightly
-negative result there, rather than a sign the effect is not real.
+that.
+
+`opencode` starts from a much higher baseline (95.2%), and in the
+`baseline` vs `spelunk_full` cell 45 of the 49 paired tasks pass under both
+arms while none fail under both, leaving 4 discordant tasks in total. There is
+almost no room left for any condition to move the resolve rate in that cell, so
+read it as uninformative rather than as evidence for or against an effect.
+
+## Telemetry and cost
+
+Per-task telemetry was captured for every run in this matrix: `input_tokens`,
+`output_tokens`, `turns` and `wall_seconds` sit on each task row of the 18
+per-seed files. Aggregated per cell with
+
+```bash
+python agents/aggregate_telemetry.py --results-dir results/flash-harness-matrix
+```
+
+| Model | Harness | Condition | Filter | Tasks | Input tok mean(med) | Output tok mean(med) | Turns mean(med) | Wall s mean(med) | Raw $ | Effective $ | Priced |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| deepseek-v4-flash | none | baseline | - | 147 | 629,997 (519,843) | 9,668 (9,289) | 19 (20) | 110.1 (99.2) | $13.36 | $13.36 | yes |
+| deepseek-v4-flash | none | spelunk_full | - | 147 | 560,938 (463,481) | 9,131 (8,929) | 17 (20) | 111.4 (92.7) | $11.92 | $11.92 | yes |
+| deepseek-v4-flash | none | spelunk_search | - | 147 | 665,665 (546,511) | 10,161 (10,131) | 18 (20) | 112.4 (104.1) | $14.12 | $14.12 | yes |
+| deepseek-v4-flash | opencode | baseline | - | 146 | 24,039 (18,662) | 4,415 (3,285) | 31 (24) | 173.2 (132.9) | $0.67 | $0.67 | yes |
+| deepseek-v4-flash | opencode | spelunk_full | - | 147 | 21,952 (19,287) | 3,630 (3,267) | 26 (22) | 138.0 (114.8) | $0.60 | $0.60 | yes |
+| deepseek-v4-flash | opencode | spelunk_search | - | 146 | 24,187 (19,296) | 3,898 (3,042) | 28 (23) | 158.8 (122.3) | $0.65 | $0.65 | yes |
+
+Token, turn and wall figures are per-task mean (median) over all three seeds of
+a cell, so `Tasks` is 49 evaluated tasks x 3 seeds, less the two `opencode`
+runs that hit the 900 s harness timeout and recorded no measurement. `Raw $` is
+the whole-cell total, extrapolated from the committed `deepseek-v4-flash` list
+price in `agents/pricing.json` (verified 2026-07-10); per task that is $0.0909
+(`none`/`baseline`), $0.0960 (`none`/`spelunk_search`), $0.0811
+(`none`/`spelunk_full`), and $0.0046/$0.0045/$0.0041 for the three `opencode`
+cells. No row in this matrix carries `cache_read_input_tokens`, so effective
+cost equals raw cost throughout. The tool's prospective-cost projection for a
+not-yet-run cell is omitted here, being unrelated to this run.
+
+Read these as tokens-to-outcome, never as a token saving. Under `harness=none`,
+`spelunk_full` reached 87.8% at 560,938 input tokens and $0.0811 per task,
+`baseline` 61.2% at 629,997 tokens and $0.0909, `spelunk_search` 64.6% at
+665,665 tokens and $0.0960. Tokens are the price of each outcome, not the
+result: with n=3 seeds, no per-tool call counts recorded, and three tools
+varying together in `spelunk_full`, this run cannot say what moved the token
+profile, and a lower token count alongside a higher resolve rate is not by
+itself a claim about efficiency.
+
+The two harnesses differ by roughly 26x in input tokens per task (about 630k
+under `harness=none` against about 24k under `opencode`, for the same model on
+the same tasks). That is a large difference in how much context each harness
+feeds the model, and it is worth holding next to the second caveat below, which
+flags `opencode`'s resolve-rate gap as needing independent scrutiny before it
+is read as a harness-quality finding.
 
 ## Files
 
@@ -62,6 +113,28 @@ negative result there, rather than a sign the effect is not real.
   comparisons.
 
 ## Caveats
+
+- **What the +26.5pp can be attributed to.** Under `harness=none`, the
+  `spelunk_full` arm adds three tools at once to the shared base tool set:
+  semantic code search, code graph traversal, and project memory retrieval.
+  `baseline` is that same base tool set with none of the three added, and
+  `spelunk_search` adds only the first. Nothing in the design varies the three
+  independently, so the +26.5pp is a whole-tool-set effect measured against a
+  baseline that had none of them. It is not a memory result and it is not a
+  search result; separating them needs one condition per tool.
+  - Memory was **not** structurally empty in this run. `setup_repos.sh` clones
+    each task repo blobless (`--filter=blob:none --no-checkout`, which carries
+    the complete commit graph) or falls back to a full clone, neither path
+    using `--depth`, and only then checks out the task's base commit, leaving
+    full ancestry in `.git`. `swebench_run.sh` runs
+    `inkentry memory harvest --git-range HEAD~50..HEAD` per task on the
+    `spelunk_full` arm, so harvest had 50 real upstream commits to work from.
+  - What was not recorded is how much memory actually reached the model on any
+    given run: per-run memory contents and per-tool call counts are absent from
+    the result rows, and harvest failures were swallowed by
+    `2>&1 | tail -1 || true` (see the harvest caveat below). So the arm is
+    known to have had history to harvest, and unknown in how much retrieved
+    context it put in front of the model.
 
 - Memory harvest (`spelunk_full`) was intermittently unreliable even after a
   fix for a DeepSeek `response_format` incompatibility landed mid-run: some

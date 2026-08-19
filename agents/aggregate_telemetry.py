@@ -35,6 +35,10 @@ METRICS = ["input_tokens", "output_tokens", "turns", "wall_seconds"]
 # Missing `harness` => a pre-harness-matrix (legacy) row. See README.
 LEGACY_HARNESS = "none"
 
+# A dict document is only treated as a single result row if it carries at least
+# one of these. Keeps foreign JSON in the same tree out of the aggregation.
+ROW_FIELDS = ("task_id", "model", "condition")
+
 
 def load_prices(path: str | Path) -> dict[str, Any]:
     """Load the committed price config (CLI arg or default file)."""
@@ -44,26 +48,78 @@ def load_prices(path: str | Path) -> dict[str, Any]:
     return data
 
 
+def doc_rows(doc: Any) -> list[Any] | None:
+    """Extract the result rows from one parsed result document.
+
+    Three shapes reach this function:
+
+    * a JSON array of result objects (what `agent.py` and the harness adapters
+      emit directly);
+    * a `{"aggregate": ..., "tasks": [...]}` envelope (what `swebench_eval.sh`
+      writes), whose `tasks` list holds the rows;
+    * a dict that is a single result row.
+
+    Returns None for anything else. That case is load-bearing: the official
+    swebench harness writes its own run reports as dicts too, and counting one
+    of those as a row produced a junk cell keyed `model=unknown`.
+    """
+    if isinstance(doc, list):
+        return doc
+    if isinstance(doc, dict):
+        tasks = doc.get("tasks")
+        if isinstance(tasks, list):
+            return tasks
+        if any(k in doc for k in ROW_FIELDS):
+            return [doc]
+    return None
+
+
+def has_telemetry(row: dict[str, Any]) -> bool:
+    """True if a row carries at least one metric this script aggregates."""
+    return any(isinstance(row.get(f), (int, float)) and not isinstance(row.get(f), bool)
+               for f in METRICS)
+
+
 def load_results(results_dir: str | Path) -> list[dict[str, Any]]:
     """Read every *.json under results_dir (recursively) as a list of rows.
 
-    Each file is a JSON array of result objects (the shape agent.py / the
-    harness adapters emit). A file that is a single object is accepted as a
-    one-row list. Non-list / non-object JSON is skipped with a warning.
+    Handles both the bare-array and the `{aggregate, tasks}` envelope shapes
+    (see `doc_rows`). Rows for tasks that never produced a measurement, i.e.
+    skipped tasks and errored runs, carry no telemetry and no cell fields, so
+    they are dropped instead of grouping into an `unknown` cell. Every drop is
+    counted and reported on stderr rather than passing silently.
     """
     rows: list[dict[str, Any]] = []
+    foreign: list[Path] = []
+    dropped = 0
     for path in sorted(Path(results_dir).rglob("*.json")):
         try:
             doc = json.loads(path.read_text())
         except json.JSONDecodeError as e:
             print(f"warning: skipping unparseable {path}: {e}", file=sys.stderr)
             continue
-        items = doc if isinstance(doc, list) else [doc]
+        items = doc_rows(doc)
+        if items is None:
+            foreign.append(path)
+            continue
         for item in items:
-            if isinstance(item, dict):
+            if not isinstance(item, dict):
+                print(f"warning: skipping non-object row in {path}", file=sys.stderr)
+            elif has_telemetry(item):
                 rows.append(item)
             else:
-                print(f"warning: skipping non-object row in {path}", file=sys.stderr)
+                dropped += 1
+    if foreign:
+        print(
+            f"note: skipped {len(foreign)} JSON file(s) that are not result "
+            f"documents (first: {foreign[0]})",
+            file=sys.stderr,
+        )
+    if dropped:
+        print(
+            f"note: dropped {dropped} row(s) with no telemetry (skipped or errored tasks)",
+            file=sys.stderr,
+        )
     return rows
 
 
