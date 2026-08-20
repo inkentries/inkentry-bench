@@ -24,7 +24,7 @@ Prereq: the target project is indexed; `inkentry` is in PATH. Read-only on the D
 Usage:
     python ownrepo/golden_eval.py \
         --db .inkentry/index.db \
-        [--samples 150] [--seed 0] [--mode semantic] [--model-label nomic-v1.5] \
+        [--samples 150] [--seed 0] [--conditions hybrid] [--model-label nomic-v1.5] \
         [--out results/ownrepo-nomic.json]
 """
 
@@ -34,6 +34,7 @@ import re
 import sqlite3
 import statistics
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 
@@ -112,24 +113,50 @@ def load_golden(db_path: str, samples: int, seed: int) -> list[dict]:
     return items[:samples]
 
 
-def inkentry_search(query: str, mode: str, limit: int = 10) -> list[dict]:
+CONDITIONS = {
+    # The golden set is built from indexed code chunks, so every condition
+    # restricts to the code corpus; the knob is the ranking.
+    "hybrid": ["--only-code"],
+    "text": ["--only-code", "--only-text"],
+}
+
+
+def inkentry_search(query: str, condition: str, limit: int = 10) -> list[dict]:
     cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
-    if mode != "hybrid":
-        cmd.extend(["--mode", mode])
+    cmd.extend(CONDITIONS[condition])
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-        if r.returncode != 0 or not r.stdout.strip():
+        # `search` is porcelain: no matches exits 0 with `[]`, so any non-zero
+        # exit means the query did not run. Exit 1 as "no results" is the
+        # *plumbing* convention; applying it here turns a missing index into a
+        # silent zero, which is the failure this harness exists to catch.
+        if r.returncode != 0:
+            print(
+                f"search exited {r.returncode}: {r.stderr.strip()[:200]}",
+                file=sys.stderr,
+            )
+            return []
+        if not r.stdout.strip():
             return []
         return json.loads(r.stdout)
-    except (subprocess.TimeoutExpired, json.JSONDecodeError, Exception):
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, OSError) as e:
+        print(f"search failed: {e}", file=sys.stderr)
         return []
 
 
 def find_rank(results: list[dict], name: str, path: str) -> int | None:
-    """Rank of the first result matching the target by file path + symbol name."""
+    """Rank of the first result matching the target by file path + symbol name.
+
+    Results arrive as a fusion envelope with the chunk fields nested under
+    `code`; older builds emitted them flat. Reading the top level against a
+    current binary matches nothing and scores a silent zero, so unwrap when
+    the nested object is present and fall through to the flat shape otherwise.
+    """
     for i, item in enumerate(results):
-        rname = item.get("name") or ""
-        rpath = item.get("file_path") or item.get("path") or ""
+        nested = item.get("code")
+        payload = nested if isinstance(nested, dict) else item
+        rname = payload.get("name") or ""
+        rpath = payload.get("file_path") or payload.get("path") or ""
         if rname == name and rpath.endswith(path):
             return i + 1
     return None
@@ -140,24 +167,35 @@ def main() -> None:
     ap.add_argument("--db", default=".inkentry/index.db")
     ap.add_argument("--samples", type=int, default=150)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--mode", default="semantic", help="semantic | hybrid | text (comma-separated ok)")
+    ap.add_argument(
+        "--conditions",
+        default="hybrid",
+        help="hybrid | text (comma-separated ok). hybrid is the best-available "
+        "ranking; text is full-text only.",
+    )
     ap.add_argument("--model-label", default="unknown")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
     golden = load_golden(args.db, args.samples, args.seed)
-    modes = [m.strip() for m in args.mode.split(",") if m.strip()]
+    conditions = [c.strip() for c in args.conditions.split(",") if c.strip()]
+    unknown = [c for c in conditions if c not in CONDITIONS]
+    if unknown:
+        ap.error(
+            f"unknown condition(s): {', '.join(unknown)}. "
+            f"Valid: {', '.join(sorted(CONDITIONS))}"
+        )
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     outputs = []
 
-    for mode in modes:
+    for condition in conditions:
         rr, r5, r10, walls = [], [], [], []
         for it in golden:
             q = it["query"]
             if not q:
                 continue
             t0 = time.monotonic()
-            res = inkentry_search(q, mode=mode)
+            res = inkentry_search(q, condition=condition)
             walls.append(time.monotonic() - t0)
             rank = find_rank(res, it["name"], it["path"])
             rr.append(1.0 / rank if rank else 0.0)
@@ -169,8 +207,8 @@ def main() -> None:
             "run_id": ts,
             "benchmark": "ownrepo-golden",
             "model_label": args.model_label,
-            "condition": mode,
-            "search_mode": mode,
+            "condition": condition,
+            "search_args": CONDITIONS[condition],
             "samples": n,
             "mrr_at_10": round(sum(rr) / n, 4) if n else 0.0,
             "recall_at_5": round(sum(r5) / n, 4) if n else 0.0,
@@ -179,7 +217,7 @@ def main() -> None:
         }
         outputs.append(out)
         print(
-            f"[{mode}] n={n}  MRR@10={out['mrr_at_10']}  "
+            f"[{condition}] n={n}  MRR@10={out['mrr_at_10']}  "
             f"R@5={out['recall_at_5']}  R@10={out['recall_at_10']}  "
             f"med_wall={out['median_wall_seconds']}s"
         )

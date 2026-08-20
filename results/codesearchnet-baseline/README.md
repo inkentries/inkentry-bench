@@ -12,8 +12,9 @@ have something honest to be judged against.
 | Product commit | `c3b6a9a1ce6efc66ed7280b64b9aac47b493986c` (`inkentry`, `main`) |
 | Harness commit | `49020ff54ac1d392221c402857b8ce831490dacc` (this repo) |
 | Date (UTC) | 2026-08-11 |
-| Command | `bash codesearchnet/run.sh --samples 500 --seed 0 --mode hybrid` |
-| Samples / seed / mode | 500 · 0 · hybrid |
+| Command, as run | `bash codesearchnet/run.sh --samples 500 --seed 0 --mode hybrid` |
+| Equivalent today | `bash codesearchnet/run.sh --samples 500 --seed 0` |
+| Samples / seed / condition | 500 · 0 · hybrid |
 | Corpus | 500 CodeSearchNet Python functions across 437 files, docstrings stripped |
 | Repeats | 3 |
 
@@ -21,6 +22,28 @@ The product commit **includes** the deterministic structural summaries and the
 PageRank-ordered tiered embed queue. It **excludes** unified-search rank fusion.
 That is the point of this file: it is the "before" for unified search and for
 subsequent ranking work.
+
+## Comparing it to a current run
+
+**The command in the table above no longer runs.** `--mode` was removed from
+`inkentry search`, and `codesearchnet/run.sh` now rejects it with exit 2. It is
+kept as the record of what produced these numbers, with the modern equivalent
+beside it.
+
+The two invocations measure the same retrieval, which is why the comparison
+holds. On 0.9.8 there was no memory corpus, so `--mode hybrid` searched code
+with the best ranking available; today `run.sh` passes `--only-code`, which is
+that same search. What changed is the spelling, not the retrieval.
+
+So this file's `condition: hybrid` lines up with a current run's
+`condition: hybrid` / `search_args: ["--only-code"]`. It also carries
+`search_mode: hybrid`, the flag actually passed in 2026-08; current runs do not
+write that key.
+
+Two conveniences for `report.py`, which reads flat top-level fields: `condition`
+is duplicated from `search_mode`, and `mrr_at_10`, `recall_at_5` and
+`recall_at_10` mirror `metrics.<name>.median`. The per-repeat numbers under
+`metrics` and `runs` are the authoritative ones.
 
 ## Results
 

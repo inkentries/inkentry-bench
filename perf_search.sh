@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # perf_search.sh — inkentry search latency benchmark
 #
-# Times `inkentry search` across different query lengths and modes,
-# reporting p50/p95/p99 latency.
+# Times `inkentry search` across different query lengths and retrieval
+# conditions, reporting p50/p95/p99 latency.
 #
 # Usage:
 #   ./perf_search.sh [REPO_PATH]
@@ -14,7 +14,16 @@
 set -euo pipefail
 
 INKENTRY="${INKENTRY:-inkentry}"
-REPO="${1:-.}"
+
+# REPO_PATH was accepted, echoed, and then never used: every search ran in the
+# caller's cwd, so a run "against" another repo silently measured whatever was
+# indexed here. Resolve both to absolute paths and cd once, which keeps the
+# timed region free of a per-iteration subshell.
+REPO="$(cd "${1:-.}" && pwd)"
+if [[ "$INKENTRY" == */* ]]; then
+    INKENTRY="$(cd "$(dirname "$INKENTRY")" && pwd)/$(basename "$INKENTRY")"
+fi
+cd "$REPO"
 
 echo "=== Search latency ==="
 echo "Repo:   ${REPO}"
@@ -28,10 +37,41 @@ QUERIES=(
     "find all functions that parse command line arguments and validate user input"
 )
 
-MODES=("hybrid" "text")
+# Retrieval conditions, as "label:flags". An empty flag list is the default
+# best-available ranking over both corpora.
+#
+# Labelled `default` rather than `hybrid` on purpose. The JSON-writing harnesses
+# keep `hybrid` as a frozen baseline key, but they record `search_args` beside
+# it; this script prints to a terminal and writes no JSON, so the label is all a
+# reader gets. `hybrid` there means `--only-code`, and here it would mean no
+# flags at all — the same word for two different retrievals. The flags are
+# echoed next to the label for the same reason.
+CONDITIONS=("default:" "code-only:--only-code" "text:--only-text")
 
-for mode in "${MODES[@]}"; do
-    echo "--- Mode: ${mode} ---"
+for entry in "${CONDITIONS[@]}"; do
+    label="${entry%%:*}"
+    # Written so an empty flag list stays safe under `set -u` on bash 3.2,
+    # where expanding an empty array is an unbound-variable error.
+    flags=()
+    if [[ -n "${entry#*:}" ]]; then
+        flags=("${entry#*:}")
+    fi
+    # Built from the string, not the array: expanding an empty array under
+    # `set -u` on bash 3.2 is an unbound-variable error.
+    flag_display="${entry#*:}"
+    if [[ -z "$flag_display" ]]; then
+        flag_display="no flags — both corpora"
+    fi
+    echo "--- Condition: ${label} [${flag_display}] ---"
+
+    # A removed or renamed flag exits non-zero in microseconds, which reads as
+    # a spectacular latency win rather than as a failure. Prove the invocation
+    # works once before timing it ten times.
+    if ! "$INKENTRY" search "${QUERIES[0]}" ${flags[@]+"${flags[@]}"} --limit 5 --format json > /dev/null; then
+        echo "  invocation failed for condition ${label}, skipping" >&2
+        echo
+        continue
+    fi
 
     TIMES=()
     for q in "${QUERIES[@]}"; do
@@ -41,7 +81,7 @@ for mode in "${MODES[@]}"; do
 
         for _ in $(seq 1 $ITER); do
             start=$(python3 -c "import time; print(int(time.time()*1000))")
-            "$INKENTRY" search "$q" --mode "$mode" --limit 5 --format json > /dev/null 2>&1
+            "$INKENTRY" search "$q" ${flags[@]+"${flags[@]}"} --limit 5 --format json > /dev/null 2>&1
             end=$(python3 -c "import time; print(int(time.time()*1000))")
             elapsed=$(( end - start ))
             RUN_TIMES+=("$elapsed")
