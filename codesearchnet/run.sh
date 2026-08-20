@@ -56,10 +56,13 @@ while [[ $# -gt 0 ]]; do
         --seed) SEED="$2"; shift 2 ;;
         --only-text) ONLY_TEXT=1; CONDITION="text"; shift ;;
         --mode)
+            # Exit 2 to match what `inkentry search --mode` itself does, and the
+            # rows below to match its hint.
             echo "--mode was removed from inkentry search; this harness no longer takes it." >&2
             echo "  --mode text                 ->  --only-text" >&2
             echo "  --mode semantic|hybrid|auto ->  no flag; that is the default" >&2
-            exit 1
+            echo "  --mode ast-grep             ->  no replacement; structural search was removed" >&2
+            exit 2
             ;;
         --corpus-dir) CORPUS_DIR="$2"; shift 2 ;;
         --out) OUT="$2"; shift 2 ;;

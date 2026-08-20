@@ -100,40 +100,72 @@ committing. `file_count` vs `files` was a silent-zero bug caught in review.
 
 ## The `search --format json` shape harnesses must unwrap
 
-This is the shape the harnesses in this repo parse. It is not the canonical
-contract; that lives with the CLI. Re-check it against a real binary before
-trusting it.
+The canonical contract is [JSON output: the envelope contract][contract], in the
+inkentry repo — specified field by field and covered by that project's stability
+policy. **Read it there.** What follows is only what is policy *here*: how these
+harnesses unwrap, and which corpus they ask for.
 
-`inkentry search --format json` returns a flat list of fusion envelopes, one
-per hit. The chunk fields sit **nested**, under `code` or `memory` according
-to `type`:
+[contract]: https://github.com/inkentries/inkentry/blob/main/docs/commands.md#json-output-the-envelope-contract
 
-```json
-[
-  {
-    "type": "code",
-    "fused_rank": 1,
-    "fused_score": 0.0163,
-    "corpus_rank": 1,
-    "code": {
-      "chunk_id": 71, "file_path": "batch_run.py", "name": "main",
-      "language": "python", "node_type": "verbatim",
-      "start_line": 110, "end_line": 171, "content": "...",
-      "distance": 0.049, "from_graph": false, "token_count": 509
-    }
-  }
-]
-```
+`inkentry search --format json` returns a list of fusion envelopes, one per hit
+— `{type, fused_rank, fused_score, corpus_rank, code|memory}` — with the chunk
+fields **nested** under `code` or `memory` according to `type`. Read
+`item["code"]["file_path"]`, never `item["file_path"]`.
 
-Read `item["code"]["file_path"]`, never `item["file_path"]`. Earlier builds
-emitted those fields flat at the top level, so unwrap tolerantly. That keeps
-a harness able to re-read results captured by an older binary:
+Earlier builds emitted those fields flat at the top level, so unwrap tolerantly.
+That keeps a harness able to re-read results captured by an older binary:
 
 ```python
 nested = item.get("code")
 payload = nested if isinstance(nested, dict) else item
 name, path = payload.get("name"), payload.get("file_path")
 ```
+
+Do not restate the field list here. It has an owner now, and a second copy
+drifts — and drift in this particular list is indistinguishable from a working
+benchmark, which is the whole reason both documents exist.
+
+### Five ways to read zero results from a healthy binary
+
+Each returns nothing at full query latency, with nothing on stdout saying so.
+
+**Reading the flat shape.** The case above: matches nothing, on every result.
+
+**Treating exit 1 as "no results".** `search` is porcelain — no matches is exit
+`0` with `[]`. Exit `1` means the query never ran (no project here, an
+unreadable index) and exit `2` is a rejected argument. The convention where `1`
+means an empty set belongs to `plumbing` commands, which reserve `2` for errors.
+`graph/evaluate.py` calls both and needs both rules; its two blocks differ on
+purpose, and `agents/agent.py` passes the convention into `_run_inkentry`.
+
+**Deriving rank from position, over an appendix.** `--graph` call-graph
+neighbours, `--expand-graph` relates-to neighbours and cross-project memory
+entries are appended **after** the ranked members, with `fused_rank`,
+`fused_score` and `corpus_rank` all `null`. None of them was ranked against the
+query. A `find_rank` built on `enumerate()` scores them as ranks 6, 7, 8 and
+inflates recall. Filter to `fused_rank is not None`, or read `fused_rank`.
+
+**Iterating the top level under `--budget`.** `--budget` (mutually exclusive
+with `--limit`) replaces the top-level array with an **object**, envelopes under
+`results`. Nothing here passes it today; a consumer that iterates the top level
+reads zero the moment something does.
+
+**Querying an index an older binary wrote.** Not a parsing bug — an environment
+one, and the likeliest of these in practice. An index whose schema predates the
+running build is **not** opened in place: it is discarded and rebuilt *empty*,
+and it stays empty until you re-index. Search then returns `[]` at exit 0 from a
+perfectly healthy binary. The notice goes to **stderr**, so it lands in the
+stream every harness here drops on the success path, and `--reuse-index` and
+`--reuse-corpus` are the two flags most likely to walk into it.
+
+`inkentry status --format json` reports `index_rebuilt_from` — the schema
+version a rebuild discarded, null when nothing was discarded. That is the
+machine-readable guard; `perf_scale.sh` already reads `status --format json` for
+`chunk_count`, so the pattern is in the repo. No harness checks it yet.
+
+Coverage, freshness and degradation notices go to **stderr**, so stdout stays
+machine-clean. Every harness here captures stderr and drops it on the success
+path — worth remembering when a run comes back inexplicably empty.
 
 ### Picking a corpus
 
@@ -145,13 +177,26 @@ in the SWE-bench conditions it keeps `inkentry_search` from quietly becoming a
 partial `inkentry_full`. Use `--only-memory` for memory retrieval and
 `--only-text` for the full-text-only condition.
 
+### Condition labels are frozen baseline keys
+
+`hybrid` and `text` in the result JSON name retrieval *behaviour*, not flags.
+They are kept so runs stay comparable with baselines captured before the flags
+changed, and the literal argv is recorded beside them as `search_args`. Do not
+"correct" them to match current flag names — that silently breaks comparison
+against `results/codesearchnet-baseline/`.
+
+`perf_search.sh` is the exception: it prints to a terminal and writes no
+`search_args`, so a bare label there has nothing to disambiguate it. It calls
+the no-flags condition `default` and echoes the flags next to it.
+
 ### Commands that moved
 
 | Reach for | Use |
 |---|---|
 | a search mode | no flag (best-available); `--only-text` for full-text only |
+| structural / ast-grep search | no replacement; it was removed |
 | memory retrieval | `inkentry search <q> --only-memory` |
-| a symbol plus neighbours | `inkentry search <sym> --graph` |
+| a symbol plus neighbours | `inkentry search <sym> --graph` — appendix members are unranked, see above |
 | raw graph edges (JSONL) | `inkentry plumbing graph-edges --symbol <sym>` |
 
 The removed spellings exit 2 with a migration hint on stderr and print nothing
@@ -206,8 +251,10 @@ at runtime. Repos must live **outside** this repository — cloning them under t
 repo root would pollute the inkentry index. See `README.md` for setup.
 
 ### Output paths
-- Scratch results: `results/` (gitignored except `.gitignore`)
-- Committed baselines: none. See the Baselines section of README.md.
+- Scratch results: `results/` (gitignored except the allowlisted subdirectories below)
+- Committed baselines: `results/codesearchnet-baseline/` only, kept by an
+  explicit allowlist in `results/.gitignore`. See the Baselines section of
+  README.md before comparing anything to it.
 - Plans and reports: `tmp/` (gitignored; use `git add -f` to commit)
 
 ### Configuration priority for API scripts

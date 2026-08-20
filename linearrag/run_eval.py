@@ -66,11 +66,17 @@ def unwrap(item: dict) -> dict:
 
 def summarize(results: list) -> list[dict]:
     out = []
-    for r, item in enumerate(results):
+    for item in results:
         x = unwrap(item)
+        # `--only-code` should keep memory envelopes out entirely. If one does
+        # arrive, `unwrap` correctly falls through to the outer envelope, which
+        # carries none of these keys — skip it rather than raising KeyError part
+        # way through a run.
+        if "chunk_id" not in x:
+            continue
         out.append(
             {
-                "rank": r + 1,
+                "rank": len(out) + 1,
                 "chunk_id": x["chunk_id"],
                 "file": x["file_path"],
                 "name": x.get("name"),
@@ -91,6 +97,7 @@ def run_query(query: str, algo: str, limit: int = 10) -> tuple[list, float]:
     cmd = [
         BINARY, "search", query,
         "--retrieval", algo,
+        "--only-code",
         "--limit", str(limit),
         "--format", "json",
         "--no-stale-check",

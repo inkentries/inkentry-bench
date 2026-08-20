@@ -103,7 +103,11 @@ def run_inkentry_search(repo_path: Path, symbol: str, limit: int = 10) -> set[st
         )
         if result.returncode == 0 and result.stdout.strip():
             return search_file_paths(json.loads(result.stdout))
-        if result.returncode not in (0, 1):
+        # `search` is porcelain: no matches exits 0 with `[]`, so any non-zero
+        # exit means the query did not run. Exit 1 as "no results" is the
+        # *plumbing* convention, which `run_inkentry_graph` below is right to
+        # use and this call site is not.
+        if result.returncode != 0:
             print(
                 f"  search: exit {result.returncode} for {symbol}: "
                 f"{result.stderr.strip()[:200]}",
@@ -125,6 +129,9 @@ def run_inkentry_graph(repo_path: Path, symbol: str, limit: int = 10) -> set[str
             text=True,
             timeout=30,
         )
+        # Plumbing, unlike `search` above: exit 1 is an empty edge set, exit 2
+        # is the error. The asymmetry between these two blocks is the contract,
+        # not an oversight.
         if result.returncode not in (0, 1):
             print(
                 f"  graph: exit {result.returncode} for {symbol}: "

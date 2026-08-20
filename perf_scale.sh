@@ -194,5 +194,9 @@ print('Summary:')
 for name, repo in d.get('repos', {}).items():
     print(f'  {name}: {repo.get(\"files\",\"?\")} files, {repo.get(\"chunks\",\"?\")} chunks, index={repo.get(\"index_seconds\",\"?\")}s')
     for s in repo.get('search', []):
-        print(f'    search ({s[\"words\"]}) p50={s[\"p50_ms\"]}ms  p95={s[\"p95_ms\"]}ms')
+        # A failed iteration exits in microseconds and drags p50 down, so a
+        # latency printed without its failure count reads as a speedup.
+        failed = s.get('failed_iterations') or 0
+        note = f'  [{failed} FAILED]' if failed else ''
+        print(f'    search ({s[\"words\"]}) p50={s[\"p50_ms\"]}ms  p95={s[\"p95_ms\"]}ms{note}')
 "

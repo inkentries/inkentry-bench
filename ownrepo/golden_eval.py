@@ -126,7 +126,11 @@ def inkentry_search(query: str, condition: str, limit: int = 10) -> list[dict]:
     cmd.extend(CONDITIONS[condition])
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-        if r.returncode not in (0, 1):
+        # `search` is porcelain: no matches exits 0 with `[]`, so any non-zero
+        # exit means the query did not run. Exit 1 as "no results" is the
+        # *plumbing* convention; applying it here turns a missing index into a
+        # silent zero, which is the failure this harness exists to catch.
+        if r.returncode != 0:
             print(
                 f"search exited {r.returncode}: {r.stderr.strip()[:200]}",
                 file=sys.stderr,

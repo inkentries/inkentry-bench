@@ -9,7 +9,7 @@ Five conditions compared against the same question set:
     vanilla_rag     — plain embed-and-KNN over raw commit messages (generic
                       "any embedding store" control: no harvest, no LLM
                       extraction, no graph, no rerank). Deterministic, n=1.
-    memory_search   — inkentry memory search (semantic over harvested entries)
+    memory_search   — inkentry search --only-memory (semantic over harvested entries)
 
 Usage:
     python memory/decision_archaeology.py \\
@@ -104,7 +104,11 @@ def run_memory_search(repo_path: Path, query: str, limit: int = 10) -> list[dict
         result = subprocess.run(
             cmd, cwd=repo_path, capture_output=True, text=True, timeout=30
         )
-        if result.returncode not in (0, 1):
+        # `search` is porcelain: no matches exits 0 with `[]`, so any non-zero
+        # exit means the query did not run. Exit 1 as "no results" is the
+        # *plumbing* convention; applying it here turns a missing index into a
+        # silent zero, which is the failure this harness exists to catch.
+        if result.returncode != 0:
             print(
                 f"memory search exited {result.returncode}: "
                 f"{result.stderr.strip()[:200]}",
@@ -384,6 +388,13 @@ def check_hit(results: list[dict], commit: str) -> tuple[bool, int | None]:
         return False, None
     for i, r in enumerate(results):
         candidate = r.get("commit") or r.get("source_ref") or ""
+        # `source_ref` is conditional on a memory payload — present only when the
+        # entry was harvested from a commit. Without the emptiness guard,
+        # `commit.startswith("")` is True, so every entry that was never
+        # harvested from a commit scores as a ground-truth hit at rank 1 and
+        # inflates this condition's recall toward 1.0.
+        if not candidate:
+            continue
         if candidate.startswith(commit) or commit.startswith(candidate):
             return True, i + 1
     return False, None
