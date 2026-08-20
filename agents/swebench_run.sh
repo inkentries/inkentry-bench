@@ -255,8 +255,12 @@ for TASK_ID in $ALL_TASK_IDS; do
         inkentry index "$TASK_REPO" 2>&1 | tail -1 || true
     fi
 
-    # For inkentry_full: attempt memory harvest from git history.
-    # Best-effort — single-commit SWE-bench repos have no harvestable history.
+    # For inkentry_full: harvest memory from the task repo's git history.
+    # setup_repos.sh clones with full ancestry (blobless partial clone, or a
+    # full clone on fallback; never --depth) and only then checks out the base
+    # commit, so this range is real upstream history, not an empty one.
+    # Best-effort: a harvest failure must not fail the run, which also means a
+    # failure here leaves no trace in the result rows.
     if [[ "$CONDITION" == "inkentry_full" ]]; then
         echo "  Harvesting memory (best-effort)..."
         inkentry memory harvest --git-range HEAD~50..HEAD "$TASK_REPO" 2>&1 | tail -1 || true

@@ -4,6 +4,7 @@ Run:
     uv run --with pytest pytest agents/tests/ -v
 """
 
+import json
 from pathlib import Path
 
 import pytest
@@ -54,6 +55,70 @@ def test_null_harness_value_treated_as_none():
     # A row that carries harness: null (the harness=none adapter output).
     row = {"model": "m", "harness": None, "condition": "baseline"}
     assert agg.cell_key(row)[1] == "none"
+
+
+# --- document shapes the loader must unwrap ---------------------------------
+
+
+def _write(tmp_path, name, doc):
+    path = tmp_path / name
+    path.write_text(json.dumps(doc))
+    return path
+
+
+def test_envelope_document_yields_its_task_rows(tmp_path):
+    """swebench_eval.sh writes {aggregate, tasks}; the rows are under `tasks`."""
+    _write(
+        tmp_path,
+        "swebench-baseline.json",
+        {
+            "aggregate": {"tasks_total": 2, "resolve_rate": 0.5},
+            "tasks": [
+                {"task_id": "a", "model": "m", "harness": "none", "condition": "baseline",
+                 "input_tokens": 10},
+                {"task_id": "b", "model": "m", "harness": "none", "condition": "baseline",
+                 "input_tokens": 20},
+            ],
+        },
+    )
+    rows = agg.load_results(tmp_path)
+    assert [r["task_id"] for r in rows] == ["a", "b"]
+    assert agg.cell_key(rows[0]) == ("m", "none", "baseline", None)
+
+
+def test_skipped_rows_are_dropped(tmp_path):
+    """A skipped task carries no model/telemetry and must not form its own cell."""
+    _write(
+        tmp_path,
+        "swebench-baseline.json",
+        {
+            "aggregate": {},
+            "tasks": [
+                {"task_id": "a", "model": "m", "condition": "baseline", "input_tokens": 10},
+                {"task_id": "b", "skipped": True, "reason": "repo not found"},
+            ],
+        },
+    )
+    rows = agg.load_results(tmp_path)
+    assert [r["task_id"] for r in rows] == ["a"]
+    assert all(c["model"] != "unknown" for c in agg.build_report(rows, PRICES)["cells"])
+
+
+def test_foreign_report_document_is_skipped(tmp_path):
+    """The official swebench harness report is a dict with no row fields."""
+    _write(
+        tmp_path,
+        "report.json",
+        {"total_instances": 50, "resolved_instances": 30, "resolved_ids": ["a"]},
+    )
+    assert agg.load_results(tmp_path) == []
+
+
+def test_bare_array_and_single_row_still_load(tmp_path):
+    _write(tmp_path, "array.json", [{"task_id": "a", "model": "m", "input_tokens": 1}])
+    _write(tmp_path, "single.json", {"task_id": "b", "model": "m", "input_tokens": 2})
+    rows = agg.load_results(tmp_path)
+    assert sorted(r["task_id"] for r in rows) == ["a", "b"]
 
 
 # --- summary stats ----------------------------------------------------------

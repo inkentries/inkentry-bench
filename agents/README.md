@@ -512,6 +512,14 @@ aggregate side by side without conflating harnesses. Per cell it reports task
 count and mean/median input tokens, output tokens, turns, and wall seconds —
 per-harness numbers stay separate.
 
+Two result-file shapes load: a bare JSON array of task rows, and the
+`{aggregate, tasks}` envelope `swebench_eval.sh` writes (rows are read out of
+`tasks`). JSON files that are neither, such as the official swebench harness's
+own run reports, are skipped, as are rows for tasks that never produced a
+measurement (skipped or errored runs). Both kinds of drop are counted on
+stderr, because a silently absorbed file is how this script once emitted cells
+keyed `model=unknown`.
+
 Framed as tokens-to-outcome, never a headline "tokens saved" (binding P8).
 
 ### Cost extrapolation and pricing
@@ -540,10 +548,10 @@ counts there are **estimates** — replace with measured means from a pilot cell
 before quoting a figure.
 
 Tests: `uv run --with pytest pytest agents/tests/ -v` (offline; covers
-grouping, legacy-none handling, cost/cache math, and projection). The committed
-`tests/fixtures/swebench-harness-matrix.json` carries the
-harness-matrix provenance fields so aggregation over a harness-carrying file is
-exercised end to end.
+grouping, legacy-none handling, the loadable document shapes, cost/cache math,
+and projection). The committed `tests/fixtures/swebench-harness-matrix.json`
+carries the harness-matrix provenance fields so aggregation over a
+harness-carrying file is exercised end to end.
 
 ## Notes
 
@@ -556,10 +564,19 @@ exercised end to end.
 - **Infrastructure vs. resolve_rate:** Infrastructure fixes (Phase 3) unblock
   benchmarks by ensuring tasks run without crashes. They do not improve
   `resolve_rate` — that requires a capable model (deepseek-v4-flash).
-- **inkentry_full vs inkentry_search:** For SWE-bench repos checked out at single
-  commits, `inkentry memory harvest` has no git history — memory tools return
-  empty results. `inkentry_full` is equivalent to `inkentry_search` for these
-  repos. The condition differentiates only on repos with prior inkentry memory
-  (Phase 6 benchmarks).
+- **inkentry_full vs inkentry_search:** `inkentry_full` adds code graph
+  traversal and project memory retrieval on top of the search tool, so the two
+  conditions differ by a tool set, not by a setting. They are **not** equivalent
+  on SWE-bench task repos: `setup_repos.sh` clones with full ancestry (blobless
+  partial clone, or a full clone on fallback; never `--depth`) and only then
+  checks out the base commit, and `swebench_run.sh` harvests
+  `HEAD~50..HEAD` per task, so the memory tools have real history behind them.
+  The flash harness matrix measured the difference: under `harness=none`,
+  `inkentry_full` beat `inkentry_search` on every seed (0.898 / 0.898 / 0.837
+  against 0.633 / 0.653 / 0.653). Both arms share the same system prompt and
+  both have code search, so that gap varies two tools, graph traversal and
+  memory, and cannot be attributed to either alone. It is a cleaner contrast
+  than `baseline` to `inkentry_full`, which varies the prompt as well. See
+  `results/flash-harness-matrix/README.md`.
 - **Phase 6a prerequisite:** `inkentry context` must exist before the
   cross-session handoff benchmark can be scripted as described in the plan.
