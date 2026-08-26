@@ -10,6 +10,19 @@ python3 linearrag/run_eval.py collect   # query both algorithms, write results.j
 python3 linearrag/run_eval.py metrics
 ```
 
+## `collect` does not run against a released binary
+
+`run_eval.py collect` passes `inkentry search --retrieval <algo>`. **`--retrieval`
+is a research flag and is in no released build**, so `collect` exits 2 with a
+clap error against anything you can install. Only `metrics`, which reads the
+committed `results.json`, runs unmodified.
+
+To collect new numbers you need a build that carries `--retrieval`; without one,
+the comparison cannot be re-measured and the committed results are all there is.
+Everything else here — the envelope unwrapping and `--only-code` — is kept in
+step with the other harnesses so the script is correct the moment such a build
+exists, but none of it has been exercised end to end.
+
 ## About the committed `results.json` and `labels.json`
 
 **These are historical, pre-rename measurements. They are not inkentry

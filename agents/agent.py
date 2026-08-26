@@ -252,8 +252,26 @@ def write_file(repo_path: Path, path: str, content: str) -> str:
         return f"Error writing file: {e}"
 
 
-def _run_inkentry(repo_path: Path, args: list[str], timeout: int = 30) -> str:
-    """Run a inkentry command in repo_path, return stdout or error message."""
+def _run_inkentry(
+    repo_path: Path,
+    args: list[str],
+    timeout: int = 30,
+    exit_1_is_empty: bool = False,
+) -> str:
+    """Run a inkentry command in repo_path, return stdout or error message.
+
+    `exit_1_is_empty` picks the exit-code convention, which differs between the
+    two command families this helper serves.
+
+    `plumbing` commands signal an empty result set with exit 1 and reserve
+    exit 2 for errors, so exit 1 there is a legitimate "nothing matched".
+    Porcelain commands — `search` — do not: no matches is exit 0 with `[]`, and
+    exit 1 means the query never ran (no project here, unreadable index).
+    Reporting that to the model as "(no results)" is indistinguishable from
+    inkentry genuinely having nothing to say, which is how a container whose
+    index never built scores a whole matrix cell at baseline with nothing
+    erroring and nothing in the telemetry to show why.
+    """
     cmd = ["inkentry"] + args
     try:
         result = subprocess.run(
@@ -261,8 +279,7 @@ def _run_inkentry(repo_path: Path, args: list[str], timeout: int = 30) -> str:
         )
         if result.returncode == 0:
             output = result.stdout
-        elif result.returncode == 1:
-            # plumbing convention: exit 1 = no results — not an error
+        elif result.returncode == 1 and exit_1_is_empty:
             output = result.stdout or "(no results)"
         else:
             return (
@@ -279,19 +296,31 @@ def _run_inkentry(repo_path: Path, args: list[str], timeout: int = 30) -> str:
 
 
 def inkentry_search(repo_path: Path, query: str, limit: int = 10) -> str:
+    # --only-code keeps the conditions separable: memory retrieval is what the
+    # inkentry_memory_search tool measures, and letting it leak into this tool
+    # would make the inkentry_search condition a partial inkentry_full.
     return _run_inkentry(
-        repo_path, ["search", query, "--limit", str(limit), "--format", "json"]
+        repo_path,
+        ["search", query, "--only-code", "--limit", str(limit), "--format", "json"],
     )
 
 
 def inkentry_graph(repo_path: Path, symbol: str) -> str:
-    return _run_inkentry(repo_path, ["graph", symbol, "--format", "json"])
+    # The code graph is reached through search rather than a top-level graph
+    # command. This tool wants the edges themselves, not ranked chunks, so it
+    # uses the plumbing command; the JSONL fields match what a graph query
+    # returned before.
+    return _run_inkentry(
+        repo_path,
+        ["plumbing", "graph-edges", "--symbol", symbol],
+        exit_1_is_empty=True,
+    )
 
 
 def inkentry_memory_search(repo_path: Path, query: str, limit: int = 10) -> str:
     return _run_inkentry(
         repo_path,
-        ["memory", "search", query, "--limit", str(limit), "--format", "json"],
+        ["search", query, "--only-memory", "--limit", str(limit), "--format", "json"],
     )
 
 

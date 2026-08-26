@@ -20,7 +20,7 @@ and the corpus was rebuilt from the same manifest.
 
 Usage:
     python3 codesearchnet/evaluate.py --materialize --corpus-dir DIR
-    python3 codesearchnet/evaluate.py --corpus-dir DIR [--mode hybrid] [--out FILE]
+    python3 codesearchnet/evaluate.py --corpus-dir DIR [--only-text] [--out FILE]
 """
 
 import argparse
@@ -208,10 +208,27 @@ def resolve_db(corpus_dir: Path, explicit: str | None) -> str | None:
     return None
 
 
-def search(query: str, db: str | None, cwd: Path, mode: str, limit: int) -> list[dict]:
+def search_args(only_text: bool) -> list[str]:
+    """Extra `inkentry search` flags for the requested condition.
+
+    `--only-code` is unconditional: the corpus is materialized CodeSearchNet
+    functions and holds no memory entries, so the interleaved default would
+    embed the query against an empty memory corpus and roughly double the
+    per-query wall time for nothing.
+    """
+    args = ["--only-code"]
+    if only_text:
+        args.append("--only-text")
+    return args
+
+
+def condition_label(only_text: bool) -> str:
+    return "text" if only_text else "hybrid"
+
+
+def search(query: str, db: str | None, cwd: Path, only_text: bool, limit: int) -> list[dict]:
     cmd = [inkentry_bin(), "search", query, "--limit", str(limit), "--format", "json"]
-    if mode:
-        cmd += ["--mode", mode]
+    cmd += search_args(only_text)
     if db:
         cmd += ["--db", db]
     try:
@@ -239,6 +256,20 @@ def search(query: str, db: str | None, cwd: Path, mode: str, limit: int) -> list
         return []
 
 
+def result_payload(item: dict) -> dict:
+    """Return the code fields of one search result, whatever the envelope.
+
+    Current `inkentry search --format json` emits a fusion envelope, one entry
+    per result: `{type, fused_rank, fused_score, corpus_rank, code|memory: {…}}`,
+    with the chunk fields nested under `code`. Older builds emitted those fields
+    flat at the top level. Reading the top level unconditionally against a
+    current binary matches nothing and scores a silent zero, so unwrap when the
+    nested object is present and fall through to the flat shape otherwise.
+    """
+    nested = item.get("code")
+    return nested if isinstance(nested, dict) else item
+
+
 def find_rank(results: list[dict], name: str, relpath: str) -> int | None:
     """1-based rank of the target, matched on symbol name *and* file path.
 
@@ -247,14 +278,15 @@ def find_rank(results: list[dict], name: str, relpath: str) -> int | None:
     a hit.
     """
     for i, item in enumerate(results):
-        rname = item.get("name") or ""
-        rpath = item.get("file_path") or item.get("path") or ""
+        payload = result_payload(item)
+        rname = payload.get("name") or ""
+        rpath = payload.get("file_path") or payload.get("path") or ""
         if rname == name and rpath.replace("\\", "/").endswith(relpath):
             return i + 1
     return None
 
 
-def evaluate(manifest: dict, corpus_dir: Path, db: str | None, mode: str) -> dict:
+def evaluate(manifest: dict, corpus_dir: Path, db: str | None, only_text: bool) -> dict:
     entries = manifest["entries"]
     corpus_root = corpus_dir / "corpus"
     ranks: list[int | None] = []
@@ -262,7 +294,7 @@ def evaluate(manifest: dict, corpus_dir: Path, db: str | None, mode: str) -> dic
 
     for n, entry in enumerate(entries, 1):
         t0 = time.monotonic()
-        results = search(entry["query"], db, corpus_root, mode, limit=10)
+        results = search(entry["query"], db, corpus_root, only_text, limit=10)
         walls.append(time.monotonic() - t0)
         ranks.append(find_rank(results, entry["name"], entry["relpath"]))
         if n % 25 == 0 or n == len(entries):
@@ -277,8 +309,12 @@ def evaluate(manifest: dict, corpus_dir: Path, db: str | None, mode: str) -> dic
         "run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
         "benchmark": "codesearchnet",
         "dataset": manifest["dataset"],
-        "condition": mode,
-        "search_mode": mode,
+        # "hybrid" and "text" are kept as the condition labels so runs stay
+        # comparable with baselines captured before the search flags changed.
+        # They name the retrieval behaviour, not a flag: the literal argv is
+        # recorded in search_args.
+        "condition": condition_label(only_text),
+        "search_args": search_args(only_text),
         "inkentry_version": inkentry_version(),
         "languages": manifest["languages"],
         "seed": manifest["seed"],
@@ -309,7 +345,12 @@ def main() -> None:
         help="Leave each function's docstring in the indexed body. Off by default: the "
         "docstring is the query, so keeping it lets full-text search score a perfect 1.0.",
     )
-    ap.add_argument("--mode", default="hybrid", help="inkentry search --mode value (default: hybrid).")
+    ap.add_argument(
+        "--only-text",
+        action="store_true",
+        help="Query with full-text search only (no embedding, no inference server). "
+        "Default is the best-available ranking.",
+    )
     ap.add_argument("--db", default=None, help="Index to query (default: the corpus's own index).")
     ap.add_argument("--out", default=None, help="Write the result JSON here instead of stdout.")
     args = ap.parse_args()
@@ -335,7 +376,7 @@ def main() -> None:
             f"Run: inkentry index {corpus_dir / 'corpus'}"
         )
 
-    result = evaluate(manifest, corpus_dir, db, args.mode)
+    result = evaluate(manifest, corpus_dir, db, args.only_text)
 
     print(f"MRR@10:      {result['mrr_at_10']}")
     print(f"Recall@5:    {result['recall_at_5']}")

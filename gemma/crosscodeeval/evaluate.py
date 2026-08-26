@@ -189,7 +189,18 @@ def _run_grep(repo_path: Path, pattern: str, search_path: str = ".") -> str:
 
 
 def _inkentry_search(repo_path: Path, query: str, limit: int = 5) -> str:
-    cmd = ["inkentry", "search", query, "--limit", str(limit), "--format", "json"]
+    # --only-code: the condition under test is code retrieval, and these
+    # checkouts carry no memory entries for the interleaved default to find.
+    cmd = [
+        "inkentry",
+        "search",
+        query,
+        "--only-code",
+        "--limit",
+        str(limit),
+        "--format",
+        "json",
+    ]
     try:
         result = subprocess.run(
             cmd, cwd=repo_path, capture_output=True, text=True, timeout=30

@@ -10,6 +10,7 @@
   "bench_repo": "inkentries/inkentry-bench",
   "inkentry_version": "inkentry-cli 0.9.8",
   "search_mode": "hybrid",
+  "condition": "hybrid",
   "languages": [
     "python"
   ],
@@ -55,6 +56,9 @@
       "range": 0.006
     }
   },
+  "mrr_at_10": 0.1924,
+  "recall_at_5": 0.352,
+  "recall_at_10": 0.654,
   "median_wall_seconds_per_query": [
     0.134,
     0.15,

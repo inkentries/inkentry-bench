@@ -87,7 +87,10 @@ run_timed() {
     local start end elapsed_ms
 
     start=$(ms_now)
-    ( cd "$FIXTURE_DIR" && "$INKENTRY" memory "$@" > /dev/null )
+    # Takes the full argv rather than injecting a `memory` subcommand: memory
+    # retrieval moved from `memory search` onto `search --only-memory`, which is
+    # not under `memory` at all.
+    ( cd "$FIXTURE_DIR" && "$INKENTRY" "$@" > /dev/null )
     end=$(ms_now)
     elapsed_ms=$(( end - start ))
 
@@ -101,13 +104,13 @@ run_timed() {
 echo
 echo "=== Benchmark results ==="
 run_timed "memory list --kind decision --limit 10  (primary)" \
-    list --kind decision --limit 10
+    memory list --kind decision --limit 10
 
 run_timed "memory list --limit 10" \
-    list --limit 10
+    memory list --limit 10
 
-run_timed "memory search 'benchmark' --limit 5" \
-    search "benchmark" --limit 5
+run_timed "search 'benchmark' --only-memory --limit 5" \
+    search "benchmark" --only-memory --limit 5
 
 echo
 echo "=== Notes ==="

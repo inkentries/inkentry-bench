@@ -18,7 +18,7 @@ the only thing that catches it.
 One command, from a clean checkout:
 
 ```bash
-INKENTRY_SECRET_STORE=file bash codesearchnet/run.sh --samples 500 --seed 0 --mode hybrid
+INKENTRY_SECRET_STORE=file bash codesearchnet/run.sh --samples 500 --seed 0
 ```
 
 That does all three phases: samples 500 CodeSearchNet Python functions, writes
@@ -27,9 +27,10 @@ build, and queries it. It prints MRR@10, Recall@5 and Recall@10, and writes
 `results/codesearchnet-hybrid-<timestamp>.json`.
 
 **Then make your change, rebuild, and re-run with the same flags.** Two runs
-are comparable when `--samples`, `--seed`, `--languages` and `--mode` match and
-the corpus was rebuilt the same way; the result JSON records all of them plus
-the inkentry version, so a pair of files can be checked rather than trusted.
+are comparable when `--samples`, `--seed`, `--languages` and the retrieval
+condition match and the corpus was rebuilt the same way; the result JSON
+records all of them plus the inkentry version, so a pair of files can be
+checked rather than trusted.
 
 Compare with:
 
@@ -47,7 +48,7 @@ seconds. What you may skip depends on what you are comparing:
 |---|---|---|---|
 | no flag | re-sampled | **deleted, rebuilt** | the first run, or a new `--seed`, `--samples` or `--languages` |
 | `--reuse-corpus` | kept | **deleted, rebuilt** | a before/after of an indexing, chunking, embedding or ranking change, and repeats for variance |
-| `--reuse-index` | kept | kept | comparing `--mode hybrid` against `--mode text` or `--mode semantic` over one index |
+| `--reuse-index` | kept | kept | comparing the default ranking against `--only-text` over one index |
 
 The two rebuilding modes delete `<corpus-dir>/corpus/.inkentry` before
 indexing, and that deletion is what makes them mean anything. Indexing is
@@ -74,8 +75,27 @@ not signal.
 
 `--languages python` (comma-separated; CodeSearchNet ships go, java,
 javascript, php, python, ruby) · `--samples 500` · `--seed 0` ·
-`--mode hybrid|semantic|text|auto` · `--corpus-dir DIR` (default
+`--only-text` · `--corpus-dir DIR` (default
 `~/.cache/inkentry-bench/codesearchnet`) · `--out FILE`
+
+### Retrieval conditions
+
+Queries run with `--only-code`. The corpus is materialized CodeSearchNet
+functions and holds no memory entries, so the interleaved default would embed
+each query against an empty memory corpus and roughly double the per-query wall
+time for nothing.
+
+That leaves one knob, and the result JSON records it twice: as a `condition`
+label, and as the literal `search_args` that were passed.
+
+| Flag | `condition` | `search_args` |
+|---|---|---|
+| none | `hybrid` | `["--only-code"]` |
+| `--only-text` | `text` | `["--only-code", "--only-text"]` |
+
+The `hybrid` and `text` labels name the retrieval behaviour, not a flag. They
+are kept so runs stay comparable with baselines captured before the search
+flags changed.
 
 ### What the number means
 
@@ -102,7 +122,7 @@ inkentry code rather than sampled Python:
 ```bash
 cd /path/to/indexed/repo
 INKENTRY_SECRET_STORE=file python3 /path/to/inkentry-bench/ownrepo/golden_eval.py \
-    --samples 150 --mode semantic --model-label <embedding-model>
+    --samples 150 --conditions hybrid,text --model-label <embedding-model>
 ```
 
 It needs an already-indexed repository and is read-only on the database. Note
@@ -241,7 +261,7 @@ Requires `ANTHROPIC_API_KEY`. Results go to `results/swebench-{condition}-{times
 
 ## Code-graph - call graph retrieval quality
 
-Model-agnostic. Measures how well `inkentry graph` retrieves files containing callers/callees/implementers of a symbol, compared against `git grep` and `inkentry search` as baselines.
+Model-agnostic. Measures how well the code graph retrieves files containing callers/callees/implementers of a symbol, compared against `git grep` and `inkentry search` as baselines. The graph condition reads edges from `inkentry plumbing graph-edges --symbol <name>`; the search condition runs `inkentry search <symbol> --only-code`.
 
 **Repo setup:** clone the benchmark repos somewhere *outside* this repository (to avoid polluting the inkentry index), then point the evaluator at them:
 
