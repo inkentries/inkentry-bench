@@ -1,0 +1,1877 @@
+[
+ {
+  "tid": 0,
+  "style": "concept",
+  "query": "how to calculate the prior period start date for a semiannual subscription when the anniversary day does not exist in that month"
+ },
+ {
+  "tid": 0,
+  "style": "keywords",
+  "query": "semiannual billing anchor date"
+ },
+ {
+  "tid": 0,
+  "style": "identifier",
+  "query": "compute_base_date semiannual anniversary edge case"
+ },
+ {
+  "tid": 1,
+  "style": "concept",
+  "query": "speed up searching or filtering subscriptions by name"
+ },
+ {
+  "tid": 1,
+  "style": "keywords",
+  "query": "trigram index subscription name"
+ },
+ {
+  "tid": 1,
+  "style": "identifier",
+  "query": "gin_trgm_ops subscriptions migration"
+ },
+ {
+  "tid": 2,
+  "style": "concept",
+  "query": "scheduled job that flags finalized invoices as overdue when payment due date has passed"
+ },
+ {
+  "tid": 2,
+  "style": "keywords",
+  "query": "overdue invoice payment job"
+ },
+ {
+  "tid": 2,
+  "style": "identifier",
+  "query": "MarkOverdueJob invoices overdue batch"
+ },
+ {
+  "tid": 3,
+  "style": "concept",
+  "query": "how does the system pick which invoice payload builder to use for each accounting integration"
+ },
+ {
+  "tid": 3,
+  "style": "keywords",
+  "query": "invoice integration payload factory"
+ },
+ {
+  "tid": 3,
+  "style": "identifier",
+  "query": "Payloads::Factory choose accounting integration class"
+ },
+ {
+  "tid": 4,
+  "style": "concept",
+  "query": "how is a unique caching key built for invoiced usage analytics by organization and currency"
+ },
+ {
+  "tid": 4,
+  "style": "keywords",
+  "query": "invoiced usage cache invalidation"
+ },
+ {
+  "tid": 4,
+  "style": "identifier",
+  "query": "Analytics::InvoicedUsage cache key"
+ },
+ {
+  "tid": 5,
+  "style": "concept",
+  "query": "generate the XML payment receipt document required for electronic invoicing compliance"
+ },
+ {
+  "tid": 5,
+  "style": "keywords",
+  "query": "e-invoice payment receipt XML"
+ },
+ {
+  "tid": 5,
+  "style": "identifier",
+  "query": "CrossIndustryInvoice payment receipt serializer"
+ },
+ {
+  "tid": 6,
+  "style": "concept",
+  "query": "add fast partial text search on invoice numbers"
+ },
+ {
+  "tid": 6,
+  "style": "keywords",
+  "query": "trigram index invoice number"
+ },
+ {
+  "tid": 6,
+  "style": "identifier",
+  "query": "gin_trgm_ops invoices migration"
+ },
+ {
+  "tid": 7,
+  "style": "concept",
+  "query": "endpoint that runs incoming graphql queries and builds the request context for resolvers"
+ },
+ {
+  "tid": 7,
+  "style": "keywords",
+  "query": "graphql query execution endpoint"
+ },
+ {
+  "tid": 7,
+  "style": "identifier",
+  "query": "LagoApiSchema execute query length limit"
+ },
+ {
+  "tid": 8,
+  "style": "concept",
+  "query": "graphql mutation to delete a mapping between an integration and its collection"
+ },
+ {
+  "tid": 8,
+  "style": "keywords",
+  "query": "integration collection mapping delete mutation"
+ },
+ {
+  "tid": 8,
+  "style": "identifier",
+  "query": "DestroyIntegrationCollectionMapping mutation resolver"
+ },
+ {
+  "tid": 9,
+  "style": "concept",
+  "query": "how does the internal http client send a post request with json body and custom headers"
+ },
+ {
+  "tid": 9,
+  "style": "keywords",
+  "query": "outbound http post helper"
+ },
+ {
+  "tid": 9,
+  "style": "identifier",
+  "query": "LagoHttpClient::Client post response"
+ },
+ {
+  "tid": 10,
+  "style": "concept",
+  "query": "restrict which charge pricing models are allowed to be prorated based on the aggregation type"
+ },
+ {
+  "tid": 10,
+  "style": "keywords",
+  "query": "prorated charge validation rules"
+ },
+ {
+  "tid": 10,
+  "style": "identifier",
+  "query": "weighted_sum_agg prorated charge validation"
+ },
+ {
+  "tid": 11,
+  "style": "concept",
+  "query": "how is a wallet's payment method represented in API output"
+ },
+ {
+  "tid": 11,
+  "style": "keywords",
+  "query": "wallet payment method serializer"
+ },
+ {
+  "tid": 11,
+  "style": "identifier",
+  "query": "WalletSerializer payment method output"
+ },
+ {
+  "tid": 12,
+  "style": "concept",
+  "query": "background migration that backfills a missing organization reference on existing subscription records in batches"
+ },
+ {
+  "tid": 12,
+  "style": "keywords",
+  "query": "subscription organization backfill migration"
+ },
+ {
+  "tid": 12,
+  "style": "identifier",
+  "query": "PopulateSubscriptionsWithOrganizationJob batch update"
+ },
+ {
+  "tid": 13,
+  "style": "concept",
+  "query": "turn raw grouped clickhouse rows into aggregation results with counts"
+ },
+ {
+  "tid": 13,
+  "style": "keywords",
+  "query": "grouped event aggregation clickhouse"
+ },
+ {
+  "tid": 13,
+  "style": "identifier",
+  "query": "ClickhouseStore grouped aggregation values"
+ },
+ {
+  "tid": 14,
+  "style": "concept",
+  "query": "how is the minimum granted credits amount validated when creating a wallet transaction"
+ },
+ {
+  "tid": 14,
+  "style": "keywords",
+  "query": "minimum wallet credit validation"
+ },
+ {
+  "tid": 14,
+  "style": "identifier",
+  "query": "WalletTransactions::ValidateService granted credits"
+ },
+ {
+  "tid": 15,
+  "style": "concept",
+  "query": "determine the billing period start and end dates including charge windows when creating an invoice for a subscription"
+ },
+ {
+  "tid": 15,
+  "style": "keywords",
+  "query": "invoice billing period boundaries"
+ },
+ {
+  "tid": 15,
+  "style": "identifier",
+  "query": "BillingPeriodBoundaries invoice subscription calculation"
+ },
+ {
+  "tid": 16,
+  "style": "concept",
+  "query": "enforce that every refund record has an organization set"
+ },
+ {
+  "tid": 16,
+  "style": "keywords",
+  "query": "refunds organization not null constraint"
+ },
+ {
+  "tid": 16,
+  "style": "identifier",
+  "query": "add_check_constraint refunds table validation"
+ },
+ {
+  "tid": 17,
+  "style": "concept",
+  "query": "shared base class for generating csv export files by serializing a collection of records"
+ },
+ {
+  "tid": 17,
+  "style": "keywords",
+  "query": "csv export base service"
+ },
+ {
+  "tid": 17,
+  "style": "identifier",
+  "query": "BaseCsvService csv export output file"
+ },
+ {
+  "tid": 18,
+  "style": "concept",
+  "query": "resolve the customer associated with an event when estimating an upcoming charge"
+ },
+ {
+  "tid": 18,
+  "style": "keywords",
+  "query": "pay in advance customer lookup"
+ },
+ {
+  "tid": 18,
+  "style": "identifier",
+  "query": "EstimatePayInAdvanceService customer resolution"
+ },
+ {
+  "tid": 19,
+  "style": "concept",
+  "query": "database migration that safely makes the organization column required on the charges table"
+ },
+ {
+  "tid": 19,
+  "style": "keywords",
+  "query": "organization id required migration"
+ },
+ {
+  "tid": 19,
+  "style": "identifier",
+  "query": "charges_organization_id_null constraint"
+ },
+ {
+  "tid": 20,
+  "style": "concept",
+  "query": "read a streaming server sent events connection line by line and dispatch each parsed event to listeners"
+ },
+ {
+  "tid": 20,
+  "style": "keywords",
+  "query": "server-sent events streaming client"
+ },
+ {
+  "tid": 20,
+  "style": "identifier",
+  "query": "SseClient run method streaming"
+ },
+ {
+  "tid": 21,
+  "style": "concept",
+  "query": "make invoice sequential numbers unique per billing entity instead of just customer"
+ },
+ {
+  "tid": 21,
+  "style": "keywords",
+  "query": "invoice sequential number unique index"
+ },
+ {
+  "tid": 21,
+  "style": "identifier",
+  "query": "index_invoices_on_customer_billing_entity_sequential migration"
+ },
+ {
+  "tid": 22,
+  "style": "concept",
+  "query": "custom error class wrapping the response code body and url of a failed http request"
+ },
+ {
+  "tid": 22,
+  "style": "keywords",
+  "query": "http client error wrapper"
+ },
+ {
+  "tid": 22,
+  "style": "identifier",
+  "query": "HttpError response headers code"
+ },
+ {
+  "tid": 23,
+  "style": "concept",
+  "query": "generate the electronic invoice xml document for a credit note"
+ },
+ {
+  "tid": 23,
+  "style": "keywords",
+  "query": "credit note e-invoice xml generation"
+ },
+ {
+  "tid": 23,
+  "style": "identifier",
+  "query": "CreditNotes::Cii xml builder call"
+ },
+ {
+  "tid": 24,
+  "style": "concept",
+  "query": "validation rule requiring a feature grant to belong to exactly one of a plan or subscription"
+ },
+ {
+  "tid": 24,
+  "style": "keywords",
+  "query": "feature grant parent validation"
+ },
+ {
+  "tid": 24,
+  "style": "identifier",
+  "query": "Entitlement exactly one parent"
+ },
+ {
+  "tid": 25,
+  "style": "concept",
+  "query": "prorate a minimum spend commitment amount based on how much of the billing period it covers"
+ },
+ {
+  "tid": 25,
+  "style": "keywords",
+  "query": "minimum commitment proration amount"
+ },
+ {
+  "tid": 25,
+  "style": "identifier",
+  "query": "commitment_amount_cents proration calculation minimum spend"
+ },
+ {
+  "tid": 26,
+  "style": "concept",
+  "query": "build the sql query that unions event values across a billing period for a weighted average calculation"
+ },
+ {
+  "tid": 26,
+  "style": "keywords",
+  "query": "weighted sum events CTE"
+ },
+ {
+  "tid": 26,
+  "style": "identifier",
+  "query": "events_cte_sql weighted sum query"
+ },
+ {
+  "tid": 27,
+  "style": "concept",
+  "query": "serializer that formats a product filter and its key value entries for the api response"
+ },
+ {
+  "tid": 27,
+  "style": "keywords",
+  "query": "product filter serializer"
+ },
+ {
+  "tid": 27,
+  "style": "identifier",
+  "query": "ProductFilterSerializer values options"
+ },
+ {
+  "tid": 28,
+  "style": "concept",
+  "query": "safely delete a dunning campaign and unassign it from customers and billing entities"
+ },
+ {
+  "tid": 28,
+  "style": "keywords",
+  "query": "dunning campaign deletion cleanup"
+ },
+ {
+  "tid": 28,
+  "style": "identifier",
+  "query": "DunningCampaigns::DestroyService discard campaign"
+ },
+ {
+  "tid": 29,
+  "style": "concept",
+  "query": "how is a customer's current billing period invoice assembled including charge fees and applicable taxes"
+ },
+ {
+  "tid": 29,
+  "style": "keywords",
+  "query": "customer invoice usage calculation"
+ },
+ {
+  "tid": 29,
+  "style": "identifier",
+  "query": "CustomerUsageService compute usage"
+ },
+ {
+  "tid": 30,
+  "style": "concept",
+  "query": "format the different kinds of event ingestion validation failures into an API response"
+ },
+ {
+  "tid": 30,
+  "style": "keywords",
+  "query": "event validation error response"
+ },
+ {
+  "tid": 30,
+  "style": "identifier",
+  "query": "EventsValidationErrorsSerializer event validation fields"
+ },
+ {
+  "tid": 31,
+  "style": "concept",
+  "query": "send a webhook notification when a payment request fails to be paid"
+ },
+ {
+  "tid": 31,
+  "style": "keywords",
+  "query": "payment request failure webhook"
+ },
+ {
+  "tid": 31,
+  "style": "identifier",
+  "query": "PaymentRequestPaymentFailureService webhook payload"
+ },
+ {
+  "tid": 32,
+  "style": "concept",
+  "query": "mailer that emails a customer their finalized invoice with the pdf attached"
+ },
+ {
+  "tid": 32,
+  "style": "keywords",
+  "query": "invoice email pdf attachment"
+ },
+ {
+  "tid": 32,
+  "style": "identifier",
+  "query": "InvoiceMailer finalized invoice pdf email"
+ },
+ {
+  "tid": 33,
+  "style": "concept",
+  "query": "handle webhook notification when a customer authorizes a direct debit mandate"
+ },
+ {
+  "tid": 33,
+  "style": "keywords",
+  "query": "gocardless mandate webhook payment method"
+ },
+ {
+  "tid": 33,
+  "style": "identifier",
+  "query": "MandateCreatedService gocardless webhook handler"
+ },
+ {
+  "tid": 34,
+  "style": "concept",
+  "query": "what fields describe a charge when serializing a customer's projected usage for an upcoming invoice"
+ },
+ {
+  "tid": 34,
+  "style": "keywords",
+  "query": "projected usage charge fields"
+ },
+ {
+  "tid": 34,
+  "style": "identifier",
+  "query": "ProjectedChargeUsageSerializer charge data"
+ },
+ {
+  "tid": 35,
+  "style": "concept",
+  "query": "make job retries skip re-acquiring the uniqueness lock so failed jobs can be retried without being blocked"
+ },
+ {
+  "tid": 35,
+  "style": "keywords",
+  "query": "ActiveJob uniqueness retry lock"
+ },
+ {
+  "tid": 35,
+  "style": "identifier",
+  "query": "UntilExecutedPatch job uniqueness lock retry"
+ },
+ {
+  "tid": 36,
+  "style": "concept",
+  "query": "attach custom display sections to an invoice when it is generated"
+ },
+ {
+  "tid": 36,
+  "style": "keywords",
+  "query": "invoice custom sections apply"
+ },
+ {
+  "tid": 36,
+  "style": "identifier",
+  "query": "ApplyInvoiceCustomSectionsService invoice sections"
+ },
+ {
+  "tid": 37,
+  "style": "concept",
+  "query": "sql snippet clamping an event timestamp to the billing period start for proration in the customer timezone"
+ },
+ {
+  "tid": 37,
+  "style": "keywords",
+  "query": "billing period timestamp clamp sql"
+ },
+ {
+  "tid": 37,
+  "style": "identifier",
+  "query": "prorated_aggregation_service period start sql"
+ },
+ {
+  "tid": 38,
+  "style": "concept",
+  "query": "graphql schema for the amount threshold that triggers a dunning reminder"
+ },
+ {
+  "tid": 38,
+  "style": "keywords",
+  "query": "dunning threshold graphql type"
+ },
+ {
+  "tid": 38,
+  "style": "identifier",
+  "query": "DunningCampaignThreshold graphql amount type"
+ },
+ {
+  "tid": 39,
+  "style": "concept",
+  "query": "what event code is sent when a contact is created through a crm or accounting integration"
+ },
+ {
+  "tid": 39,
+  "style": "keywords",
+  "query": "crm contact webhook event"
+ },
+ {
+  "tid": 39,
+  "style": "identifier",
+  "query": "Aggregator::Contacts::BaseService webhook code"
+ },
+ {
+  "tid": 40,
+  "style": "concept",
+  "query": "database migration adding a type column to invoice custom sections and backfilling existing records"
+ },
+ {
+  "tid": 40,
+  "style": "keywords",
+  "query": "invoice custom section migration"
+ },
+ {
+  "tid": 40,
+  "style": "identifier",
+  "query": "invoice_custom_section_type enum migration"
+ },
+ {
+  "tid": 41,
+  "style": "concept",
+  "query": "efficiently attach subscription counts to a batch of features to avoid N+1 queries"
+ },
+ {
+  "tid": 41,
+  "style": "keywords",
+  "query": "preload feature subscription counts"
+ },
+ {
+  "tid": 41,
+  "style": "identifier",
+  "query": "preload_subscriptions_count entitlement feature"
+ },
+ {
+  "tid": 42,
+  "style": "concept",
+  "query": "service that updates the roles on a pending team invitation with permission checks"
+ },
+ {
+  "tid": 42,
+  "style": "keywords",
+  "query": "update invite roles permissions"
+ },
+ {
+  "tid": 42,
+  "style": "identifier",
+  "query": "Invites::UpdateService update roles permission"
+ },
+ {
+  "tid": 43,
+  "style": "concept",
+  "query": "background job that sends an outgoing webhook and retries on failure"
+ },
+ {
+  "tid": 43,
+  "style": "keywords",
+  "query": "webhook delivery job retry"
+ },
+ {
+  "tid": 43,
+  "style": "identifier",
+  "query": "SendHttpWebhookJob retry webhook delivery"
+ },
+ {
+  "tid": 44,
+  "style": "concept",
+  "query": "what input fields are accepted by the api when creating a new billable metric"
+ },
+ {
+  "tid": 44,
+  "style": "keywords",
+  "query": "billable metric creation fields"
+ },
+ {
+  "tid": 44,
+  "style": "identifier",
+  "query": "BillableMetrics::CreateInput arguments"
+ },
+ {
+  "tid": 45,
+  "style": "concept",
+  "query": "model representing a usage alert notification threshold that can notify when a triggered alert is resolved"
+ },
+ {
+  "tid": 45,
+  "style": "keywords",
+  "query": "usage alert threshold notification"
+ },
+ {
+  "tid": 45,
+  "style": "identifier",
+  "query": "AlertThreshold usage monitoring notify resolved"
+ },
+ {
+  "tid": 46,
+  "style": "concept",
+  "query": "graphql schema for a volume-based pricing tier with flat and per unit amounts"
+ },
+ {
+  "tid": 46,
+  "style": "keywords",
+  "query": "volume pricing tier graphql type"
+ },
+ {
+  "tid": 46,
+  "style": "identifier",
+  "query": "VolumeRange graphql pricing fields"
+ },
+ {
+  "tid": 47,
+  "style": "concept",
+  "query": "query object that lists webhook endpoints with pagination and consistent ordering"
+ },
+ {
+  "tid": 47,
+  "style": "keywords",
+  "query": "webhook endpoints list query"
+ },
+ {
+  "tid": 47,
+  "style": "identifier",
+  "query": "WebhookEndpointsQuery pagination ordering"
+ },
+ {
+  "tid": 48,
+  "style": "concept",
+  "query": "update netsuite integration settings and resync when the endpoint url changes"
+ },
+ {
+  "tid": 48,
+  "style": "keywords",
+  "query": "netsuite integration update sync"
+ },
+ {
+  "tid": 48,
+  "style": "identifier",
+  "query": "Netsuite::UpdateService script endpoint url"
+ },
+ {
+  "tid": 49,
+  "style": "concept",
+  "query": "which serializer builds the payload sent in a webhook when a feature is deleted"
+ },
+ {
+  "tid": 49,
+  "style": "keywords",
+  "query": "feature deletion webhook payload"
+ },
+ {
+  "tid": 49,
+  "style": "identifier",
+  "query": "Webhooks::Features::DeletedService serializer"
+ },
+ {
+  "tid": 50,
+  "style": "concept",
+  "query": "send an analytics tracking event when a webhook endpoint is removed"
+ },
+ {
+  "tid": 50,
+  "style": "keywords",
+  "query": "webhook endpoint deletion tracking"
+ },
+ {
+  "tid": 50,
+  "style": "identifier",
+  "query": "SegmentTrackJob webhook endpoint deleted tracking"
+ },
+ {
+  "tid": 51,
+  "style": "concept",
+  "query": "invalidate cached analytics data for a specific customer"
+ },
+ {
+  "tid": 51,
+  "style": "keywords",
+  "query": "analytics cache expiration customer"
+ },
+ {
+  "tid": 51,
+  "style": "identifier",
+  "query": "expire_cache_for_customer analytics cache"
+ },
+ {
+  "tid": 52,
+  "style": "concept",
+  "query": "helper that assembles a grouped result object for prorated event aggregation with group keys"
+ },
+ {
+  "tid": 52,
+  "style": "keywords",
+  "query": "grouped usage proration result builder"
+ },
+ {
+  "tid": 52,
+  "style": "identifier",
+  "query": "GroupedProratedAggregationResult groups events count"
+ },
+ {
+  "tid": 53,
+  "style": "concept",
+  "query": "strip null byte characters from model attributes before saving"
+ },
+ {
+  "tid": 53,
+  "style": "keywords",
+  "query": "null byte sanitization attribute"
+ },
+ {
+  "tid": 53,
+  "style": "identifier",
+  "query": "NullByteSanitizable strip null bytes"
+ },
+ {
+  "tid": 54,
+  "style": "concept",
+  "query": "graphql mutation that signs in a user using a microsoft single sign on authorization code"
+ },
+ {
+  "tid": 54,
+  "style": "keywords",
+  "query": "microsoft sso login mutation"
+ },
+ {
+  "tid": 54,
+  "style": "identifier",
+  "query": "EntraIdLogin mutation resolve"
+ },
+ {
+  "tid": 55,
+  "style": "concept",
+  "query": "background job that processes an incoming webhook event from a payment provider integration"
+ },
+ {
+  "tid": 55,
+  "style": "keywords",
+  "query": "Cashfree payment webhook job"
+ },
+ {
+  "tid": 55,
+  "style": "identifier",
+  "query": "Cashfree::HandleEventJob perform organization"
+ },
+ {
+  "tid": 56,
+  "style": "concept",
+  "query": "build the payload sent to hubspot when syncing a new subscription"
+ },
+ {
+  "tid": 56,
+  "style": "keywords",
+  "query": "hubspot subscription sync payload"
+ },
+ {
+  "tid": 56,
+  "style": "identifier",
+  "query": "create_body hubspot subscription payload"
+ },
+ {
+  "tid": 57,
+  "style": "concept",
+  "query": "factory method that builds the right tax provider invoice payload based on which integration is connected"
+ },
+ {
+  "tid": 57,
+  "style": "keywords",
+  "query": "tax invoice payload factory"
+ },
+ {
+  "tid": 57,
+  "style": "identifier",
+  "query": "Payloads::Factory tax integration payload"
+ },
+ {
+  "tid": 58,
+  "style": "concept",
+  "query": "graphql resolver returning monthly invoice collection analytics for premium accounts"
+ },
+ {
+  "tid": 58,
+  "style": "keywords",
+  "query": "invoice collection analytics resolver"
+ },
+ {
+  "tid": 58,
+  "style": "identifier",
+  "query": "InvoiceCollectionsResolver premium analytics"
+ },
+ {
+  "tid": 59,
+  "style": "concept",
+  "query": "how are raw statuses from an external payment provider mapped to an internal processing state"
+ },
+ {
+  "tid": 59,
+  "style": "keywords",
+  "query": "payment provider status mapping"
+ },
+ {
+  "tid": 59,
+  "style": "identifier",
+  "query": "PaymentProviders::BaseProvider payment status"
+ },
+ {
+  "tid": 60,
+  "style": "concept",
+  "query": "list of allowed request fields for creating a new subscription through the API"
+ },
+ {
+  "tid": 60,
+  "style": "keywords",
+  "query": "subscription create request parameters"
+ },
+ {
+  "tid": 60,
+  "style": "identifier",
+  "query": "SubscriptionsController subscription creation params"
+ },
+ {
+  "tid": 61,
+  "style": "concept",
+  "query": "include customer details inside the serialized invoice response"
+ },
+ {
+  "tid": 61,
+  "style": "keywords",
+  "query": "invoice serializer customer nested"
+ },
+ {
+  "tid": 61,
+  "style": "identifier",
+  "query": "InvoiceSerializer nested customer field"
+ },
+ {
+  "tid": 62,
+  "style": "concept",
+  "query": "memoized helper returning the billing dates calculator for a terminated subscription"
+ },
+ {
+  "tid": 62,
+  "style": "keywords",
+  "query": "subscription termination dates service"
+ },
+ {
+  "tid": 62,
+  "style": "identifier",
+  "query": "DatesService subscription termination date"
+ },
+ {
+  "tid": 63,
+  "style": "concept",
+  "query": "choose which company payload class to build for a given accounting or crm integration"
+ },
+ {
+  "tid": 63,
+  "style": "keywords",
+  "query": "company integration payload factory"
+ },
+ {
+  "tid": 63,
+  "style": "identifier",
+  "query": "Companies::Payloads::Factory integration type"
+ },
+ {
+  "tid": 64,
+  "style": "concept",
+  "query": "how is usage aggregated for a custom billable metric including any pay in advance portion"
+ },
+ {
+  "tid": 64,
+  "style": "keywords",
+  "query": "custom metric usage aggregation"
+ },
+ {
+  "tid": 64,
+  "style": "identifier",
+  "query": "BillableMetrics::Aggregations::CustomService aggregation"
+ },
+ {
+  "tid": 65,
+  "style": "concept",
+  "query": "graphql mutation that updates an existing quote version and returns errors on failure"
+ },
+ {
+  "tid": 65,
+  "style": "keywords",
+  "query": "update quote version mutation"
+ },
+ {
+  "tid": 65,
+  "style": "identifier",
+  "query": "UpdateQuoteVersion mutation resolve"
+ },
+ {
+  "tid": 66,
+  "style": "concept",
+  "query": "safely build the sql for counting subscriptions per feature with parameterized filters"
+ },
+ {
+  "tid": 66,
+  "style": "keywords",
+  "query": "subscriptions count sql sanitize"
+ },
+ {
+  "tid": 66,
+  "style": "identifier",
+  "query": "SubscriptionsCountQuery sql sanitize"
+ },
+ {
+  "tid": 67,
+  "style": "concept",
+  "query": "graphql input type defining the fields accepted when creating a tax rate"
+ },
+ {
+  "tid": 67,
+  "style": "keywords",
+  "query": "new tax rate graphql input"
+ },
+ {
+  "tid": 67,
+  "style": "identifier",
+  "query": "TaxCreateInput code rate"
+ },
+ {
+  "tid": 68,
+  "style": "concept",
+  "query": "sql query selecting wallet top-up rules that should trigger on a recurring interval"
+ },
+ {
+  "tid": 68,
+  "style": "keywords",
+  "query": "recurring wallet transaction rule query"
+ },
+ {
+  "tid": 68,
+  "style": "identifier",
+  "query": "CreateIntervalWalletTransactionsService recurring rule scope"
+ },
+ {
+  "tid": 69,
+  "style": "concept",
+  "query": "how is the price per unit calculated for a flat rate pricing charge model"
+ },
+ {
+  "tid": 69,
+  "style": "keywords",
+  "query": "standard charge per unit price"
+ },
+ {
+  "tid": 69,
+  "style": "identifier",
+  "query": "ChargeModels::StandardService unit amount"
+ },
+ {
+  "tid": 70,
+  "style": "concept",
+  "query": "props definition for the table component that lists invoice line items and lets you edit or delete fees"
+ },
+ {
+  "tid": 70,
+  "style": "keywords",
+  "query": "invoice details table props"
+ },
+ {
+  "tid": 70,
+  "style": "identifier",
+  "query": "InvoiceDetailsTableProps invoice fee editing"
+ },
+ {
+  "tid": 71,
+  "style": "concept",
+  "query": "which filter fields are allowed when querying billing forecasts"
+ },
+ {
+  "tid": 71,
+  "style": "keywords",
+  "query": "forecast query filters type"
+ },
+ {
+  "tid": 71,
+  "style": "identifier",
+  "query": "ForecastsQueryFilters forecast filters"
+ },
+ {
+  "tid": 72,
+  "style": "concept",
+  "query": "prop types for a table component that displays a customer's payment history with pagination"
+ },
+ {
+  "tid": 72,
+  "style": "keywords",
+  "query": "payment history table props"
+ },
+ {
+  "tid": 72,
+  "style": "identifier",
+  "query": "PaymentsListProps pagination loading state"
+ },
+ {
+  "tid": 73,
+  "style": "concept",
+  "query": "type definition for a chart component that stacks values per category with currency formatting"
+ },
+ {
+  "tid": 73,
+  "style": "keywords",
+  "query": "usage chart component props"
+ },
+ {
+  "tid": 73,
+  "style": "identifier",
+  "query": "StackedBarChartProps bars xAxisDataKey"
+ },
+ {
+  "tid": 74,
+  "style": "concept",
+  "query": "typescript type describing a clickable action shown in a table row's menu"
+ },
+ {
+  "tid": 74,
+  "style": "keywords",
+  "query": "table row action button"
+ },
+ {
+  "tid": 74,
+  "style": "identifier",
+  "query": "ActionItem table row action"
+ },
+ {
+  "tid": 75,
+  "style": "concept",
+  "query": "props type for a component that displays an upsell message for a feature locked behind a paid plan"
+ },
+ {
+  "tid": 75,
+  "style": "keywords",
+  "query": "premium feature upsell props"
+ },
+ {
+  "tid": 75,
+  "style": "identifier",
+  "query": "PremiumFeatureProps feature title description"
+ },
+ {
+  "tid": 76,
+  "style": "concept",
+  "query": "type describing one row of a customer's projected versus actual usage and charges"
+ },
+ {
+  "tid": 76,
+  "style": "keywords",
+  "query": "charge usage summary row type"
+ },
+ {
+  "tid": 76,
+  "style": "identifier",
+  "query": "ChargeSummaryRow usage table type"
+ },
+ {
+  "tid": 77,
+  "style": "concept",
+  "query": "prop types for the invoice detail page covering downloads retries and third party integration syncing"
+ },
+ {
+  "tid": 77,
+  "style": "keywords",
+  "query": "invoice detail page props"
+ },
+ {
+  "tid": 77,
+  "style": "identifier",
+  "query": "InvoiceOverviewProps tax integration retry"
+ },
+ {
+  "tid": 78,
+  "style": "concept",
+  "query": "define the editor node attributes for a rich text block that references plans or add-ons"
+ },
+ {
+  "tid": 78,
+  "style": "keywords",
+  "query": "editor node pricing attributes"
+ },
+ {
+  "tid": 78,
+  "style": "identifier",
+  "query": "PricingBlock addAttributes entityIds"
+ },
+ {
+  "tid": 79,
+  "style": "concept",
+  "query": "props for the popup menu on a table row inside the rich text editor"
+ },
+ {
+  "tid": 79,
+  "style": "keywords",
+  "query": "table row context menu"
+ },
+ {
+  "tid": 79,
+  "style": "identifier",
+  "query": "RowMenuContentProps table editor"
+ },
+ {
+  "tid": 80,
+  "style": "concept",
+  "query": "text editor extension that converts a hidden reference marker for a credit into an interactive embedded block and back to markdown"
+ },
+ {
+  "tid": 80,
+  "style": "keywords",
+  "query": "editor extension credit reference"
+ },
+ {
+  "tid": 80,
+  "style": "identifier",
+  "query": "CreditsBlock markdown serialization extension"
+ },
+ {
+  "tid": 81,
+  "style": "concept",
+  "query": "override fields for a fixed add-on charge when customizing a quote"
+ },
+ {
+  "tid": 81,
+  "style": "keywords",
+  "query": "fixed charge override add-on"
+ },
+ {
+  "tid": 81,
+  "style": "identifier",
+  "query": "PlanFixedChargeOverride quote override"
+ },
+ {
+  "tid": 82,
+  "style": "concept",
+  "query": "extension config adding a lookup table of mention values to the rich text editor's mention feature"
+ },
+ {
+  "tid": 82,
+  "style": "keywords",
+  "query": "rich text mention extension options"
+ },
+ {
+  "tid": 82,
+  "style": "identifier",
+  "query": "addOptions tiptap mention extension values"
+ },
+ {
+  "tid": 83,
+  "style": "concept",
+  "query": "show a success toast after saving stripe payment provider settings"
+ },
+ {
+  "tid": 83,
+  "style": "keywords",
+  "query": "stripe payment provider save toast"
+ },
+ {
+  "tid": 83,
+  "style": "identifier",
+  "query": "AddStripeDialog onCompleted toast"
+ },
+ {
+  "tid": 84,
+  "style": "concept",
+  "query": "custom material ui theme type declaring stacking order values for toasts dialogs and drawers"
+ },
+ {
+  "tid": 84,
+  "style": "keywords",
+  "query": "theme z-index stacking values"
+ },
+ {
+  "tid": 84,
+  "style": "identifier",
+  "query": "ZIndexOptions theme interface"
+ },
+ {
+  "tid": 85,
+  "style": "concept",
+  "query": "type describing subscription grouped fee and billing boundary data used to render invoice line items"
+ },
+ {
+  "tid": 85,
+  "style": "keywords",
+  "query": "invoice items subscription grouping type"
+ },
+ {
+  "tid": 85,
+  "style": "identifier",
+  "query": "TSubscriptionDataForDisplay invoice fee display type"
+ },
+ {
+  "tid": 86,
+  "style": "concept",
+  "query": "shape of the wallet creation and editing form data including recurring top-up rules"
+ },
+ {
+  "tid": 86,
+  "style": "keywords",
+  "query": "wallet form data type"
+ },
+ {
+  "tid": 86,
+  "style": "identifier",
+  "query": "TWalletDataForm wallet form type"
+ },
+ {
+  "tid": 87,
+  "style": "concept",
+  "query": "return type of the hook powering the credit note creation form with fee breakdown and submit handler"
+ },
+ {
+  "tid": 87,
+  "style": "keywords",
+  "query": "credit note form hook types"
+ },
+ {
+  "tid": 87,
+  "style": "identifier",
+  "query": "useCreateCreditNote hook return type"
+ },
+ {
+  "tid": 88,
+  "style": "concept",
+  "query": "typescript return shape for the hook that creates or edits a billable metric"
+ },
+ {
+  "tid": 88,
+  "style": "keywords",
+  "query": "billable metric create edit hook"
+ },
+ {
+  "tid": 88,
+  "style": "identifier",
+  "query": "useCreateEditBillableMetric onSave hook"
+ },
+ {
+  "tid": 89,
+  "style": "concept",
+  "query": "props for a filter field letting a user pick a date range and block future dates"
+ },
+ {
+  "tid": 89,
+  "style": "keywords",
+  "query": "date range picker props"
+ },
+ {
+  "tid": 89,
+  "style": "identifier",
+  "query": "DateRangeFilterFieldsProps date filter"
+ },
+ {
+  "tid": 90,
+  "style": "concept",
+  "query": "produce a fallback filter with no specific filter values when looking up event charge pricing rules"
+ },
+ {
+  "tid": 90,
+  "style": "keywords",
+  "query": "default event filter fallback"
+ },
+ {
+  "tid": 90,
+  "style": "identifier",
+  "query": "ToDefaultFilter fallback filter matching"
+ },
+ {
+  "tid": 91,
+  "style": "concept",
+  "query": "start listening to database change events for billable metrics and update the cache"
+ },
+ {
+  "tid": 91,
+  "style": "keywords",
+  "query": "billable metrics kafka consumer"
+ },
+ {
+  "tid": 91,
+  "style": "identifier",
+  "query": "StartBillableMetricsConsumer kafka consumer"
+ },
+ {
+  "tid": 92,
+  "style": "concept",
+  "query": "wrapper that starts a tracing span with a configured tracing backend and applies custom tags and attributes"
+ },
+ {
+  "tid": 92,
+  "style": "keywords",
+  "query": "tracing span creation wrapper"
+ },
+ {
+  "tid": 92,
+  "style": "identifier",
+  "query": "DatadogTracer span tags attributes"
+ },
+ {
+  "tid": 93,
+  "style": "concept",
+  "query": "publish an event to the queue when a charge is billed immediately in advance"
+ },
+ {
+  "tid": 93,
+  "style": "keywords",
+  "query": "charged in advance event producer"
+ },
+ {
+  "tid": 93,
+  "style": "identifier",
+  "query": "ProduceChargedInAdvanceEvent kafka producer"
+ },
+ {
+  "tid": 94,
+  "style": "concept",
+  "query": "helper function that reads a boolean value from an environment variable with a fallback default"
+ },
+ {
+  "tid": 94,
+  "style": "keywords",
+  "query": "boolean env variable parsing"
+ },
+ {
+  "tid": 94,
+  "style": "identifier",
+  "query": "GetEnvAsBool environment variable"
+ },
+ {
+  "tid": 95,
+  "style": "concept",
+  "query": "struct grouping the services used together to enrich, cache, and republish incoming usage events"
+ },
+ {
+  "tid": 95,
+  "style": "keywords",
+  "query": "usage event processing pipeline"
+ },
+ {
+  "tid": 95,
+  "style": "identifier",
+  "query": "EventProcessor struct enrichment cache services"
+ },
+ {
+  "tid": 96,
+  "style": "concept",
+  "query": "state for a single kafka partition's consumer goroutine including its stop channel"
+ },
+ {
+  "tid": 96,
+  "style": "keywords",
+  "query": "kafka partition consumer struct"
+ },
+ {
+  "tid": 96,
+  "style": "identifier",
+  "query": "PartitionConsumer quit channel"
+ },
+ {
+  "tid": 97,
+  "style": "concept",
+  "query": "builds the cache lookup key for a subscription and errors when its organization is missing"
+ },
+ {
+  "tid": 97,
+  "style": "keywords",
+  "query": "subscription cache key"
+ },
+ {
+  "tid": 97,
+  "style": "identifier",
+  "query": "subscriptionKey cache lookup organization"
+ },
+ {
+  "tid": 98,
+  "style": "concept",
+  "query": "struct holding the opentelemetry exporter and metrics configuration for tracing"
+ },
+ {
+  "tid": 98,
+  "style": "keywords",
+  "query": "opentelemetry tracer provider setup"
+ },
+ {
+  "tid": 98,
+  "style": "identifier",
+  "query": "OTelTracerProvider exporter struct"
+ },
+ {
+  "tid": 99,
+  "style": "concept",
+  "query": "how is the database connection pool and orm wrapper set up for the events processing service"
+ },
+ {
+  "tid": 99,
+  "style": "keywords",
+  "query": "postgres connection pool init"
+ },
+ {
+  "tid": 99,
+  "style": "identifier",
+  "query": "NewConnection database pool"
+ },
+ {
+  "tid": 100,
+  "style": "concept",
+  "query": "helper that wraps a timestamp value as a valid nullable database time"
+ },
+ {
+  "tid": 100,
+  "style": "keywords",
+  "query": "nullable time wrapper helper"
+ },
+ {
+  "tid": 100,
+  "style": "identifier",
+  "query": "NewNullTime nullable timestamp wrapper"
+ },
+ {
+  "tid": 101,
+  "style": "concept",
+  "query": "expire a cached key with a delay to account for downstream data replication timing"
+ },
+ {
+  "tid": 101,
+  "style": "keywords",
+  "query": "cache key expire clickhouse"
+ },
+ {
+  "tid": 101,
+  "style": "identifier",
+  "query": "ExpireKey cache expiration clickhouse"
+ },
+ {
+  "tid": 102,
+  "style": "concept",
+  "query": "accessor that lazily initializes and returns the global tracing provider instance"
+ },
+ {
+  "tid": 102,
+  "style": "keywords",
+  "query": "lazy global tracer accessor"
+ },
+ {
+  "tid": 102,
+  "style": "identifier",
+  "query": "GetTracer global tracer singleton"
+ },
+ {
+  "tid": 103,
+  "style": "concept",
+  "query": "convert an incoming raw event into its enriched form with parsed timestamp"
+ },
+ {
+  "tid": 103,
+  "style": "keywords",
+  "query": "event enrichment timestamp conversion"
+ },
+ {
+  "tid": 103,
+  "style": "identifier",
+  "query": "ToEnrichedEvent timestamp parsing"
+ },
+ {
+  "tid": 104,
+  "style": "concept",
+  "query": "how are an error code and message attached to a generic result value in events processor"
+ },
+ {
+  "tid": 104,
+  "style": "keywords",
+  "query": "generic result error details"
+ },
+ {
+  "tid": 104,
+  "style": "identifier",
+  "query": "AddErrorDetails result type"
+ },
+ {
+  "tid": 105,
+  "style": "concept",
+  "query": "explanation of why removing a database column safely needs two separate deployments"
+ },
+ {
+  "tid": 105,
+  "style": "keywords",
+  "query": "safe column drop migration"
+ },
+ {
+  "tid": 105,
+  "style": "identifier",
+  "query": "ignored_columns two-step column drop"
+ },
+ {
+  "tid": 106,
+  "style": "concept",
+  "query": "why split background job processing into separate dedicated worker queues"
+ },
+ {
+  "tid": 106,
+  "style": "keywords",
+  "query": "dedicated worker queues benefits"
+ },
+ {
+  "tid": 106,
+  "style": "identifier",
+  "query": "architecture.md worker queue benefits"
+ },
+ {
+  "tid": 107,
+  "style": "concept",
+  "query": "doc section showing how to schedule the periodic partition maintenance procedure via pg_cron"
+ },
+ {
+  "tid": 107,
+  "style": "keywords",
+  "query": "partition maintenance cron schedule"
+ },
+ {
+  "tid": 107,
+  "style": "identifier",
+  "query": "schedule_in_database partman maintenance cron"
+ },
+ {
+  "tid": 108,
+  "style": "concept",
+  "query": "guidelines for how AI agents should write and run rspec tests in this backend"
+ },
+ {
+  "tid": 108,
+  "style": "keywords",
+  "query": "testing conventions rspec guidelines"
+ },
+ {
+  "tid": 108,
+  "style": "identifier",
+  "query": "AGENTS.md be_not_found_error testing rules"
+ },
+ {
+  "tid": 109,
+  "style": "concept",
+  "query": "alerting rule that fires when a background job queue builds up too many waiting jobs"
+ },
+ {
+  "tid": 109,
+  "style": "keywords",
+  "query": "background jobs piling up"
+ },
+ {
+  "tid": 109,
+  "style": "identifier",
+  "query": "SidekiqQueueBacklog alert rule"
+ },
+ {
+  "tid": 110,
+  "style": "concept",
+  "query": "guidance on how to mock dialog components in frontend unit tests because of an unsupported module syntax"
+ },
+ {
+  "tid": 110,
+  "style": "keywords",
+  "query": "jest mock dialog testing"
+ },
+ {
+  "tid": 110,
+  "style": "identifier",
+  "query": "useFormDialog jest mock testing guidance"
+ },
+ {
+  "tid": 111,
+  "style": "concept",
+  "query": "what to check before filing a new feature request on the project"
+ },
+ {
+  "tid": 111,
+  "style": "keywords",
+  "query": "enhancement suggestion checklist"
+ },
+ {
+  "tid": 111,
+  "style": "identifier",
+  "query": "CONTRIBUTING.md enhancement suggestion checklist"
+ },
+ {
+  "tid": 112,
+  "style": "concept",
+  "query": "doc explaining how to override default docker environment variables for local development"
+ },
+ {
+  "tid": 112,
+  "style": "keywords",
+  "query": "local env variable override docs"
+ },
+ {
+  "tid": 112,
+  "style": "identifier",
+  "query": "LAGO_CLICKHOUSE_ENABLED env override development"
+ },
+ {
+  "tid": 113,
+  "style": "concept",
+  "query": "instructions for wiring a new custom node into the rich text editor"
+ },
+ {
+  "tid": 113,
+  "style": "keywords",
+  "query": "register rich text editor extension"
+ },
+ {
+  "tid": 113,
+  "style": "identifier",
+  "query": "RichTextEditor baseExtensions register node"
+ },
+ {
+  "tid": 114,
+  "style": "concept",
+  "query": "explanation of how the platform keeps usage metering and pricing separate from payment processor integrations"
+ },
+ {
+  "tid": 114,
+  "style": "keywords",
+  "query": "metering separate from payments"
+ },
+ {
+  "tid": 114,
+  "style": "identifier",
+  "query": "Lago Direct Embedded stack"
+ },
+ {
+  "tid": 115,
+  "style": "concept",
+  "query": "how to start the self-hosted application with docker and enable PDF invoice generation"
+ },
+ {
+  "tid": 115,
+  "style": "keywords",
+  "query": "docker quickstart PDF generation"
+ },
+ {
+  "tid": 115,
+  "style": "identifier",
+  "query": "gotenberg docker PDF generation container"
+ },
+ {
+  "tid": 116,
+  "style": "concept",
+  "query": "how to set up a shell shortcut for managing frontend git worktrees"
+ },
+ {
+  "tid": 116,
+  "style": "keywords",
+  "query": "frontend worktree script setup"
+ },
+ {
+  "tid": 116,
+  "style": "identifier",
+  "query": "lago-worktree shell alias setup"
+ },
+ {
+  "tid": 117,
+  "style": "concept",
+  "query": "contributing guide section on how to propose a new feature or enhancement"
+ },
+ {
+  "tid": 117,
+  "style": "keywords",
+  "query": "contributing feature request guidelines"
+ },
+ {
+  "tid": 117,
+  "style": "identifier",
+  "query": "CONTRIBUTING.md feature request suggestion guidelines"
+ },
+ {
+  "tid": 118,
+  "style": "concept",
+  "query": "checklist to follow before filing a new bug report on the frontend repo"
+ },
+ {
+  "tid": 118,
+  "style": "keywords",
+  "query": "bug report guidelines contributing"
+ },
+ {
+  "tid": 118,
+  "style": "identifier",
+  "query": "CONTRIBUTING.md bug report checklist"
+ },
+ {
+  "tid": 119,
+  "style": "concept",
+  "query": "what json fields are required when sending a usage event to the billing api"
+ },
+ {
+  "tid": 119,
+  "style": "keywords",
+  "query": "usage event json schema"
+ },
+ {
+  "tid": 119,
+  "style": "identifier",
+  "query": "precise_total_amount_cents event format"
+ },
+ {
+  "tid": 120,
+  "style": "concept",
+  "query": "section showing current release version badges linking to the project's GitHub releases"
+ },
+ {
+  "tid": 120,
+  "style": "keywords",
+  "query": "release version badges readme"
+ },
+ {
+  "tid": 120,
+  "style": "identifier",
+  "query": "getlago/lago-api release version badge"
+ },
+ {
+  "tid": 121,
+  "style": "concept",
+  "query": "how docker compose generates or lets you supply your own RSA keys for JWT signing"
+ },
+ {
+  "tid": 121,
+  "style": "keywords",
+  "query": "docker compose RSA keys JWT"
+ },
+ {
+  "tid": 121,
+  "style": "identifier",
+  "query": "LAGO_RSA_PRIVATE_KEY docker compose keys"
+ },
+ {
+  "tid": 122,
+  "style": "concept",
+  "query": "doc showing how to enable sidekiq profiling and restart the worker process"
+ },
+ {
+  "tid": 122,
+  "style": "keywords",
+  "query": "sidekiq profiling enable docs"
+ },
+ {
+  "tid": 122,
+  "style": "identifier",
+  "query": "SIDEKIQ_PROFILING_ENABLED sidekiq worker profiling"
+ },
+ {
+  "tid": 123,
+  "style": "concept",
+  "query": "command to run the go test suite for the events processing service"
+ },
+ {
+  "tid": 123,
+  "style": "keywords",
+  "query": "events processor go tests"
+ },
+ {
+  "tid": 123,
+  "style": "identifier",
+  "query": "events-processor README go test command"
+ },
+ {
+  "tid": 124,
+  "style": "concept",
+  "query": "why does running go test directly fail locally and what wrapper command should be used instead"
+ },
+ {
+  "tid": 124,
+  "style": "keywords",
+  "query": "go test wrapper command"
+ },
+ {
+  "tid": 124,
+  "style": "identifier",
+  "query": "lago exec go test"
+ }
+]

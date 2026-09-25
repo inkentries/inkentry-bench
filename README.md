@@ -140,6 +140,7 @@ not for a published figure.
 | **Primary** | SWE-bench | any OpenAI-compatible | Pre-release |
 | Secondary | SWE-bench (Claude) | claude-sonnet-4-6 | Major releases only |
 | Retrieval | CodeSearchNet | model-agnostic | On indexer/chunker/ranking changes |
+| Retrieval | Known-item code (`codeknown/`) | model-agnostic | On indexer/chunker/ranking changes |
 | Retrieval | Own-repo golden set | model-agnostic | On indexer/chunker/ranking changes |
 | Retrieval | Code-graph | model-agnostic | On graph/indexer changes |
 
@@ -310,6 +311,140 @@ full invocation, the comparability rules, and the docstring-leakage caveat.
 
 ---
 
+## Known-item code retrieval: `codeknown/`
+
+Model-agnostic. Measures whether `inkentry search` finds a known piece of code
+in a real repository at a pinned commit. The input is three frozen eval sets
+under `evalsets/` (see `evalsets/README.md`), each named and versioned as
+ADR-098 D4 requires:
+
+| set | corpus | targets | queries |
+|---|---|---|---|
+| `code-knownitem-inkentry/v1` | inkentry at `ead04c85` | 100 Rust definitions, 25 docs sections | 375 |
+| `code-knownitem-lago/v1` | getlago/lago at `02a4bc8d`, with its `api` and `front` submodules | 70 Ruby, 20 TS/TSX, 15 Go, 20 Markdown | 375 |
+| `code-knownitem-lago-uncovered/v1` | the same lago commit | 20 TS/TSX `const` arrow functions, 10 Rails class bodies (targeted, not random) | 90 |
+
+Each target is a path and a line span. There are three queries per target, one
+in each style: `concept` (plain language, no identifiers), `keywords` (2 to 5)
+and `identifier` (names a symbol). A query **hits** when a ranked result in
+the top 10 is in the target's file and its line span overlaps the target's.
+The **file-level** variant needs only the file. The rule never uses a chunk id,
+so a set stays valid across chunker changes.
+
+```bash
+bash codeknown/run.sh --set code-knownitem-inkentry/v1 --mode text
+bash codeknown/run.sh --set code-knownitem-lago/v1 --mode text --repo-dir ~/src/lago
+bash codeknown/run.sh --set code-knownitem-lago-uncovered/v1 --mode text --reuse-index
+```
+
+The run prints R@1, R@5, R@10, MRR@10 and file-level R@10, overall, by query
+style and by target language. It writes
+`results/codeknown-<set>-<version>-<mode>-<timestamp>.json`, which holds the
+set name and version, the condition and literal `search_args`, the inkentry
+version and the sha256 of the binary, the corpus commit, the index's chunk and
+embedding counts, and every query's rank. That per-query data is what lets two
+runs be paired.
+
+Compare two runs of the same set with:
+
+```bash
+python3 codeknown/compare.py results/codeknown-<A>.json results/codeknown-<B>.json
+```
+
+It prints both runs' metrics, the R@10 difference with a paired bootstrap 95%
+CI, and the number of queries found only by A and only by B. The bootstrap
+resamples *targets*, not queries, because the three queries on one target are
+not independent. It refuses to pair different sets, different versions of a
+set, or runs over different queries. Pairing two conditions (`text` against
+`hybrid`) over one set is allowed.
+
+### Modes
+
+| `--mode` | index | queries | cost |
+|---|---|---|---|
+| `text` (default) | `INKENTRY_MODE=offline inkentry index`: parse and full-text only, no embedding | `--only-code --only-text`, offline | about 25 seconds end to end for inkentry, two minutes for lago |
+| `hybrid` | full index, embedded through a local `inkentry-server` | `--only-code`, best-available ranking | about 10 minutes for inkentry, about an hour for lago |
+
+The `text` and `hybrid` labels match `codesearchnet/`. Before evaluating,
+`hybrid` checks that every chunk is embedded and that semantic search goes
+through a loopback server. Without those checks, a missing server would
+silently turn it into a second `text` run.
+
+### Corpus and index
+
+The corpus is `git archive` of the pinned commit, plus each submodule's
+archive at the commit the superproject pins. With `--repo-dir` it comes from a
+local clone, and its submodules must be checked out. Without it, each commit
+is fetched from the set's URL with `--depth 1` into
+`~/.cache/inkentry-bench/codeknown/git/`. Corpora live in
+`~/.cache/inkentry-bench/codeknown/corpora/<repo>-<commit>/`, so two sets on
+one commit share a corpus and an index. Before indexing, every target span is
+checked against the `span_sha256` frozen in the set. A wrong commit, a missing
+submodule or rewritten line endings fails the run, instead of scoring as
+misses.
+
+Every mode that indexes **deletes `<corpus>/.inkentry` first**, for two
+reasons:
+
+- Indexing is content-hash incremental. Left in place, the old index is
+  hash-skipped, and the run re-measures an index some other binary built.
+- A repository can commit its own `.inkentry/config.toml`. inkentry's own does,
+  and it says `cloud = true`. Left in place, that config would send the
+  corpus to the hosted cloud for embedding.
+
+| Invocation | Corpus | Index |
+|---|---|---|
+| no flag | re-materialized | **deleted, rebuilt** |
+| `--reuse-corpus` | kept (spans re-checked) | **deleted, rebuilt** |
+| `--reuse-index` | kept | kept: evaluate only; recorded as `index.reused` |
+
+The same caveat applies as for CodeSearchNet: `--reuse-index` cannot show a
+change to indexing, chunking or embedding. Re-materializing a lago set deletes
+the index that the other lago set shares.
+
+Each `inkentry` call is isolated from the machine it runs on:
+
+- It gets an explicit, near-empty `--config`, so the personal config is never read.
+- It runs from inside the corpus, so no other project's config applies.
+- Inherited `INKENTRY_*` variables such as `INKENTRY_SERVER_URL` are dropped.
+- The project registry is private to the harness.
+- `INKENTRY_SECRET_STORE=file` and `NO_COLOR=1` are set.
+
+After `inkentry index` returns, the harness waits for the index lock to be
+released. A detached child keeps writing to the index (title-less refinement
+and conventions), and querying while it runs would measure an index that is
+still changing. Set `INKENTRY_BIN` to choose a binary.
+
+### What it can and cannot claim
+
+The queries were written by an LLM that saw each target chunk. They are **not
+blind**, and the `identifier` style names the target's own symbols by
+construction. By ADR-098 D4 these sets are **guards**: they catch a change
+that breaks code retrieval, and they serve as a development signal while
+tuning ranking. They are not evidence that retrieval is good, and they are not
+a comparison against other tools. Report them as relative numbers between two
+builds, never as absolute quality.
+
+- `code-knownitem-inkentry` is code that the people tuning the ranking know.
+  Read it next to `code-knownitem-lago`.
+- `code-knownitem-lago-uncovered` is a hand-picked sample of two code shapes.
+  Never pool it with the random sets.
+- The overlap rule is lenient. A large chunk that covers the target counts as
+  a hit, so a coarser chunker can gain chunk-level recall without getting
+  better at finding code.
+
+**Noise floor.** `text` mode is deterministic. Two runs with fresh indexes,
+from the same binary, gave identical ranks on all 375 queries of
+`code-knownitem-inkentry/v1` (inkentry 1.1.0, main). Any non-zero difference in `text` mode
+therefore comes from the build. The `hybrid` noise floor has not been measured
+yet. Measure it with two fresh-index runs before trusting a small `hybrid`
+delta.
+
+**Metrics:** `recall_at_1`, `recall_at_5`, `recall_at_10`, `mrr_at_10`,
+`file_recall_at_10`
+
+---
+
 ## Comparing results
 
 ```bash
@@ -377,7 +512,9 @@ Fabricated fixtures live in `tests/fixtures/`; real runs land in `results/`
 | `edit_similarity` | CrossCodeEval | Average SequenceMatcher ratio between prediction and ground truth |
 | `identifier_recall` | CrossCodeEval | Fraction of identifiers in ground truth that appear in the prediction |
 | `resolve_rate` | SWE-bench | Fraction of tasks where the patch passes all tests (set by harness) |
-| `mrr_at_10` | CodeSearchNet, own-repo | Mean Reciprocal Rank at 10 |
-| `recall_at_5/10` | CodeSearchNet, own-repo | Fraction of queries where ground truth appears in top 5/10 results |
+| `mrr_at_10` | CodeSearchNet, own-repo, codeknown | Mean Reciprocal Rank at 10 |
+| `recall_at_5/10` | CodeSearchNet, own-repo, codeknown | Fraction of queries where ground truth appears in top 5/10 results |
+| `recall_at_1` | codeknown | Fraction of queries whose target is the top result |
+| `file_recall_at_10` | codeknown | Fraction of queries with a top-10 result in the target's file |
 | `median_tokens_per_task` | SWE-bench | Median total tokens per task |
 | `median_wall_seconds` | All | Median wall-clock seconds per task/query |

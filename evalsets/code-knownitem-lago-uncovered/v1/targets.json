@@ -1,0 +1,302 @@
+[
+ {
+  "tid": 1000,
+  "path": "front/src/core/apolloClient/cacheUtils.ts",
+  "start_line": 174,
+  "end_line": 191,
+  "name": "omitDeep",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "bbaa9516bf1fe052c59157d732caf44fae7376dbe7814a7485efedb62ec7a12f"
+ },
+ {
+  "tid": 1001,
+  "path": "front/src/components/Filters/graphql/utils.ts",
+  "start_line": 1407,
+  "end_line": 1417,
+  "name": "buildUrlForInvoicesWithFilters",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "73170aac23d42a2e2ffafd20b21f5e01532fd6933abf5bf1bf77f09e314c50e5"
+ },
+ {
+  "tid": 1002,
+  "path": "front/src/pages/wallet/mappers/mapFromFormToApi.ts",
+  "start_line": 103,
+  "end_line": 147,
+  "name": "mapFormToCreateInput",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "b7284327ce5ae28c40aa9ddb1aa2505487cc67b9205c1d537ad56cbeb4822fc7"
+ },
+ {
+  "tid": 1003,
+  "path": "front/src/hooks/usePermissions.ts",
+  "start_line": 141,
+  "end_line": 186,
+  "name": "usePermissions",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "89d7cc921f47a5600f3b710a7dd1b058ae8bb99a47cd03c11d8321c3a193fd12"
+ },
+ {
+  "tid": 1004,
+  "path": "front/src/components/wallets/utils.ts",
+  "start_line": 316,
+  "end_line": 326,
+  "name": "formatCredits",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "53e30f5c04ac35d16fe631d88747cb6ab46dc4277d85b1a7a70969bc53608390"
+ },
+ {
+  "tid": 1005,
+  "path": "front/src/components/addOns/AddOnCodeSnippet.tsx",
+  "start_line": 14,
+  "end_line": 43,
+  "name": "getSnippets",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "fa41aae4c3fecbe12334418f9670f7082349ab27e67ea2a157c48bc98e957190"
+ },
+ {
+  "tid": 1006,
+  "path": "front/src/components/dialogs/PremiumWarningDialog.tsx",
+  "start_line": 17,
+  "end_line": 59,
+  "name": "PremiumWarningDialog",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "5094f558b7a1a15e46bfd4f28500962a2bc122a20fcc8ffba07c40938baccfac"
+ },
+ {
+  "tid": 1007,
+  "path": "front/src/pages/settings/teamAndSecurity/members/dialogs/RevokeInviteDialog.tsx",
+  "start_line": 13,
+  "end_line": 40,
+  "name": "useRevokeInviteDialog",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "f80244c2ad39d5b809972e727e73d504aa55d554b2bef1982952c948db7aba3e"
+ },
+ {
+  "tid": 1008,
+  "path": "front/src/components/aiAgent/PanelWrapper.tsx",
+  "start_line": 21,
+  "end_line": 86,
+  "name": "PanelWrapper",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "2d60c2805d3f561a1832f77d5174550f5346b10e28708ffb601b9540353cea2e"
+ },
+ {
+  "tid": 1009,
+  "path": "front/src/components/settings/integrations/DeleteGocardlessIntegrationDialog.tsx",
+  "start_line": 31,
+  "end_line": 75,
+  "name": "useDeleteGocardlessIntegrationDialog",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "02d242cd1e463d57a21b23097b9ad46e1cd40ef5e11b499a5dc11d7fece1c102"
+ },
+ {
+  "tid": 1010,
+  "path": "front/src/components/wallets/tanstackForm/walletFormSchema.ts",
+  "start_line": 270,
+  "end_line": 281,
+  "name": "settingsToItem",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "1132392da89975f500a0d8629fba11d16706419dc5fb6450e4fe8597a2833dd6"
+ },
+ {
+  "tid": 1011,
+  "path": "front/src/components/designSystem/Pagination/utils.ts",
+  "start_line": 17,
+  "end_line": 35,
+  "name": "getPageRange",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "02a542b332818197653bb541fd129bf0cb1519f3e551a52cb5ac1406153b8f68"
+ },
+ {
+  "tid": 1012,
+  "path": "front/src/components/designSystem/graphs/InlineBarsChart.tsx",
+  "start_line": 18,
+  "end_line": 42,
+  "name": "BarWithBorder",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "466695dcab3a0121ef514d9bcce75c7f8167533b658f6538395fae2be1c1a2c4"
+ },
+ {
+  "tid": 1013,
+  "path": "front/src/core/apolloClient/reactiveVars/toastVar.ts",
+  "start_line": 37,
+  "end_line": 49,
+  "name": "addToast",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "83ec9d0f96a5b92dd841a0a54d25953668c5dbd0225f44938e52244eb3f9c6ea"
+ },
+ {
+  "tid": 1014,
+  "path": "front/src/pages/settings/teamAndSecurity/members/MembersInvitationList.tsx",
+  "start_line": 38,
+  "end_line": 46,
+  "name": "getRolesColumn",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "bc824237c708af8373f0a9a3c71896f2fe004c478910b0691748de981fd0e8c9"
+ },
+ {
+  "tid": 1015,
+  "path": "front/src/components/designSystem/Table/Table.tsx",
+  "start_line": 127,
+  "end_line": 165,
+  "name": "TableRow",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "b92dbe0c766fd8fd447a9b6eaf5e168face31aebfd3d9a674068ca0e0604de41"
+ },
+ {
+  "tid": 1016,
+  "path": "front/src/pages/settings/integrations/common/getParametersFromProvider.ts",
+  "start_line": 11,
+  "end_line": 19,
+  "name": "safeStringConversion",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "93eb14977682ceeb51ca42bede1324a6bc1beedf727364d096f1f9a4c8e9a843"
+ },
+ {
+  "tid": 1017,
+  "path": "front/src/pages/catalog/drawers/rateCard/constants.ts",
+  "start_line": 71,
+  "end_line": 82,
+  "name": "mapStrategyToInvoiceFields",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "95446db0ea241feb734f08146e9f17b19a6c89444ae4c1db473d59b1702eda68"
+ },
+ {
+  "tid": 1018,
+  "path": "front/src/components/dialogs/useDialogActions.ts",
+  "start_line": 23,
+  "end_line": 75,
+  "name": "useDialogActions",
+  "language": "typescript",
+  "node_type": "function",
+  "span_sha256": "04a3b7b284c98588381b03dfd5ae2d2aa71f2b1e919b999e9eec36d97558a6e3"
+ },
+ {
+  "tid": 1019,
+  "path": "front/src/styles/mainObjectsForm.tsx",
+  "start_line": 56,
+  "end_line": 64,
+  "name": "Subtitle",
+  "language": "tsx",
+  "node_type": "function",
+  "span_sha256": "126e6da30ca4e1674561e3f3d63ff23808e12699dd46c5acb574af5968d0bbd0"
+ },
+ {
+  "tid": 1020,
+  "path": "api/app/models/organization.rb",
+  "start_line": 1,
+  "end_line": 62,
+  "name": "(class body of organization.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "90ea04860626870da1ae10f03b8f5042ecb0877933011bc359e118f876c77207"
+ },
+ {
+  "tid": 1021,
+  "path": "api/app/models/rate_card_rate.rb",
+  "start_line": 1,
+  "end_line": 65,
+  "name": "(class body of rate_card_rate.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "f32edafeff0b0beb7b47759ebac2aa2be45f9dbd68d92f4c8cb3e8795e303652"
+ },
+ {
+  "tid": 1022,
+  "path": "api/app/models/charge.rb",
+  "start_line": 1,
+  "end_line": 64,
+  "name": "(class body of charge.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "c82c25dc2b4eb12b0222cff73530fdc92ce4e8145b49e5f5a5b2540c21791de4"
+ },
+ {
+  "tid": 1023,
+  "path": "api/app/models/customer.rb",
+  "start_line": 141,
+  "end_line": 184,
+  "name": "(class body of customer.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "c1994925bbbc71a1b6ee83a534b84dac93e5128e18b99921d9b6c1a1f4d97e75"
+ },
+ {
+  "tid": 1024,
+  "path": "api/app/models/invoice.rb",
+  "start_line": 32,
+  "end_line": 74,
+  "name": "(class body of invoice.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "8bc938d0d911b152ae914ae0a1ae3fc27f6de1bd6dc13221dd2bf8e145244736"
+ },
+ {
+  "tid": 1025,
+  "path": "api/app/models/fee.rb",
+  "start_line": 1,
+  "end_line": 45,
+  "name": "(class body of fee.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "062a4ebe99c55af972d5958ee195c52b5e13f5c4a617c1843310885a887690fc"
+ },
+ {
+  "tid": 1026,
+  "path": "api/app/models/plan.rb",
+  "start_line": 1,
+  "end_line": 60,
+  "name": "(class body of plan.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "b7cafedee39f820dfeadefe24649a39726ae0233905a78273874180dd81b6d45"
+ },
+ {
+  "tid": 1027,
+  "path": "api/app/models/wallet.rb",
+  "start_line": 1,
+  "end_line": 55,
+  "name": "(class body of wallet.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "79f6c528be908c4a7517ec08084391e44e324975fbb7f5bd0d041658ac560ca8"
+ },
+ {
+  "tid": 1028,
+  "path": "api/app/models/rate_card.rb",
+  "start_line": 1,
+  "end_line": 48,
+  "name": "(class body of rate_card.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "4a8bc03b14e2b945276cadf728a3882036bcf050ec8dfb433f29d17f90dbb300"
+ },
+ {
+  "tid": 1029,
+  "path": "api/app/models/charge_filter.rb",
+  "start_line": 1,
+  "end_line": 31,
+  "name": "(class body of charge_filter.rb)",
+  "language": "ruby",
+  "node_type": "verbatim",
+  "span_sha256": "def28ba22772ef6a99be9cb619640dc0814b702c5a3dd283f32028e07d974cec"
+ }
+]

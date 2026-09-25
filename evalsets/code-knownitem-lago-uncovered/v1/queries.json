@@ -1,0 +1,452 @@
+[
+ {
+  "tid": 1000,
+  "style": "concept",
+  "query": "recursively strip a key from a nested object structure while preserving arrays and dates"
+ },
+ {
+  "tid": 1000,
+  "style": "keywords",
+  "query": "recursive omit object key"
+ },
+ {
+  "tid": 1000,
+  "style": "identifier",
+  "query": "omitDeep utility function"
+ },
+ {
+  "tid": 1001,
+  "style": "concept",
+  "query": "construct the invoices page URL from a set of search filter parameters"
+ },
+ {
+  "tid": 1001,
+  "style": "keywords",
+  "query": "invoice list filter url"
+ },
+ {
+  "tid": 1001,
+  "style": "identifier",
+  "query": "buildUrlForInvoicesWithFilters usage"
+ },
+ {
+  "tid": 1002,
+  "style": "concept",
+  "query": "convert wallet creation form fields into the API request payload for a new customer wallet"
+ },
+ {
+  "tid": 1002,
+  "style": "keywords",
+  "query": "wallet creation form mapping"
+ },
+ {
+  "tid": 1002,
+  "style": "identifier",
+  "query": "mapFormToCreateInput wallet"
+ },
+ {
+  "tid": 1003,
+  "style": "concept",
+  "query": "hook that checks whether the current user has a set of required access permissions"
+ },
+ {
+  "tid": 1003,
+  "style": "keywords",
+  "query": "user permission check hook"
+ },
+ {
+  "tid": 1003,
+  "style": "identifier",
+  "query": "usePermissions hook"
+ },
+ {
+  "tid": 1004,
+  "style": "concept",
+  "query": "format a numeric credit balance for display, optionally masking it as hidden"
+ },
+ {
+  "tid": 1004,
+  "style": "keywords",
+  "query": "format wallet credits display"
+ },
+ {
+  "tid": 1004,
+  "style": "identifier",
+  "query": "formatCredits function"
+ },
+ {
+  "tid": 1005,
+  "style": "concept",
+  "query": "generate example API request code for creating a one-off invoice using an add-on"
+ },
+ {
+  "tid": 1005,
+  "style": "keywords",
+  "query": "add-on api code snippet"
+ },
+ {
+  "tid": 1005,
+  "style": "identifier",
+  "query": "getSnippets code snippet"
+ },
+ {
+  "tid": 1006,
+  "style": "concept",
+  "query": "modal dialog prompting a user to contact sales to unlock a premium feature"
+ },
+ {
+  "tid": 1006,
+  "style": "keywords",
+  "query": "premium upgrade dialog"
+ },
+ {
+  "tid": 1006,
+  "style": "identifier",
+  "query": "PremiumWarningDialog component"
+ },
+ {
+  "tid": 1007,
+  "style": "concept",
+  "query": "hook that opens a confirmation dialog to cancel a pending team invitation"
+ },
+ {
+  "tid": 1007,
+  "style": "keywords",
+  "query": "revoke invite confirmation dialog"
+ },
+ {
+  "tid": 1007,
+  "style": "identifier",
+  "query": "useRevokeInviteDialog hook"
+ },
+ {
+  "tid": 1008,
+  "style": "concept",
+  "query": "layout wrapper for a side panel header with back, history and close controls"
+ },
+ {
+  "tid": 1008,
+  "style": "keywords",
+  "query": "ai agent panel header"
+ },
+ {
+  "tid": 1008,
+  "style": "identifier",
+  "query": "PanelWrapper component"
+ },
+ {
+  "tid": 1009,
+  "style": "concept",
+  "query": "hook that confirms and performs removal of a connected payment integration provider"
+ },
+ {
+  "tid": 1009,
+  "style": "keywords",
+  "query": "gocardless removal confirmation"
+ },
+ {
+  "tid": 1009,
+  "style": "identifier",
+  "query": "useDeleteGocardlessIntegrationDialog hook"
+ },
+ {
+  "tid": 1010,
+  "style": "concept",
+  "query": "merge updated settings fields back into a wallet form item, parsing priority as a number"
+ },
+ {
+  "tid": 1010,
+  "style": "keywords",
+  "query": "wallet settings form sync"
+ },
+ {
+  "tid": 1010,
+  "style": "identifier",
+  "query": "settingsToItem wallet form"
+ },
+ {
+  "tid": 1011,
+  "style": "concept",
+  "query": "calculate the first and last item numbers shown on the current pagination page"
+ },
+ {
+  "tid": 1011,
+  "style": "keywords",
+  "query": "pagination range calculation"
+ },
+ {
+  "tid": 1011,
+  "style": "identifier",
+  "query": "getPageRange pagination"
+ },
+ {
+  "tid": 1012,
+  "style": "concept",
+  "query": "svg bar chart segment with a thin border separating adjacent bars"
+ },
+ {
+  "tid": 1012,
+  "style": "keywords",
+  "query": "bar chart border segment"
+ },
+ {
+  "tid": 1012,
+  "style": "identifier",
+  "query": "BarWithBorder chart"
+ },
+ {
+  "tid": 1013,
+  "style": "concept",
+  "query": "add a notification toast to the global list unless a duplicate is already showing"
+ },
+ {
+  "tid": 1013,
+  "style": "keywords",
+  "query": "add toast notification"
+ },
+ {
+  "tid": 1013,
+  "style": "identifier",
+  "query": "addToast notification helper"
+ },
+ {
+  "tid": 1014,
+  "style": "concept",
+  "query": "factory returning a table cell renderer that shows a member's role as a chip"
+ },
+ {
+  "tid": 1014,
+  "style": "keywords",
+  "query": "member role chip column"
+ },
+ {
+  "tid": 1014,
+  "style": "identifier",
+  "query": "getRolesColumn table"
+ },
+ {
+  "tid": 1015,
+  "style": "concept",
+  "query": "component that highlights a table row on hover and click state"
+ },
+ {
+  "tid": 1015,
+  "style": "keywords",
+  "query": "table row hover highlight"
+ },
+ {
+  "tid": 1015,
+  "style": "identifier",
+  "query": "TableRow clickable hover styles"
+ },
+ {
+  "tid": 1016,
+  "style": "concept",
+  "query": "helper that converts a value to a string but skips empty or object values"
+ },
+ {
+  "tid": 1016,
+  "style": "keywords",
+  "query": "safe string conversion"
+ },
+ {
+  "tid": 1016,
+  "style": "identifier",
+  "query": "safeStringConversion helper"
+ },
+ {
+  "tid": 1017,
+  "style": "concept",
+  "query": "function mapping a billing strategy choice to invoice display and fee regrouping settings"
+ },
+ {
+  "tid": 1017,
+  "style": "keywords",
+  "query": "invoice strategy mapping"
+ },
+ {
+  "tid": 1017,
+  "style": "identifier",
+  "query": "mapStrategyToInvoiceFields switch"
+ },
+ {
+  "tid": 1018,
+  "style": "concept",
+  "query": "hook that resolves or rejects a modal dialog after running a confirm action"
+ },
+ {
+  "tid": 1018,
+  "style": "keywords",
+  "query": "dialog confirm cancel hook"
+ },
+ {
+  "tid": 1018,
+  "style": "identifier",
+  "query": "useDialogActions confirm handler"
+ },
+ {
+  "tid": 1019,
+  "style": "concept",
+  "query": "small reusable text wrapper used below a heading for secondary styled captions"
+ },
+ {
+  "tid": 1019,
+  "style": "keywords",
+  "query": "subtitle typography component"
+ },
+ {
+  "tid": 1019,
+  "style": "identifier",
+  "query": "Subtitle styled typography"
+ },
+ {
+  "tid": 1020,
+  "style": "concept",
+  "query": "list of everything that belongs to a company account, such as its users, plans, and invoices"
+ },
+ {
+  "tid": 1020,
+  "style": "keywords",
+  "query": "organization associations has_many"
+ },
+ {
+  "tid": 1020,
+  "style": "identifier",
+  "query": "Organization model associations list"
+ },
+ {
+  "tid": 1021,
+  "style": "concept",
+  "query": "define which rate entries are currently in effect versus scheduled to start later"
+ },
+ {
+  "tid": 1021,
+  "style": "keywords",
+  "query": "rate card scopes effective"
+ },
+ {
+  "tid": 1021,
+  "style": "identifier",
+  "query": "RateCardRate scope for current rates"
+ },
+ {
+  "tid": 1022,
+  "style": "concept",
+  "query": "validations ensuring a pricing charge has a unique code and valid billing model"
+ },
+ {
+  "tid": 1022,
+  "style": "keywords",
+  "query": "charge model validations"
+ },
+ {
+  "tid": 1022,
+  "style": "identifier",
+  "query": "Charge code uniqueness validation"
+ },
+ {
+  "tid": 1023,
+  "style": "concept",
+  "query": "scope that finds customers who currently have an active wallet"
+ },
+ {
+  "tid": 1023,
+  "style": "keywords",
+  "query": "customer active wallets scope"
+ },
+ {
+  "tid": 1023,
+  "style": "identifier",
+  "query": "with_active_wallets scope"
+ },
+ {
+  "tid": 1024,
+  "style": "concept",
+  "query": "which invoice fields are searchable and filterable in the search index"
+ },
+ {
+  "tid": 1024,
+  "style": "keywords",
+  "query": "invoice search index attributes"
+ },
+ {
+  "tid": 1024,
+  "style": "identifier",
+  "query": "Invoice search index config"
+ },
+ {
+  "tid": 1025,
+  "style": "concept",
+  "query": "which billing objects a fee line item can be attached to like an invoice or charge"
+ },
+ {
+  "tid": 1025,
+  "style": "keywords",
+  "query": "fee belongs_to associations"
+ },
+ {
+  "tid": 1025,
+  "style": "identifier",
+  "query": "invoiceable polymorphic type"
+ },
+ {
+  "tid": 1026,
+  "style": "concept",
+  "query": "what a subscription plan is composed of, its charges customers and pricing intervals"
+ },
+ {
+  "tid": 1026,
+  "style": "keywords",
+  "query": "plan associations intervals"
+ },
+ {
+  "tid": 1026,
+  "style": "identifier",
+  "query": "Plan associations and charges"
+ },
+ {
+  "tid": 1027,
+  "style": "concept",
+  "query": "validation rules ensuring a customer's wallet balance and top-up amounts stay positive"
+ },
+ {
+  "tid": 1027,
+  "style": "keywords",
+  "query": "wallet balance validations"
+ },
+ {
+  "tid": 1027,
+  "style": "identifier",
+  "query": "balance_cents numericality validation"
+ },
+ {
+  "tid": 1028,
+  "style": "concept",
+  "query": "settings controlling whether a rate card bills upfront or after usage and how fees are grouped"
+ },
+ {
+  "tid": 1028,
+  "style": "keywords",
+  "query": "rate card billing timing"
+ },
+ {
+  "tid": 1028,
+  "style": "identifier",
+  "query": "billing_timing enum values"
+ },
+ {
+  "tid": 1029,
+  "style": "concept",
+  "query": "which billable metric values a charge filter groups together, kept in creation order"
+ },
+ {
+  "tid": 1029,
+  "style": "keywords",
+  "query": "charge filter values scope"
+ },
+ {
+  "tid": 1029,
+  "style": "identifier",
+  "query": "ChargeFilter ordering scope"
+ }
+]

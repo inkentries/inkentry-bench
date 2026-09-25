@@ -1,0 +1,1877 @@
+[
+ {
+  "tid": 0,
+  "style": "concept",
+  "query": "what states can a file linked to a memory entry be in relative to git"
+ },
+ {
+  "tid": 0,
+  "style": "keywords",
+  "query": "linked file tracked state"
+ },
+ {
+  "tid": 0,
+  "style": "identifier",
+  "query": "FileState enum linked files"
+ },
+ {
+  "tid": 1,
+  "style": "concept",
+  "query": "figure out every local project whose config should be checked, not just the one that started this process"
+ },
+ {
+  "tid": 1,
+  "style": "keywords",
+  "query": "discover local project directories"
+ },
+ {
+  "tid": 1,
+  "style": "identifier",
+  "query": "local_config_targets team targets roots"
+ },
+ {
+  "tid": 2,
+  "style": "concept",
+  "query": "data structure representing one code relationship like an import or function call with its location"
+ },
+ {
+  "tid": 2,
+  "style": "keywords",
+  "query": "call graph relationship struct"
+ },
+ {
+  "tid": 2,
+  "style": "identifier",
+  "query": "Edge struct fields for call graph"
+ },
+ {
+  "tid": 3,
+  "style": "concept",
+  "query": "how does the tool run a git command and capture its output in a target directory"
+ },
+ {
+  "tid": 3,
+  "style": "keywords",
+  "query": "run git subprocess output"
+ },
+ {
+  "tid": 3,
+  "style": "identifier",
+  "query": "git_output helper function"
+ },
+ {
+  "tid": 4,
+  "style": "concept",
+  "query": "top level routine that pulls a downloaded server database and folds its entries into the local project store"
+ },
+ {
+  "tid": 4,
+  "style": "keywords",
+  "query": "import server memory dump"
+ },
+ {
+  "tid": 4,
+  "style": "identifier",
+  "query": "memory_reconcile source database path"
+ },
+ {
+  "tid": 5,
+  "style": "concept",
+  "query": "default behavior for canceling an in-progress embedding request that a caller abandoned"
+ },
+ {
+  "tid": 5,
+  "style": "keywords",
+  "query": "cancel embedding request default"
+ },
+ {
+  "tid": 5,
+  "style": "identifier",
+  "query": "embed_with_cancel default trait method"
+ },
+ {
+  "tid": 6,
+  "style": "concept",
+  "query": "check request bearer token against stored hash using constant time comparison"
+ },
+ {
+  "tid": 6,
+  "style": "keywords",
+  "query": "bearer token constant time compare"
+ },
+ {
+  "tid": 6,
+  "style": "identifier",
+  "query": "authenticate bearer token hash compare"
+ },
+ {
+  "tid": 7,
+  "style": "concept",
+  "query": "find files that appear in both the stated intent and the currently modified working tree"
+ },
+ {
+  "tid": 7,
+  "style": "keywords",
+  "query": "intent versus modified files overlap"
+ },
+ {
+  "tid": 7,
+  "style": "identifier",
+  "query": "compute_overlaps worktree modified files check"
+ },
+ {
+  "tid": 8,
+  "style": "concept",
+  "query": "how does marking a memory entry as archived get recorded in git notes across clones"
+ },
+ {
+  "tid": 8,
+  "style": "keywords",
+  "query": "mark note archived git"
+ },
+ {
+  "tid": 8,
+  "style": "identifier",
+  "query": "archive function memory entry backend"
+ },
+ {
+  "tid": 9,
+  "style": "concept",
+  "query": "helper that writes daemon status details to disk with locked-down file permissions"
+ },
+ {
+  "tid": 9,
+  "style": "keywords",
+  "query": "write pid state file"
+ },
+ {
+  "tid": 9,
+  "style": "identifier",
+  "query": "write_state_file daemon status"
+ },
+ {
+  "tid": 10,
+  "style": "concept",
+  "query": "mark a stored memory entry as archived in the server-side database"
+ },
+ {
+  "tid": 10,
+  "style": "keywords",
+  "query": "archive note server db"
+ },
+ {
+  "tid": 10,
+  "style": "identifier",
+  "query": "archive_note server sqlite status"
+ },
+ {
+  "tid": 11,
+  "style": "concept",
+  "query": "find memory entries that were first recorded at a specific git commit"
+ },
+ {
+  "tid": 11,
+  "style": "keywords",
+  "query": "notes anchored to commit"
+ },
+ {
+  "tid": 11,
+  "style": "identifier",
+  "query": "list_anchored_to notes anchored commit"
+ },
+ {
+  "tid": 12,
+  "style": "concept",
+  "query": "determine whether to use offline, cloud, or local inference based on config mode"
+ },
+ {
+  "tid": 12,
+  "style": "keywords",
+  "query": "offline cloud local routing decision"
+ },
+ {
+  "tid": 12,
+  "style": "identifier",
+  "query": "inference_tier resolution for cloud mode"
+ },
+ {
+  "tid": 13,
+  "style": "concept",
+  "query": "how does the relay avoid rolling back its sync position to an older cursor value"
+ },
+ {
+  "tid": 13,
+  "style": "keywords",
+  "query": "sync cursor monotonic guard"
+ },
+ {
+  "tid": 13,
+  "style": "identifier",
+  "query": "seed_cursor relay session"
+ },
+ {
+  "tid": 14,
+  "style": "concept",
+  "query": "client method that fetches a page of stored notes from a hosted memory API over HTTP"
+ },
+ {
+  "tid": 14,
+  "style": "keywords",
+  "query": "fetch remote notes page"
+ },
+ {
+  "tid": 14,
+  "style": "identifier",
+  "query": "CloudApiMemoryBackend list memory entries"
+ },
+ {
+  "tid": 15,
+  "style": "concept",
+  "query": "check whether this process is allowed to open the GPU render device node"
+ },
+ {
+  "tid": 15,
+  "style": "keywords",
+  "query": "GPU render node permission check"
+ },
+ {
+  "tid": 15,
+  "style": "identifier",
+  "query": "classify_render_nodes renderD probe"
+ },
+ {
+  "tid": 16,
+  "style": "concept",
+  "query": "compute the short metrics summary the status command shows, returning nothing if memory fails to open"
+ },
+ {
+  "tid": 16,
+  "style": "keywords",
+  "query": "status command metrics summary"
+ },
+ {
+  "tid": 16,
+  "style": "identifier",
+  "query": "metrics_status_summary status command summary"
+ },
+ {
+  "tid": 17,
+  "style": "concept",
+  "query": "parse kotlin syntax tree to find imports function calls and class inheritance for the code graph"
+ },
+ {
+  "tid": 17,
+  "style": "keywords",
+  "query": "kotlin syntax tree parsing"
+ },
+ {
+  "tid": 17,
+  "style": "identifier",
+  "query": "kotlin_edges parsing imports and calls"
+ },
+ {
+  "tid": 18,
+  "style": "concept",
+  "query": "command that takes an embedding vector from standard input and returns nearest matching chunks"
+ },
+ {
+  "tid": 18,
+  "style": "keywords",
+  "query": "nearest neighbor search stdin"
+ },
+ {
+  "tid": 18,
+  "style": "identifier",
+  "query": "knn plumbing stdin vector"
+ },
+ {
+  "tid": 19,
+  "style": "concept",
+  "query": "figures out which directory on disk holds the tool's global configuration files"
+ },
+ {
+  "tid": 19,
+  "style": "keywords",
+  "query": "config directory lookup"
+ },
+ {
+  "tid": 19,
+  "style": "identifier",
+  "query": "inkentry_config_dir home fallback"
+ },
+ {
+  "tid": 20,
+  "style": "concept",
+  "query": "count indexed files grouped by their detected programming language"
+ },
+ {
+  "tid": 20,
+  "style": "keywords",
+  "query": "file counts per language"
+ },
+ {
+  "tid": 20,
+  "style": "identifier",
+  "query": "language_stats query files table"
+ },
+ {
+  "tid": 21,
+  "style": "concept",
+  "query": "get separate clients for embedding and chat completion since they might use different servers"
+ },
+ {
+  "tid": 21,
+  "style": "keywords",
+  "query": "embed vs llm client resolution"
+ },
+ {
+  "tid": 21,
+  "style": "identifier",
+  "query": "harvest_clients embed and llm clients"
+ },
+ {
+  "tid": 22,
+  "style": "concept",
+  "query": "gather configured shared server url and project id from environment and project config files"
+ },
+ {
+  "tid": 22,
+  "style": "keywords",
+  "query": "shared server config discovery"
+ },
+ {
+  "tid": 22,
+  "style": "identifier",
+  "query": "declared_team_targets environment variable discovery"
+ },
+ {
+  "tid": 23,
+  "style": "concept",
+  "query": "how does the code turn a relative git directory path into an absolute one"
+ },
+ {
+  "tid": 23,
+  "style": "keywords",
+  "query": "convert relative dir absolute"
+ },
+ {
+  "tid": 23,
+  "style": "identifier",
+  "query": "resolve_relative_common_dir git root"
+ },
+ {
+  "tid": 24,
+  "style": "concept",
+  "query": "flips a stored memory entry to a hidden state so future searches skip it"
+ },
+ {
+  "tid": 24,
+  "style": "keywords",
+  "query": "hide entry from results"
+ },
+ {
+  "tid": 24,
+  "style": "identifier",
+  "query": "notes archive status update"
+ },
+ {
+  "tid": 25,
+  "style": "concept",
+  "query": "figure out whether a running process's command line is actually an index run of this tool"
+ },
+ {
+  "tid": 25,
+  "style": "keywords",
+  "query": "detect background index process"
+ },
+ {
+  "tid": 25,
+  "style": "identifier",
+  "query": "command_looks_like_index_run ps argv"
+ },
+ {
+  "tid": 26,
+  "style": "concept",
+  "query": "count memory entries by kind, split into totals, active ones, and entries in a time window"
+ },
+ {
+  "tid": 26,
+  "style": "keywords",
+  "query": "count notes by kind"
+ },
+ {
+  "tid": 26,
+  "style": "identifier",
+  "query": "entry_counts notes by kind"
+ },
+ {
+  "tid": 27,
+  "style": "concept",
+  "query": "wire format payload sent to create a new memory entry on a remote server"
+ },
+ {
+  "tid": 27,
+  "style": "keywords",
+  "query": "add entry request payload"
+ },
+ {
+  "tid": 27,
+  "style": "identifier",
+  "query": "CreateEntryBody idempotency key field"
+ },
+ {
+  "tid": 28,
+  "style": "concept",
+  "query": "cleanup logic that shuts down worker threads when the embedding model object is dropped"
+ },
+ {
+  "tid": 28,
+  "style": "keywords",
+  "query": "worker thread cleanup shutdown"
+ },
+ {
+  "tid": 28,
+  "style": "identifier",
+  "query": "LlamaEmbedder drop worker threads"
+ },
+ {
+  "tid": 29,
+  "style": "concept",
+  "query": "assembles the request address for a project scoped call to a remote service, escaping special characters"
+ },
+ {
+  "tid": 29,
+  "style": "keywords",
+  "query": "build API endpoint address"
+ },
+ {
+  "tid": 29,
+  "style": "identifier",
+  "query": "RemoteMemoryBackend url method"
+ },
+ {
+  "tid": 30,
+  "style": "concept",
+  "query": "get the local reference token a dump entity uses so relationships can point at it"
+ },
+ {
+  "tid": 30,
+  "style": "keywords",
+  "query": "dump entity reference token"
+ },
+ {
+  "tid": 30,
+  "style": "identifier",
+  "query": "dump_ref portable dump entity"
+ },
+ {
+  "tid": 31,
+  "style": "concept",
+  "query": "warn the user that some synced entries have no embedding yet and how to fix it"
+ },
+ {
+  "tid": 31,
+  "style": "keywords",
+  "query": "synced entries missing embeddings warning"
+ },
+ {
+  "tid": 31,
+  "style": "identifier",
+  "query": "pending_embedding_warning sync warning message"
+ },
+ {
+  "tid": 32,
+  "style": "concept",
+  "query": "mark an old memory entry as replaced by a new one within a transaction"
+ },
+ {
+  "tid": 32,
+  "style": "keywords",
+  "query": "archive note replaced transaction"
+ },
+ {
+  "tid": 32,
+  "style": "identifier",
+  "query": "supersede function marks note archived"
+ },
+ {
+  "tid": 33,
+  "style": "concept",
+  "query": "server endpoint that turns a memory search text query into an embedding and finds matching notes"
+ },
+ {
+  "tid": 33,
+  "style": "keywords",
+  "query": "memory search endpoint embedding"
+ },
+ {
+  "tid": 33,
+  "style": "identifier",
+  "query": "search_notes handler embedder"
+ },
+ {
+  "tid": 34,
+  "style": "concept",
+  "query": "command handler that lists previously recorded coding mistakes tracked for a project"
+ },
+ {
+  "tid": 34,
+  "style": "keywords",
+  "query": "list known bad patterns"
+ },
+ {
+  "tid": 34,
+  "style": "identifier",
+  "query": "memory_failures antipattern listing"
+ },
+ {
+  "tid": 35,
+  "style": "concept",
+  "query": "find which stored code chunks reference a given list of symbol names"
+ },
+ {
+  "tid": 35,
+  "style": "keywords",
+  "query": "lookup chunks by symbol"
+ },
+ {
+  "tid": 35,
+  "style": "identifier",
+  "query": "chunks_mentioning_symbols lookup query"
+ },
+ {
+  "tid": 36,
+  "style": "concept",
+  "query": "decide whether a schema upgrade needs a full rebuild or can migrate in place"
+ },
+ {
+  "tid": 36,
+  "style": "keywords",
+  "query": "schema migration rebuild vs migrate"
+ },
+ {
+  "tid": 36,
+  "style": "identifier",
+  "query": "migrate_or_rebuild index schema migration"
+ },
+ {
+  "tid": 37,
+  "style": "concept",
+  "query": "keep only one convention rule per language and category, preferring the more specific one"
+ },
+ {
+  "tid": 37,
+  "style": "keywords",
+  "query": "convention rule merge priority"
+ },
+ {
+  "tid": 37,
+  "style": "identifier",
+  "query": "dedup_by_language_category merge logic"
+ },
+ {
+  "tid": 38,
+  "style": "concept",
+  "query": "helper that turns a database query with no matching rows into an empty result"
+ },
+ {
+  "tid": 38,
+  "style": "keywords",
+  "query": "sqlite no rows option"
+ },
+ {
+  "tid": 38,
+  "style": "identifier",
+  "query": "optional rusqlite no rows"
+ },
+ {
+  "tid": 39,
+  "style": "concept",
+  "query": "clears saved sign-in sessions, either for one organization or all of them, when a user signs out"
+ },
+ {
+  "tid": 39,
+  "style": "keywords",
+  "query": "clear cached credentials"
+ },
+ {
+  "tid": 39,
+  "style": "identifier",
+  "query": "logout org_tokens clear_all"
+ },
+ {
+  "tid": 40,
+  "style": "concept",
+  "query": "compute the median of a list of timing measurements for a benchmark"
+ },
+ {
+  "tid": 40,
+  "style": "keywords",
+  "query": "median calculation benchmark timing"
+ },
+ {
+  "tid": 40,
+  "style": "identifier",
+  "query": "median samples benchmark helper"
+ },
+ {
+  "tid": 41,
+  "style": "concept",
+  "query": "fill in missing token counts for previously stored chunks that never got one"
+ },
+ {
+  "tid": 41,
+  "style": "keywords",
+  "query": "recompute token counts chunks"
+ },
+ {
+  "tid": 41,
+  "style": "identifier",
+  "query": "backfill_token_counts chunks token count"
+ },
+ {
+  "tid": 42,
+  "style": "concept",
+  "query": "command line flags for logging into the hosted service including organization and a dev url override"
+ },
+ {
+  "tid": 42,
+  "style": "keywords",
+  "query": "cli flags for authentication"
+ },
+ {
+  "tid": 42,
+  "style": "identifier",
+  "query": "LoginArgs cli flags for login"
+ },
+ {
+  "tid": 43,
+  "style": "concept",
+  "query": "conversion function that builds the public memory entry representation from its internal stored record"
+ },
+ {
+  "tid": 43,
+  "style": "keywords",
+  "query": "convert stored record note"
+ },
+ {
+  "tid": 43,
+  "style": "identifier",
+  "query": "record_to_note conversion function"
+ },
+ {
+  "tid": 44,
+  "style": "concept",
+  "query": "structure reported by a health endpoint describing whether the built-in embedding model finished loading"
+ },
+ {
+  "tid": 44,
+  "style": "keywords",
+  "query": "embedder health readiness fields"
+ },
+ {
+  "tid": 44,
+  "style": "identifier",
+  "query": "EmbedderStatus engine device"
+ },
+ {
+  "tid": 45,
+  "style": "concept",
+  "query": "decide which of several duplicate copies of a record counts as the original when merging"
+ },
+ {
+  "tid": 45,
+  "style": "keywords",
+  "query": "pick base record duplicates"
+ },
+ {
+  "tid": 45,
+  "style": "identifier",
+  "query": "base_key note fold tie-break"
+ },
+ {
+  "tid": 46,
+  "style": "concept",
+  "query": "remove duplicate relationship facts from an imported dump, keeping the earliest timestamp available"
+ },
+ {
+  "tid": 46,
+  "style": "keywords",
+  "query": "remove duplicate relationships dump"
+ },
+ {
+  "tid": 46,
+  "style": "identifier",
+  "query": "dedupe relationship facts import"
+ },
+ {
+  "tid": 47,
+  "style": "concept",
+  "query": "response shape for fetching memory changes since a point in time including an entry count check"
+ },
+ {
+  "tid": 47,
+  "style": "keywords",
+  "query": "incremental sync response fields"
+ },
+ {
+  "tid": 47,
+  "style": "identifier",
+  "query": "SinceBody total entries divergence"
+ },
+ {
+  "tid": 48,
+  "style": "concept",
+  "query": "how does indexing pick how long an embedding batch request should run based on server timeout"
+ },
+ {
+  "tid": 48,
+  "style": "keywords",
+  "query": "embed batch timeout budget"
+ },
+ {
+  "tid": 48,
+  "style": "identifier",
+  "query": "resolve_target_batch_seconds embed phase"
+ },
+ {
+  "tid": 49,
+  "style": "concept",
+  "query": "pulls the declared name out of a parsed syntax node for a particular JVM language"
+ },
+ {
+  "tid": 49,
+  "style": "keywords",
+  "query": "kotlin ast node name"
+ },
+ {
+  "tid": 49,
+  "style": "identifier",
+  "query": "kotlin_decl_name simple_identifier"
+ },
+ {
+  "tid": 50,
+  "style": "concept",
+  "query": "embed newly imported entries right after a dump import finishes, without failing the import itself"
+ },
+ {
+  "tid": 50,
+  "style": "keywords",
+  "query": "post-import embedding backfill"
+ },
+ {
+  "tid": 50,
+  "style": "identifier",
+  "query": "finish_embeddings after dump import"
+ },
+ {
+  "tid": 51,
+  "style": "concept",
+  "query": "data describing one linked project's location, database status and file count for a listing command"
+ },
+ {
+  "tid": 51,
+  "style": "keywords",
+  "query": "linked project status struct"
+ },
+ {
+  "tid": 51,
+  "style": "identifier",
+  "query": "LinkedProjectInfo linked project struct"
+ },
+ {
+  "tid": 52,
+  "style": "concept",
+  "query": "clean up a user supplied label into a consistent lowercase hyphenated form"
+ },
+ {
+  "tid": 52,
+  "style": "keywords",
+  "query": "label cleanup lowercase hyphen"
+ },
+ {
+  "tid": 52,
+  "style": "identifier",
+  "query": "normalize_tag whitespace underscore lowercase"
+ },
+ {
+  "tid": 53,
+  "style": "concept",
+  "query": "function that merges vector similarity results into a single ranked list using reciprocal rank fusion"
+ },
+ {
+  "tid": 53,
+  "style": "keywords",
+  "query": "combine vector results reranking"
+ },
+ {
+  "tid": 53,
+  "style": "identifier",
+  "query": "search_hybrid memory notes"
+ },
+ {
+  "tid": 54,
+  "style": "concept",
+  "query": "looks up the cached authentication tokens for whichever organization is currently active"
+ },
+ {
+  "tid": 54,
+  "style": "keywords",
+  "query": "lookup active org token"
+ },
+ {
+  "tid": 54,
+  "style": "identifier",
+  "query": "resolve_session cached org"
+ },
+ {
+  "tid": 55,
+  "style": "concept",
+  "query": "build a token-limited summary by appending ranked text pieces until the budget would be exceeded"
+ },
+ {
+  "tid": 55,
+  "style": "keywords",
+  "query": "token budget text composition"
+ },
+ {
+  "tid": 55,
+  "style": "identifier",
+  "query": "select_prefix token cap summary"
+ },
+ {
+  "tid": 56,
+  "style": "concept",
+  "query": "translate the server's advertised capability strings into typed feature flags"
+ },
+ {
+  "tid": 56,
+  "style": "keywords",
+  "query": "parse server capabilities list"
+ },
+ {
+  "tid": 56,
+  "style": "identifier",
+  "query": "from_server_caps parse capabilities"
+ },
+ {
+  "tid": 57,
+  "style": "concept",
+  "query": "warn the user that their index was reset to an empty state because of a format change"
+ },
+ {
+  "tid": 57,
+  "style": "keywords",
+  "query": "schema mismatch reset message"
+ },
+ {
+  "tid": 57,
+  "style": "identifier",
+  "query": "announce_index_rebuild notice for schema mismatch"
+ },
+ {
+  "tid": 58,
+  "style": "concept",
+  "query": "enum describing why the system found no language model to send a request to"
+ },
+ {
+  "tid": 58,
+  "style": "keywords",
+  "query": "why no model to call"
+ },
+ {
+  "tid": 58,
+  "style": "identifier",
+  "query": "NoLlmReason enum variants"
+ },
+ {
+  "tid": 59,
+  "style": "concept",
+  "query": "classifies a short piece of text as one of the common code naming styles"
+ },
+ {
+  "tid": 59,
+  "style": "keywords",
+  "query": "identifier casing detector"
+ },
+ {
+  "tid": 59,
+  "style": "identifier",
+  "query": "detect_case naming style"
+ },
+ {
+  "tid": 60,
+  "style": "concept",
+  "query": "wrap a plain code search hit as an entry with no fusion rank in the merged result list"
+ },
+ {
+  "tid": 60,
+  "style": "keywords",
+  "query": "search hit missing fusion rank"
+ },
+ {
+  "tid": 60,
+  "style": "identifier",
+  "query": "unranked_code fusion wrapper"
+ },
+ {
+  "tid": 61,
+  "style": "concept",
+  "query": "resolve a git ref to its commit hash, checking the loose file then a fallback file"
+ },
+ {
+  "tid": 61,
+  "style": "keywords",
+  "query": "resolve git ref file"
+ },
+ {
+  "tid": 61,
+  "style": "identifier",
+  "query": "read_ref git notes ref resolution"
+ },
+ {
+  "tid": 62,
+  "style": "concept",
+  "query": "detect whether a typescript project follows a particular test file naming pattern"
+ },
+ {
+  "tid": 62,
+  "style": "keywords",
+  "query": "typescript test file convention"
+ },
+ {
+  "tid": 62,
+  "style": "identifier",
+  "query": "testing_record convention for test file naming"
+ },
+ {
+  "tid": 63,
+  "style": "concept",
+  "query": "command line arguments for storing an authentication credential for a server or LLM endpoint"
+ },
+ {
+  "tid": 63,
+  "style": "keywords",
+  "query": "credential storage command flags"
+ },
+ {
+  "tid": 63,
+  "style": "identifier",
+  "query": "AuthSetKeyArgs clap struct"
+ },
+ {
+  "tid": 64,
+  "style": "concept",
+  "query": "extracts commit hashes from raw log text whose timestamps fall inside a given range"
+ },
+ {
+  "tid": 64,
+  "style": "keywords",
+  "query": "filter commits by date"
+ },
+ {
+  "tid": 64,
+  "style": "identifier",
+  "query": "parse_sha_committer_lines commit window"
+ },
+ {
+  "tid": 65,
+  "style": "concept",
+  "query": "represent whether a schema upgrade step updates data in place or throws the store away and rebuilds it"
+ },
+ {
+  "tid": 65,
+  "style": "keywords",
+  "query": "schema rebuild vs migrate step"
+ },
+ {
+  "tid": 65,
+  "style": "identifier",
+  "query": "IndexMigrationKind rebuild variant"
+ },
+ {
+  "tid": 66,
+  "style": "concept",
+  "query": "fail with a helpful message when no memory store exists locally or remotely"
+ },
+ {
+  "tid": 66,
+  "style": "keywords",
+  "query": "check memory store presence error"
+ },
+ {
+  "tid": 66,
+  "style": "identifier",
+  "query": "require_memory_store plumbing command guard"
+ },
+ {
+  "tid": 67,
+  "style": "concept",
+  "query": "command line options for re-generating embeddings for stored memory entries"
+ },
+ {
+  "tid": 67,
+  "style": "keywords",
+  "query": "re-embed notes cli flags"
+ },
+ {
+  "tid": 67,
+  "style": "identifier",
+  "query": "MemoryReindexArgs cli flags struct"
+ },
+ {
+  "tid": 68,
+  "style": "concept",
+  "query": "function that wipes every saved server credential from storage and reports how many were removed"
+ },
+ {
+  "tid": 68,
+  "style": "keywords",
+  "query": "wipe saved server credentials"
+ },
+ {
+  "tid": 68,
+  "style": "identifier",
+  "query": "clear_all stored server keys"
+ },
+ {
+  "tid": 69,
+  "style": "concept",
+  "query": "adapts an internally computed pattern record into the shape used for a stored table row"
+ },
+ {
+  "tid": 69,
+  "style": "keywords",
+  "query": "convention record to row"
+ },
+ {
+  "tid": 69,
+  "style": "identifier",
+  "query": "ConventionRow from conversion"
+ },
+ {
+  "tid": 70,
+  "style": "concept",
+  "query": "warn the user that a just-saved entry has no search vector yet and how it gets one later"
+ },
+ {
+  "tid": 70,
+  "style": "keywords",
+  "query": "missing embedding warning message"
+ },
+ {
+  "tid": 70,
+  "style": "identifier",
+  "query": "pending_embedding_warning memory add"
+ },
+ {
+  "tid": 71,
+  "style": "concept",
+  "query": "apply relationship edges from an imported dump, resolving referenced entities to local rows and counting outcomes"
+ },
+ {
+  "tid": 71,
+  "style": "keywords",
+  "query": "import relationship edges dump"
+ },
+ {
+  "tid": 71,
+  "style": "identifier",
+  "query": "import_carried_edges dump relationship edges"
+ },
+ {
+  "tid": 72,
+  "style": "concept",
+  "query": "attempt to grab a concurrency slot for embedding work and report busy with a retry hint if none is free"
+ },
+ {
+  "tid": 72,
+  "style": "keywords",
+  "query": "embedding lane semaphore permit"
+ },
+ {
+  "tid": 72,
+  "style": "identifier",
+  "query": "try_acquire semaphore permit function"
+ },
+ {
+  "tid": 73,
+  "style": "concept",
+  "query": "command that lists the cached organizations a user has signed into, marking which one is active"
+ },
+ {
+  "tid": 73,
+  "style": "keywords",
+  "query": "show signed-in organizations"
+ },
+ {
+  "tid": 73,
+  "style": "identifier",
+  "query": "org_list command output"
+ },
+ {
+  "tid": 74,
+  "style": "concept",
+  "query": "renders combined code and note search hits as color coded lines in the terminal"
+ },
+ {
+  "tid": 74,
+  "style": "keywords",
+  "query": "print combined search results"
+ },
+ {
+  "tid": 74,
+  "style": "identifier",
+  "query": "print_unified_text terminal output"
+ },
+ {
+  "tid": 75,
+  "style": "concept",
+  "query": "decide at runtime whether command output should include ANSI color codes"
+ },
+ {
+  "tid": 75,
+  "style": "keywords",
+  "query": "ansi color enabled check"
+ },
+ {
+  "tid": 75,
+  "style": "identifier",
+  "query": "color_enabled stdout tty check"
+ },
+ {
+  "tid": 76,
+  "style": "concept",
+  "query": "test helper that redirects the local server auto-discovery to a mock server via env vars"
+ },
+ {
+  "tid": 76,
+  "style": "keywords",
+  "query": "mock server discovery vars"
+ },
+ {
+  "tid": 76,
+  "style": "identifier",
+  "query": "point_discovery_at test mock server"
+ },
+ {
+  "tid": 77,
+  "style": "concept",
+  "query": "decide whether a background indexing process should wait for embeddings to finish"
+ },
+ {
+  "tid": 77,
+  "style": "keywords",
+  "query": "background process readiness check"
+ },
+ {
+  "tid": 77,
+  "style": "identifier",
+  "query": "detach_embed_eligible readiness check function"
+ },
+ {
+  "tid": 78,
+  "style": "concept",
+  "query": "function that links a specification record to a file path prefix, ignoring duplicates"
+ },
+ {
+  "tid": 78,
+  "style": "keywords",
+  "query": "associate spec with path"
+ },
+ {
+  "tid": 78,
+  "style": "identifier",
+  "query": "add_spec_link database insert"
+ },
+ {
+  "tid": 79,
+  "style": "concept",
+  "query": "reads a stored credential from the operating system's secure keychain and memoizes it in memory"
+ },
+ {
+  "tid": 79,
+  "style": "keywords",
+  "query": "keychain password cache lookup"
+ },
+ {
+  "tid": 79,
+  "style": "identifier",
+  "query": "KeyringStore get cached value"
+ },
+ {
+  "tid": 80,
+  "style": "concept",
+  "query": "generate a time-ordered unique id stamped with a chosen past timestamp instead of the current time"
+ },
+ {
+  "tid": 80,
+  "style": "keywords",
+  "query": "uuid v7 backdated timestamp"
+ },
+ {
+  "tid": 80,
+  "style": "identifier",
+  "query": "uuid_v7_at backfill migration"
+ },
+ {
+  "tid": 81,
+  "style": "concept",
+  "query": "distinct failure kinds for the embedding engine, including an unrecoverable GPU device loss case"
+ },
+ {
+  "tid": 81,
+  "style": "keywords",
+  "query": "embedding error variants enum"
+ },
+ {
+  "tid": 81,
+  "style": "identifier",
+  "query": "EmbedError embedding error enum"
+ },
+ {
+  "tid": 82,
+  "style": "concept",
+  "query": "fetch local memory records formatted for pushing to a sync target, optionally including archived ones"
+ },
+ {
+  "tid": 82,
+  "style": "keywords",
+  "query": "select notes for replication"
+ },
+ {
+  "tid": 82,
+  "style": "identifier",
+  "query": "rows_for_sync query for notes"
+ },
+ {
+  "tid": 83,
+  "style": "concept",
+  "query": "wire format struct for telling the relay server which pushed and pulled entries were applied"
+ },
+ {
+  "tid": 83,
+  "style": "keywords",
+  "query": "sync acknowledgement payload shape"
+ },
+ {
+  "tid": 83,
+  "style": "identifier",
+  "query": "RelayAckRequestWire struct fields"
+ },
+ {
+  "tid": 84,
+  "style": "concept",
+  "query": "spawns a version control command as a child process and returns its output or failure text"
+ },
+ {
+  "tid": 84,
+  "style": "keywords",
+  "query": "spawn git subprocess"
+ },
+ {
+  "tid": 84,
+  "style": "identifier",
+  "query": "git_notes publish subprocess helper"
+ },
+ {
+  "tid": 85,
+  "style": "concept",
+  "query": "represent what happened after embedding one batch during a backlog catch-up pass, including why it stopped early"
+ },
+ {
+  "tid": 85,
+  "style": "keywords",
+  "query": "embedding backlog page result"
+ },
+ {
+  "tid": 85,
+  "style": "identifier",
+  "query": "PageOutcome repair sweep"
+ },
+ {
+  "tid": 86,
+  "style": "concept",
+  "query": "detect whether a file is binary by sniffing its first bytes for a null byte"
+ },
+ {
+  "tid": 86,
+  "style": "keywords",
+  "query": "check file for binary content"
+ },
+ {
+  "tid": 86,
+  "style": "identifier",
+  "query": "is_binary_file skip binary assets"
+ },
+ {
+  "tid": 87,
+  "style": "concept",
+  "query": "combine two batches of pull statistics into one running total"
+ },
+ {
+  "tid": 87,
+  "style": "keywords",
+  "query": "combine pull stats counts"
+ },
+ {
+  "tid": 87,
+  "style": "identifier",
+  "query": "merge function combining pull results"
+ },
+ {
+  "tid": 88,
+  "style": "concept",
+  "query": "list of regex patterns used to detect prompt injection attempts in text"
+ },
+ {
+  "tid": 88,
+  "style": "keywords",
+  "query": "prompt injection detection regex"
+ },
+ {
+  "tid": 88,
+  "style": "identifier",
+  "query": "patterns security regex list"
+ },
+ {
+  "tid": 89,
+  "style": "concept",
+  "query": "shared contract any chat completion provider must satisfy so it can plug into the system uniformly"
+ },
+ {
+  "tid": 89,
+  "style": "keywords",
+  "query": "LLM provider interface"
+ },
+ {
+  "tid": 89,
+  "style": "identifier",
+  "query": "LlmBackend generate streaming"
+ },
+ {
+  "tid": 90,
+  "style": "concept",
+  "query": "format a duration in seconds as a short human readable unit like minutes hours or days"
+ },
+ {
+  "tid": 90,
+  "style": "keywords",
+  "query": "human readable duration formatting"
+ },
+ {
+  "tid": 90,
+  "style": "identifier",
+  "query": "format_duration metrics display"
+ },
+ {
+  "tid": 91,
+  "style": "concept",
+  "query": "create a gitignore for the local data directory listing generated database and lock files"
+ },
+ {
+  "tid": 91,
+  "style": "keywords",
+  "query": "write gitignore data directory init"
+ },
+ {
+  "tid": 91,
+  "style": "identifier",
+  "query": "write_inkentry_gitignore init gitignore file"
+ },
+ {
+  "tid": 92,
+  "style": "concept",
+  "query": "check that a configured server address uses https unless it points at localhost"
+ },
+ {
+  "tid": 92,
+  "style": "keywords",
+  "query": "scheme check for server address"
+ },
+ {
+  "tid": 92,
+  "style": "identifier",
+  "query": "validate_transport_url loopback https"
+ },
+ {
+  "tid": 93,
+  "style": "concept",
+  "query": "command that prints all indexed chunks for a given source file as JSON lines"
+ },
+ {
+  "tid": 93,
+  "style": "keywords",
+  "query": "dump indexed chunks file"
+ },
+ {
+  "tid": 93,
+  "style": "identifier",
+  "query": "cat_chunks plumbing command"
+ },
+ {
+  "tid": 94,
+  "style": "concept",
+  "query": "heuristically decides whether a codebase leans on asynchronous functions and guesses which runtime it targets"
+ },
+ {
+  "tid": 94,
+  "style": "keywords",
+  "query": "async runtime heuristic detection"
+ },
+ {
+  "tid": 94,
+  "style": "identifier",
+  "query": "async_record tokio ratio"
+ },
+ {
+  "tid": 95,
+  "style": "concept",
+  "query": "configuration for talking to an external OpenAI-compatible chat completion endpoint"
+ },
+ {
+  "tid": 95,
+  "style": "keywords",
+  "query": "LLM client config struct"
+ },
+ {
+  "tid": 95,
+  "style": "identifier",
+  "query": "ServerLlm struct fields"
+ },
+ {
+  "tid": 96,
+  "style": "concept",
+  "query": "switch default output to machine readable format when running under an agent"
+ },
+ {
+  "tid": 96,
+  "style": "keywords",
+  "query": "auto switch json output"
+ },
+ {
+  "tid": 96,
+  "style": "identifier",
+  "query": "effective_format agent mode output"
+ },
+ {
+  "tid": 97,
+  "style": "concept",
+  "query": "structure for parsing one entry from the claude code session history log file"
+ },
+ {
+  "tid": 97,
+  "style": "keywords",
+  "query": "session log parsing struct"
+ },
+ {
+  "tid": 97,
+  "style": "identifier",
+  "query": "ClaudeHistoryEntry struct for history log"
+ },
+ {
+  "tid": 98,
+  "style": "concept",
+  "query": "function that pulls likely identifier names out of source code text for cross referencing"
+ },
+ {
+  "tid": 98,
+  "style": "keywords",
+  "query": "pull identifier-like words code"
+ },
+ {
+  "tid": 98,
+  "style": "identifier",
+  "query": "extract_mention_tokens symbol scan"
+ },
+ {
+  "tid": 99,
+  "style": "concept",
+  "query": "thin wrapper method that forwards a plain text query down to the underlying storage implementation"
+ },
+ {
+  "tid": 99,
+  "style": "keywords",
+  "query": "delegate text search call"
+ },
+ {
+  "tid": 99,
+  "style": "identifier",
+  "query": "search_text StorageBackend delegate"
+ },
+ {
+  "tid": 100,
+  "style": "concept",
+  "query": "how to check what earlier sessions recorded about a repo before doing anything else"
+ },
+ {
+  "tid": 100,
+  "style": "keywords",
+  "query": "memory list onboarding step"
+ },
+ {
+  "tid": 100,
+  "style": "identifier",
+  "query": "inkentry memory list --kind context"
+ },
+ {
+  "tid": 101,
+  "style": "concept",
+  "query": "documentation of the fields included in a code search result item"
+ },
+ {
+  "tid": 101,
+  "style": "keywords",
+  "query": "code search result json fields"
+ },
+ {
+  "tid": 101,
+  "style": "identifier",
+  "query": "chunk_id field code payload docs"
+ },
+ {
+  "tid": 102,
+  "style": "concept",
+  "query": "explain why an import fails entirely when a relationship references an entity that isn't in the file"
+ },
+ {
+  "tid": 102,
+  "style": "keywords",
+  "query": "dump import dangling reference error"
+ },
+ {
+  "tid": 102,
+  "style": "identifier",
+  "query": "entity ref endpoints must resolve"
+ },
+ {
+  "tid": 103,
+  "style": "concept",
+  "query": "documentation section confirming which server API endpoints and features are fully implemented"
+ },
+ {
+  "tid": 103,
+  "style": "keywords",
+  "query": "which endpoints are done"
+ },
+ {
+  "tid": 103,
+  "style": "identifier",
+  "query": "AuthProvider implementation status"
+ },
+ {
+  "tid": 104,
+  "style": "concept",
+  "query": "write-up of why two backend services disagree about a shared field's data type yet the client keeps working"
+ },
+ {
+  "tid": 104,
+  "style": "keywords",
+  "query": "cross service schema mismatch"
+ },
+ {
+  "tid": 104,
+  "style": "identifier",
+  "query": "project_id_stays_opaque_across_both_peers_id_types"
+ },
+ {
+  "tid": 105,
+  "style": "concept",
+  "query": "where the licensing for the bundled embedding engine and its model-download library is tracked"
+ },
+ {
+  "tid": 105,
+  "style": "keywords",
+  "query": "llama.cpp hf-hub licensing"
+ },
+ {
+  "tid": 105,
+  "style": "identifier",
+  "query": "cargo-about about.toml attribution"
+ },
+ {
+  "tid": 106,
+  "style": "concept",
+  "query": "example walkthrough step showing how to locate tests for a function before changing it"
+ },
+ {
+  "tid": 106,
+  "style": "keywords",
+  "query": "find tests full text"
+ },
+ {
+  "tid": 106,
+  "style": "identifier",
+  "query": "--only-text search flag example"
+ },
+ {
+  "tid": 107,
+  "style": "concept",
+  "query": "how to add a memory entry with tags directly from a github issue or web url"
+ },
+ {
+  "tid": 107,
+  "style": "keywords",
+  "query": "import github issue with tags"
+ },
+ {
+  "tid": 107,
+  "style": "identifier",
+  "query": "memory add --from-url flag"
+ },
+ {
+  "tid": 108,
+  "style": "concept",
+  "query": "documentation showing how to manually run the server with a plain docker command instead of compose"
+ },
+ {
+  "tid": 108,
+  "style": "keywords",
+  "query": "docker command without compose"
+ },
+ {
+  "tid": 108,
+  "style": "identifier",
+  "query": "docker run standalone setup"
+ },
+ {
+  "tid": 109,
+  "style": "concept",
+  "query": "checklist of security related tasks a maintainer runs before shipping each new release"
+ },
+ {
+  "tid": 109,
+  "style": "keywords",
+  "query": "release security checklist"
+ },
+ {
+  "tid": 109,
+  "style": "identifier",
+  "query": "cargo audit per-release checklist"
+ },
+ {
+  "tid": 110,
+  "style": "concept",
+  "query": "what output format plumbing subcommands use so a script can parse their results reliably"
+ },
+ {
+  "tid": 110,
+  "style": "keywords",
+  "query": "plumbing JSONL stdout format"
+ },
+ {
+  "tid": 110,
+  "style": "identifier",
+  "query": "plumbing knn --limit output"
+ },
+ {
+  "tid": 111,
+  "style": "concept",
+  "query": "how the indexer sends unembedded chunks to a server for vectors and writes them back safely"
+ },
+ {
+  "tid": 111,
+  "style": "keywords",
+  "query": "embedding phase server batch index"
+ },
+ {
+  "tid": 111,
+  "style": "identifier",
+  "query": "index/embed capability tier phase"
+ },
+ {
+  "tid": 112,
+  "style": "concept",
+  "query": "install instructions and a package manager tap trust requirement for the command line tool"
+ },
+ {
+  "tid": 112,
+  "style": "keywords",
+  "query": "homebrew install trust tap"
+ },
+ {
+  "tid": 112,
+  "style": "identifier",
+  "query": "brew trust command requirement"
+ },
+ {
+  "tid": 113,
+  "style": "concept",
+  "query": "documentation note about an unresolved design decision left for the product owner to decide"
+ },
+ {
+  "tid": 113,
+  "style": "keywords",
+  "query": "unresolved decision left open"
+ },
+ {
+  "tid": 113,
+  "style": "identifier",
+  "query": "inkentry conventions refresh command"
+ },
+ {
+  "tid": 114,
+  "style": "concept",
+  "query": "proposal for a small utility that builds a comma separated run of bind markers for a variable length SQL list"
+ },
+ {
+  "tid": 114,
+  "style": "keywords",
+  "query": "SQL bind marker generator"
+ },
+ {
+  "tid": 114,
+  "style": "identifier",
+  "query": "placeholders helper IN clause"
+ },
+ {
+  "tid": 115,
+  "style": "concept",
+  "query": "what compatibility guarantees the server's HTTP endpoints provide across versions"
+ },
+ {
+  "tid": 115,
+  "style": "keywords",
+  "query": "server API stability guarantees"
+ },
+ {
+  "tid": 115,
+  "style": "identifier",
+  "query": "/v1/health openapi stability"
+ },
+ {
+  "tid": 116,
+  "style": "concept",
+  "query": "where the agent skill package lives and how its version relationship to the CLI is checked"
+ },
+ {
+  "tid": 116,
+  "style": "keywords",
+  "query": "agent skill repo install plugin"
+ },
+ {
+  "tid": 116,
+  "style": "identifier",
+  "query": "agent-plugin skill install repo"
+ },
+ {
+  "tid": 117,
+  "style": "concept",
+  "query": "security audit checklist for dependency vulnerability and license scanning in continuous integration"
+ },
+ {
+  "tid": 117,
+  "style": "keywords",
+  "query": "dependency audit cargo deny checklist"
+ },
+ {
+  "tid": 117,
+  "style": "identifier",
+  "query": "cargo deny yanked dependency check"
+ },
+ {
+  "tid": 118,
+  "style": "concept",
+  "query": "documentation table listing optional cargo feature flags for the core library and what they pull in"
+ },
+ {
+  "tid": 118,
+  "style": "keywords",
+  "query": "cargo feature flags core"
+ },
+ {
+  "tid": 118,
+  "style": "identifier",
+  "query": "rich-formats feature flag"
+ },
+ {
+  "tid": 119,
+  "style": "concept",
+  "query": "describes the URL layout used to fetch build artifacts after a new version has shipped"
+ },
+ {
+  "tid": 119,
+  "style": "keywords",
+  "query": "release asset url pattern"
+ },
+ {
+  "tid": 119,
+  "style": "identifier",
+  "query": "GitHub Releases download URLs"
+ },
+ {
+  "tid": 120,
+  "style": "concept",
+  "query": "which environment variables meant only for tests can weaken server discovery trust"
+ },
+ {
+  "tid": 120,
+  "style": "keywords",
+  "query": "test-only discovery override vars"
+ },
+ {
+  "tid": 120,
+  "style": "identifier",
+  "query": "INKENTRY_TEST_TRUST_RECORDED_RESPONDER discovery"
+ },
+ {
+  "tid": 121,
+  "style": "concept",
+  "query": "note that documentation tests must be run separately from the main test runner"
+ },
+ {
+  "tid": 121,
+  "style": "keywords",
+  "query": "doctests separate test pass"
+ },
+ {
+  "tid": 121,
+  "style": "identifier",
+  "query": "cargo test --doc doctests"
+ },
+ {
+  "tid": 122,
+  "style": "concept",
+  "query": "guidance for an agent on how to look up relevant code before reading files directly"
+ },
+ {
+  "tid": 122,
+  "style": "keywords",
+  "query": "search before reading code guidance"
+ },
+ {
+  "tid": 122,
+  "style": "identifier",
+  "query": "search --graph flag usage"
+ },
+ {
+  "tid": 123,
+  "style": "concept",
+  "query": "documentation explaining which settings are read from the user's personal config file versus the project file"
+ },
+ {
+  "tid": 123,
+  "style": "keywords",
+  "query": "which settings load personal"
+ },
+ {
+  "tid": 123,
+  "style": "identifier",
+  "query": "config.toml personal fields"
+ },
+ {
+  "tid": 124,
+  "style": "concept",
+  "query": "explains how administrators roll out the tool's settings to managed machines using device management software"
+ },
+ {
+  "tid": 124,
+  "style": "keywords",
+  "query": "MDM config rollout"
+ },
+ {
+  "tid": 124,
+  "style": "identifier",
+  "query": "MDM push inkentry configuration"
+ }
+]
