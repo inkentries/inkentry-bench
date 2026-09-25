@@ -1,0 +1,65 @@
+{
+  "name": "code-knownitem-inkentry",
+  "version": 1,
+  "description": "Known-item code retrieval over inkentry's own repository at ead04c85: 100 Rust definitions and 25 docs/ Markdown sections, three queries each.",
+  "job": {
+    "d4_job": "guard",
+    "note": "Also used as a development signal for code-ranking work (ADR-098 D4). Not blind, so never a comparison."
+  },
+  "frozen": true,
+  "corpus": {
+    "repo_url": "https://github.com/inkentries/inkentry",
+    "commit": "ead04c853b8d1991e6ec505b61503688a7132de0",
+    "submodules": [],
+    "materialize": "git archive <commit>, then each submodule's git archive at its pinned commit under its path; delete .inkentry/ before indexing"
+  },
+  "counts": {
+    "targets": 125,
+    "queries": 375,
+    "targets_by_language": {
+      "markdown": 25,
+      "rust": 100
+    },
+    "queries_by_style": {
+      "concept": 125,
+      "keywords": 125,
+      "identifier": 125
+    }
+  },
+  "sampling": {
+    "kind": "random, stratified",
+    "seed": 7,
+    "rng": "Python random.seed(7); the code pool is shuffled, then the docs pool",
+    "source_index": "chunks from an index built over the corpus at this commit by the inkentry build in use on 2026-09-24. node_type and name are that chunker's labels, kept as descriptive fields only.",
+    "pools": {
+      "code": "language rust; node_type in {function, struct, enum, trait, impl}; name set; end_line - start_line >= 6; path not under fuzz/; not test code: path does not match (^|/)tests?(/|\\.rs$)|_tests?\\.rs$|/tests/ and no line before the chunk starts with #[cfg(test)]",
+      "docs": "language markdown; node_type section; name set; end_line - start_line >= 4; path under docs/ but not docs/adr/"
+    },
+    "selection": "walk each shuffled pool taking at most one target per file: 100 from code, 25 from docs"
+  },
+  "query_authoring": {
+    "method": "LLM-written. For each target the model was shown the target chunk (path, name, docstring and code) and wrote one query in each of three styles.",
+    "styles": {
+      "concept": "plain-language description of what the code does, with no identifiers",
+      "keywords": "2 to 5 keywords",
+      "identifier": "a query that contains an identifier from the target"
+    },
+    "blind": false,
+    "caveat": "The author saw the target, so wording can echo it; the identifier style names the target's own symbols by construction. Good for catching a retrieval regression, not for claiming retrieval quality or comparing against other tools.",
+    "model": "not recorded",
+    "authored": "2026-09-24",
+    "batches": "five batches of 25 targets (targets[k::5])"
+  },
+  "hit_rule": {
+    "k": 10,
+    "chunk": "hit when a ranked result in the top k has file_path equal to the target's path and a line span [start_line, end_line] that overlaps the target's (both inclusive). Rank is the 1-based position of the first such result.",
+    "file": "hit when a ranked result in the top k has file_path equal to the target's path.",
+    "ranked_only": "results with fused_rank null (graph or cross-project appendix members) are not scored",
+    "chunker_independent": "the rule uses only path and line span at a pinned commit, never a chunk id, so the set survives chunker changes. A result chunk that spans the whole target region (or a large enclosing chunk) counts as a hit."
+  },
+  "span_check": "span_sha256 in targets.json is the sha256 of the target's lines start_line..end_line (1-based, inclusive) of the file at the pinned commit, as raw bytes joined by \\n. The harness checks every one against the materialized corpus before indexing.",
+  "files": {
+    "targets.json": "tid, path, start_line, end_line, name, language, node_type, span_sha256",
+    "queries.json": "tid, style, query"
+  }
+}

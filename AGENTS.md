@@ -240,6 +240,8 @@ Smoke tests catch them; code review often misses them.
 - `memory/` — decision archaeology and cross-session handoff
 - `graph/` — code-graph retrieval
 - `codesearchnet/` — CodeSearchNet retrieval
+- `codeknown/` — known-item code retrieval over the `evalsets/code-knownitem-*` sets
+- `evalsets/<name>/v<N>/` — frozen, versioned eval sets (ADR-098 D4); a change is a new version
 - `ownrepo/` — in-domain golden-set retrieval
 - `gemma/crosscodeeval/` — RepoBench cross-file completion
 - `perf_*.sh` — performance benchmarks

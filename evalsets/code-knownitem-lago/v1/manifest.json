@@ -1,0 +1,82 @@
+{
+  "name": "code-knownitem-lago",
+  "version": 1,
+  "description": "Known-item code retrieval over getlago/lago at 02a4bc8d (with its api and front submodules): 70 Ruby, 20 TypeScript/TSX, 15 Go and 20 Markdown targets, three queries each.",
+  "job": {
+    "d4_job": "guard",
+    "note": "Also used as a development signal for code-ranking work (ADR-098 D4). Not blind, so never a comparison."
+  },
+  "frozen": true,
+  "corpus": {
+    "repo_url": "https://github.com/getlago/lago",
+    "commit": "02a4bc8d9c0ab4201875d8615a09c48a2f2a4d31",
+    "submodules": [
+      {
+        "path": "api",
+        "url": "https://github.com/getlago/lago-api",
+        "commit": "731388fca8d8b29d4c9a900d0f6325a509e8ab05"
+      },
+      {
+        "path": "front",
+        "url": "https://github.com/getlago/lago-front",
+        "commit": "dbde5273ec3f9c3c803845146ed0689fca16263a"
+      }
+    ],
+    "materialize": "git archive <commit>, then each submodule's git archive at its pinned commit under its path; delete .inkentry/ before indexing"
+  },
+  "counts": {
+    "targets": 125,
+    "queries": 375,
+    "targets_by_language": {
+      "go": 15,
+      "markdown": 20,
+      "ruby": 70,
+      "tsx": 9,
+      "typescript": 11
+    },
+    "queries_by_style": {
+      "concept": 125,
+      "keywords": 125,
+      "identifier": 125
+    }
+  },
+  "sampling": {
+    "kind": "random, stratified",
+    "seed": 11,
+    "rng": "Python random.seed(11); the four pools are shuffled in the order ruby, ts, go, md from one generator",
+    "source_index": "chunks from an index built over a lago checkout at this commit by the inkentry build in use on 2026-09-24. That chunker emitted no chunk for a JS/TS function bound with const = arrow function, so no such function could be sampled here; code-knownitem-lago-uncovered covers them.",
+    "exclude": "no name; end_line - start_line < 5; path matching (^|/)(spec|specs|test|tests|__tests__|__mocks__|e2e|cypress|fixtures?)/|[._-](spec|test)\\.[jt]sx?$|_spec\\.rb$|_test\\.go$; path containing /vendor/; path under extra/",
+    "pools": {
+      "ruby": "language ruby; node_type in {method, class}; path under api/",
+      "ts": "language tsx or typescript; node_type in {function, method, interface, class, type_alias}; path under front/",
+      "go": "language go; node_type in {function, method, struct}",
+      "md": "language markdown; node_type section; path not matching CODE_OF_CONDUCT|CHANGELOG|LICENSE (case-insensitive)"
+    },
+    "selection": "walk each shuffled pool taking at most one target per file: ruby 70, ts 20, go 15, md 20"
+  },
+  "query_authoring": {
+    "method": "LLM-written. For each target the model was shown the target chunk (path, name, docstring and code) and wrote one query in each of three styles.",
+    "styles": {
+      "concept": "plain-language description of what the code does, with no identifiers",
+      "keywords": "2 to 5 keywords",
+      "identifier": "a query that contains an identifier from the target"
+    },
+    "blind": false,
+    "caveat": "The author saw the target, so wording can echo it; the identifier style names the target's own symbols by construction. Good for catching a retrieval regression, not for claiming retrieval quality or comparing against other tools.",
+    "model": "not recorded",
+    "authored": "2026-09-24",
+    "batches": "five batches of 25 targets (targets[k::5])"
+  },
+  "hit_rule": {
+    "k": 10,
+    "chunk": "hit when a ranked result in the top k has file_path equal to the target's path and a line span [start_line, end_line] that overlaps the target's (both inclusive). Rank is the 1-based position of the first such result.",
+    "file": "hit when a ranked result in the top k has file_path equal to the target's path.",
+    "ranked_only": "results with fused_rank null (graph or cross-project appendix members) are not scored",
+    "chunker_independent": "the rule uses only path and line span at a pinned commit, never a chunk id, so the set survives chunker changes. A result chunk that spans the whole target region (or a large enclosing chunk) counts as a hit."
+  },
+  "span_check": "span_sha256 in targets.json is the sha256 of the target's lines start_line..end_line (1-based, inclusive) of the file at the pinned commit, as raw bytes joined by \\n. The harness checks every one against the materialized corpus before indexing.",
+  "files": {
+    "targets.json": "tid, path, start_line, end_line, name, language, node_type, span_sha256",
+    "queries.json": "tid, style, query"
+  }
+}

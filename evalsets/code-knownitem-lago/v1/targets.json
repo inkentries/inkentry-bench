@@ -1,0 +1,1252 @@
+[
+ {
+  "tid": 0,
+  "path": "api/app/services/subscriptions/dates/semiannual_service.rb",
+  "start_line": 126,
+  "end_line": 138,
+  "name": "compute_base_date",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "5445467004494a4045b18d710fa875bb029615b8f035aff270915ae3173de87d"
+ },
+ {
+  "tid": 1,
+  "path": "api/db/migrate/20260701083107_add_gin_index_on_subscriptions_name.rb",
+  "start_line": 3,
+  "end_line": 9,
+  "name": "AddGinIndexOnSubscriptionsName",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "b0dcf26826c87cae28d61d70d385a3405e94b367b1a76fd090cf0f0bff1c7251"
+ },
+ {
+  "tid": 2,
+  "path": "api/app/jobs/clock/mark_invoices_as_payment_overdue_job.rb",
+  "start_line": 4,
+  "end_line": 20,
+  "name": "MarkInvoicesAsPaymentOverdueJob",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "c3dbdb1d6a8e72228a1b2b2c234775a3ac7aaad6652cea0d24ad4550a11f32a3"
+ },
+ {
+  "tid": 3,
+  "path": "api/app/services/integrations/aggregator/invoices/payloads/factory.rb",
+  "start_line": 8,
+  "end_line": 21,
+  "name": "new_instance",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "e861f00f734d2083afeb8933a821c4b0b2fa05b9d4808d0eb1640f51bbb16308"
+ },
+ {
+  "tid": 4,
+  "path": "api/app/models/analytics/invoiced_usage.rb",
+  "start_line": 91,
+  "end_line": 100,
+  "name": "cache_key",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "c2f12c66837817c3aa418fb5c7ad3ef5f323a5a6a639e3073d944c160b2d9ef4"
+ },
+ {
+  "tid": 5,
+  "path": "api/app/serializers/e_invoices/payments/cii/builder.rb",
+  "start_line": 14,
+  "end_line": 36,
+  "name": "serialize",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "8db058598946abeeba02f24ffaf13d3fbfd05dd01c7eb2fee4687f85f6ef25d4"
+ },
+ {
+  "tid": 6,
+  "path": "api/db/migrate/20260608111837_add_gin_index_for_invoice_number.rb",
+  "start_line": 3,
+  "end_line": 9,
+  "name": "AddGinIndexForInvoiceNumber",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "7f3347580c3349f558e7a9db3d13d686473952e3e6003d57589de19ce4094064"
+ },
+ {
+  "tid": 7,
+  "path": "api/app/controllers/graphql_controller.rb",
+  "start_line": 21,
+  "end_line": 57,
+  "name": "execute",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "994e47bac71b77b255c101b23b297e675f676ebb3d3d45138f4448705d8d9a49"
+ },
+ {
+  "tid": 8,
+  "path": "api/app/graphql/mutations/integration_collection_mappings/destroy.rb",
+  "start_line": 5,
+  "end_line": 28,
+  "name": "Destroy",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "41b59cd92e27b1936c0899fe706b68a190f741b5d6b67830801b1bac5b3ba3fc"
+ },
+ {
+  "tid": 9,
+  "path": "api/lib/lago_http_client/lago_http_client/client.rb",
+  "start_line": 54,
+  "end_line": 63,
+  "name": "post_with_response",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "f64c2f522145930a72bd423a136be0d332102d7e781e8f1a014711dadb7c07a2"
+ },
+ {
+  "tid": 10,
+  "path": "api/app/models/charge.rb",
+  "start_line": 159,
+  "end_line": 168,
+  "name": "validate_prorated",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "58e8b2bde8c8f7ca08767fbec1c9d441f3519c447afdd2cd2fc1fd5e4c10b729"
+ },
+ {
+  "tid": 11,
+  "path": "api/app/serializers/v1/wallet_serializer.rb",
+  "start_line": 67,
+  "end_line": 74,
+  "name": "payment_method",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "d1f22b812aa908bbebb43df08e5bc149d3087c865de02e8a55ae5f4dff14361d"
+ },
+ {
+  "tid": 12,
+  "path": "api/app/jobs/database_migrations/populate_subscriptions_with_organization_job.rb",
+  "start_line": 4,
+  "end_line": 30,
+  "name": "PopulateSubscriptionsWithOrganizationJob",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "9b95b476ecf48aacffb16284fcbcd559a0966068c72a91134ea5ac6ceb41833b"
+ },
+ {
+  "tid": 13,
+  "path": "api/app/services/events/stores/clickhouse_store.rb",
+  "start_line": 903,
+  "end_line": 913,
+  "name": "prepare_grouped_aggregated_values",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "a7e610636a734d696474ce3122b0be026d6d5a1891b8be8eeaad6e50a3434126"
+ },
+ {
+  "tid": 14,
+  "path": "api/app/services/wallet_transactions/validate_service.rb",
+  "start_line": 55,
+  "end_line": 63,
+  "name": "valid_granted_credits_amount?",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "95fbf503b853662d45c5e99ce6d6b7527d56a78d5d7d3c28bd54bedab10d331d"
+ },
+ {
+  "tid": 15,
+  "path": "api/app/services/invoices/create_invoice_subscription_service.rb",
+  "start_line": 85,
+  "end_line": 99,
+  "name": "calculate_boundaries",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "6c01a194bf54e46ec8bbbc2ff2321e3989a5a8702a9b588e3f463a21badad090"
+ },
+ {
+  "tid": 16,
+  "path": "api/db/migrate/20250707082520_organization_id_check_constaint_on_refunds.rb",
+  "start_line": 3,
+  "end_line": 10,
+  "name": "OrganizationIdCheckConstaintOnRefunds",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "0dae85846324fecb08b4019e52709a832314fdad25daa8f980996d0687806214"
+ },
+ {
+  "tid": 17,
+  "path": "api/app/services/data_exports/csv/base_csv_service.rb",
+  "start_line": 8,
+  "end_line": 32,
+  "name": "BaseCsvService",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "e826fc8fe03ee6b518e412577cbcb2c4c26b77009094be5a361d3f2ddf8958c0"
+ },
+ {
+  "tid": 18,
+  "path": "api/app/services/fees/estimate_pay_in_advance_service.rb",
+  "start_line": 71,
+  "end_line": 79,
+  "name": "customer",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "6161bcdfe4a67dc7a6e02025b513d053d73df75c1a6bde1634f3fbd79f5b2a9d"
+ },
+ {
+  "tid": 19,
+  "path": "api/db/migrate/20250627124017_not_null_organization_id_on_charges.rb",
+  "start_line": 3,
+  "end_line": 14,
+  "name": "NotNullOrganizationIdOnCharges",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "d36d1484ee8d96a718f271405486fff1723950e0787df3fc00a8f10541bf1c3e"
+ },
+ {
+  "tid": 20,
+  "path": "api/lib/lago_mcp_client/lago_mcp_client/sse_client.rb",
+  "start_line": 30,
+  "end_line": 53,
+  "name": "run",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "513e9980e3fdaad97c35b47d20369c079cbc88fca5f8b84cb806c412e4841a61"
+ },
+ {
+  "tid": 21,
+  "path": "api/db/migrate/20260520134318_swap_invoices_sequential_unique_index.rb",
+  "start_line": 6,
+  "end_line": 15,
+  "name": "change",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "ac6bb9ec3aa6511ae8a90693d1b31d91fee5e25b9c8264aaa8eb2a56627d0a45"
+ },
+ {
+  "tid": 22,
+  "path": "api/lib/lago_http_client/lago_http_client/http_error.rb",
+  "start_line": 7,
+  "end_line": 12,
+  "name": "initialize",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "2a4fd56d7542604c59c787e371a0b9de4f546ad09febaa0942fe7ba552325288"
+ },
+ {
+  "tid": 23,
+  "path": "api/app/services/e_invoices/credit_notes/cii/create_service.rb",
+  "start_line": 14,
+  "end_line": 22,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "4915aecd310e4d2ff09905ae2890682f6e88d7a416763a7dd17f62d74239f9ed"
+ },
+ {
+  "tid": 24,
+  "path": "api/app/models/entitlement/entitlement.rb",
+  "start_line": 4,
+  "end_line": 27,
+  "name": "Entitlement",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "d9edd00327ea4c0b46eebdf61af0a81811ead3666ad2ae99802c2e5344c5be9d"
+ },
+ {
+  "tid": 25,
+  "path": "api/app/services/commitments/calculate_amount_service.rb",
+  "start_line": 25,
+  "end_line": 34,
+  "name": "commitment_amount_cents",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "48d9e05b922911723c88338fde7cfab0d221d0d618cf7c49dd406db38119584f"
+ },
+ {
+  "tid": 26,
+  "path": "api/app/services/events/stores/postgres/weighted_sum_query.rb",
+  "start_line": 68,
+  "end_line": 82,
+  "name": "events_cte_sql",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "0dce58dd238b28d1713049b2638b9231f5306a87419099bf642362a726b81c92"
+ },
+ {
+  "tid": 27,
+  "path": "api/app/serializers/v1/product_filter_serializer.rb",
+  "start_line": 4,
+  "end_line": 29,
+  "name": "ProductFilterSerializer",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "7f540d87eafa8edf165496a70a770912fe157fb34ad916c43906c7c0c1e11e39"
+ },
+ {
+  "tid": 28,
+  "path": "api/app/services/dunning_campaigns/destroy_service.rb",
+  "start_line": 13,
+  "end_line": 29,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "51a9108be142a1a36146a428097ff42c9cc2e0539fde3d011facb0e5dab9598d"
+ },
+ {
+  "tid": 29,
+  "path": "api/app/services/invoices/customer_usage_service.rb",
+  "start_line": 94,
+  "end_line": 114,
+  "name": "compute_usage",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "20f9f879413f755372f4ddc91389950e7ac99d1145001dc9fb53017dbe1023ee"
+ },
+ {
+  "tid": 30,
+  "path": "api/app/serializers/v1/events_validation_errors_serializer.rb",
+  "start_line": 5,
+  "end_line": 12,
+  "name": "serialize",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "d52eae87a15c3072252518c99e2d864a703e3e1def700154db7eca838f3cbd57"
+ },
+ {
+  "tid": 31,
+  "path": "api/app/services/webhooks/payment_providers/payment_request_payment_failure_service.rb",
+  "start_line": 5,
+  "end_line": 24,
+  "name": "PaymentRequestPaymentFailureService",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "3a14ac625c953345da9fbf01bad7516b4795a7c362a5ed9129d735219d7f6cc3"
+ },
+ {
+  "tid": 32,
+  "path": "api/app/mailers/invoice_mailer.rb",
+  "start_line": 3,
+  "end_line": 50,
+  "name": "InvoiceMailer",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "e6b5b83c5da160156f6b48f5283d304f9f227c38e29386d82a2b4898c7212e56"
+ },
+ {
+  "tid": 33,
+  "path": "api/app/services/payment_providers/gocardless/webhooks/mandate_created_service.rb",
+  "start_line": 16,
+  "end_line": 26,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "8c85ec0f651aa489d063166193141f2c3457677255ac59302935ecca8d29f7bf"
+ },
+ {
+  "tid": 34,
+  "path": "api/app/serializers/v1/customers/projected_charge_usage_serializer.rb",
+  "start_line": 144,
+  "end_line": 150,
+  "name": "charge_data",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "e57e1c3612aee810e295a80f44aa5a8f5b030b99b39b38e3967ea19bdf96478c"
+ },
+ {
+  "tid": 35,
+  "path": "api/lib/active_job/uniqueness/strategies/until_executed_patch.rb",
+  "start_line": 12,
+  "end_line": 19,
+  "name": "before_enqueue",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "544eb8990011910ad8f1e71b93c9063f9d591bb52cf81d3618d199e973bab267"
+ },
+ {
+  "tid": 36,
+  "path": "api/app/services/invoices/apply_invoice_custom_sections_service.rb",
+  "start_line": 16,
+  "end_line": 33,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "10b7ad1c80503da87aacb5fa0d56105611ab8cafdc6eeed04fc604f1acfdf45a"
+ },
+ {
+  "tid": 37,
+  "path": "api/app/services/fixed_charge_events/aggregations/prorated_aggregation_service.rb",
+  "start_line": 147,
+  "end_line": 154,
+  "name": "period_start",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "2db421fddf65644de7e2554605c39799350b7efc8f25fb76e4ca0e9df45935eb"
+ },
+ {
+  "tid": 38,
+  "path": "api/app/graphql/types/dunning_campaign_thresholds/object.rb",
+  "start_line": 5,
+  "end_line": 12,
+  "name": "Object",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "1abece69cc3f9398659e3f031ada13a33aebea3e42908c85026b017ad8d57d01"
+ },
+ {
+  "tid": 39,
+  "path": "api/app/services/integrations/aggregator/contacts/base_service.rb",
+  "start_line": 55,
+  "end_line": 62,
+  "name": "webhook_code",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "b648b1720620795eff0f0459db184fb76bd09ab91ee93e09458432f8c5522fc3"
+ },
+ {
+  "tid": 40,
+  "path": "api/db/migrate/20250403110833_add_section_type_to_invoice_custom_sections.rb",
+  "start_line": 6,
+  "end_line": 26,
+  "name": "up",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "8c16b13c885b3c48cb72c23fceaba038a5530984be9b41c674a2d4282d0ed640"
+ },
+ {
+  "tid": 41,
+  "path": "api/app/models/entitlement/feature.rb",
+  "start_line": 34,
+  "end_line": 47,
+  "name": "preload_subscriptions_count",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "c769b350ff970fda9c65a52731a171aee0223a59cd587d8ffe531cac4dd245cb"
+ },
+ {
+  "tid": 42,
+  "path": "api/app/services/invites/update_service.rb",
+  "start_line": 4,
+  "end_line": 56,
+  "name": "UpdateService",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "7bbcd718f88cbf49bc2bb22f5f722f63f3742ca873b13c9431cc6418e7d2dde8"
+ },
+ {
+  "tid": 43,
+  "path": "api/app/jobs/send_http_webhook_job.rb",
+  "start_line": 3,
+  "end_line": 23,
+  "name": "SendHttpWebhookJob",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "18404271d04f582c29015b581fd2752a1d0c1323cb3cb979bdc9e868f4f8bb55"
+ },
+ {
+  "tid": 44,
+  "path": "api/app/graphql/types/billable_metrics/create_input.rb",
+  "start_line": 5,
+  "end_line": 20,
+  "name": "CreateInput",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "52dda67d2ecbc1c45c5d6208a7af612a3c2ef62d711e05e2cff54f3402741cfb"
+ },
+ {
+  "tid": 45,
+  "path": "api/app/models/usage_monitoring/alert_threshold.rb",
+  "start_line": 3,
+  "end_line": 15,
+  "name": "UsageMonitoring::AlertThreshold",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "c656cf2788d3e5f5f40f9ff56c01896b1fa409f659594a01510a5d28c62972e6"
+ },
+ {
+  "tid": 46,
+  "path": "api/app/graphql/types/charge_models/volume_range.rb",
+  "start_line": 5,
+  "end_line": 11,
+  "name": "VolumeRange",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "4ac1c4e1f1b6633b7ba55c0e8a365ac89a6272915ade1a6ecb64192271805534"
+ },
+ {
+  "tid": 47,
+  "path": "api/app/queries/webhook_endpoints_query.rb",
+  "start_line": 6,
+  "end_line": 16,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "db6c6dcaaeceeba1ace6cad9120234e591079951e0104e863223e3eab6a5111e"
+ },
+ {
+  "tid": 48,
+  "path": "api/app/services/integrations/netsuite/update_service.rb",
+  "start_line": 13,
+  "end_line": 40,
+  "name": "call",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "f52ff00b7357acf1249e8968727ee62ba6554833ce69e68198fcb72854499764"
+ },
+ {
+  "tid": 49,
+  "path": "api/app/services/webhooks/features/deleted_service.rb",
+  "start_line": 12,
+  "end_line": 17,
+  "name": "object_serializer",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "07aa31202e11b5f5c9f06e5c16e3e67d4cee397c8560d4c5060dca764e3eb3bb"
+ },
+ {
+  "tid": 50,
+  "path": "api/app/services/webhook_endpoints/destroy_service.rb",
+  "start_line": 37,
+  "end_line": 47,
+  "name": "track_webhook_endpoint_deleted",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "1f485353822daf6a9e7229e4f38d3c47cac429eb0964c83844424e36e250f2a4"
+ },
+ {
+  "tid": 51,
+  "path": "api/app/models/analytics/base.rb",
+  "start_line": 51,
+  "end_line": 58,
+  "name": "expire_cache_for_customer",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "073db910d09ef15cfc08097c811a2725b3f67c93cec0e79e2e328be154ef0c4d"
+ },
+ {
+  "tid": 52,
+  "path": "api/app/services/events/stores/base_store.rb",
+  "start_line": 259,
+  "end_line": 266,
+  "name": "build_grouped_prorated_aggregation_result",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "d2f1903656d4dd416457c56e36c81a6fb03e28b2faa9978d96ff9df0f6f0c4bf"
+ },
+ {
+  "tid": 53,
+  "path": "api/app/models/concerns/null_byte_sanitizable.rb",
+  "start_line": 27,
+  "end_line": 34,
+  "name": "sanitize_null_bytes",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "cbbc8856f8df9d7b94639df998a95a747d309ea124d435ff7b58ae81f508e1c5"
+ },
+ {
+  "tid": 54,
+  "path": "api/app/graphql/mutations/auth/entra_id/login.rb",
+  "start_line": 6,
+  "end_line": 18,
+  "name": "Login",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "e3a1219cabd1c2cebecbb8b804b1cf5a8adbde1962585d39a0ce7e0a059118d7"
+ },
+ {
+  "tid": 55,
+  "path": "api/app/jobs/payment_providers/cashfree/handle_event_job.rb",
+  "start_line": 14,
+  "end_line": 19,
+  "name": "perform",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "c121f41b3156cc8932ffb0b3350100044dbb06ffc71bd42af840b979747fb7ab"
+ },
+ {
+  "tid": 56,
+  "path": "api/app/services/integrations/aggregator/subscriptions/payloads/hubspot.rb",
+  "start_line": 8,
+  "end_line": 30,
+  "name": "create_body",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "9865d4c1af82c98183c8fb50e57a66e8c46f1e2df97a1aab9e1279c42b5a8104"
+ },
+ {
+  "tid": 57,
+  "path": "api/app/services/integrations/aggregator/taxes/invoices/payloads/factory.rb",
+  "start_line": 9,
+  "end_line": 30,
+  "name": "new_instance",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "fcc4c31c1fd0ecacb44845460d92ac863d90f5963a82eeb362efd6a16ad44817"
+ },
+ {
+  "tid": 58,
+  "path": "api/app/graphql/resolvers/analytics/invoice_collections_resolver.rb",
+  "start_line": 20,
+  "end_line": 27,
+  "name": "resolve",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "21cebeab57d5c082ef9cf7d8b06835b4426f2667e5457d77d99224b567d0d336"
+ },
+ {
+  "tid": 59,
+  "path": "api/app/models/payment_providers/base_provider.rb",
+  "start_line": 32,
+  "end_line": 38,
+  "name": "determine_payment_status",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "da72f6c22e146937cafea16734e6b4779c07dcde1c9217a4c9c413a35690f138"
+ },
+ {
+  "tid": 60,
+  "path": "api/app/controllers/api/v1/subscriptions_controller.rb",
+  "start_line": 159,
+  "end_line": 186,
+  "name": "create_params",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "3b45174f286079583a84473bf88f2ed6d460772b9bbe798b5d0d0a2b66a30197"
+ },
+ {
+  "tid": 61,
+  "path": "api/app/serializers/v1/invoice_serializer.rb",
+  "start_line": 63,
+  "end_line": 70,
+  "name": "customer",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "e281d34e19a159d4eabce7bfb4026f8aa9fde55c776ee3056549dbe4228dc71c"
+ },
+ {
+  "tid": 62,
+  "path": "api/app/services/credit_notes/create_from_termination.rb",
+  "start_line": 91,
+  "end_line": 96,
+  "name": "date_service",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "3ba71745f5b1a31cc83cb3a690a571da781c643f942a7955878298feea653893"
+ },
+ {
+  "tid": 63,
+  "path": "api/app/services/integrations/aggregator/companies/payloads/factory.rb",
+  "start_line": 8,
+  "end_line": 20,
+  "name": "new_instance",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "5ee5d1486cbc45d773a3eb191c4a8206279f4b8e8daebd9c83f4e22031b76fd9"
+ },
+ {
+  "tid": 64,
+  "path": "api/app/services/billable_metrics/aggregations/custom_service.rb",
+  "start_line": 11,
+  "end_line": 29,
+  "name": "compute_aggregation",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "970e6b214b494710160722a1194ae719b546a417989ed319f3a89b298e043c15"
+ },
+ {
+  "tid": 65,
+  "path": "api/app/graphql/mutations/quote_versions/update.rb",
+  "start_line": 5,
+  "end_line": 27,
+  "name": "Update",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "f3038e2f5f4f954178b0c53410d6088882a602cf8f013cb1ed6c32cc53f1348e"
+ },
+ {
+  "tid": 66,
+  "path": "api/app/queries/entitlement/feature/subscriptions_count_query.rb",
+  "start_line": 21,
+  "end_line": 27,
+  "name": "subscriptions_count_query",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "f0be13933efd8db381ce10a1830d4853c0fc30be0d69c742b159466d9fe5411e"
+ },
+ {
+  "tid": 67,
+  "path": "api/app/graphql/types/taxes/create_input.rb",
+  "start_line": 5,
+  "end_line": 12,
+  "name": "CreateInput",
+  "language": "ruby",
+  "node_type": "class",
+  "span_sha256": "27a94851ea078cca80b28a72cc7e04d5daa0eb65efc8079997fed6cc92ba9103"
+ },
+ {
+  "tid": 68,
+  "path": "api/app/services/wallets/create_interval_wallet_transactions_service.rb",
+  "start_line": 87,
+  "end_line": 104,
+  "name": "base_recurring_transaction_rule_scope",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "7baf58895ef3652934b069449c346b8799a637fa1b505f24fd47f20ea666d7a9"
+ },
+ {
+  "tid": 69,
+  "path": "api/app/services/charge_models/standard_service.rb",
+  "start_line": 15,
+  "end_line": 20,
+  "name": "unit_amount",
+  "language": "ruby",
+  "node_type": "method",
+  "span_sha256": "35b00dd88beb78fd4f6eb8e72d79e970cdd5c53f03c67c6a49cbe17b5112b526"
+ },
+ {
+  "tid": 70,
+  "path": "front/src/components/invoices/details/InvoiceDetailsTable.tsx",
+  "start_line": 173,
+  "end_line": 182,
+  "name": "InvoiceDetailsTableProps",
+  "language": "tsx",
+  "node_type": "interface",
+  "span_sha256": "85e89d4fb7cd7c923dbc9df4c06853f9c2c2cd608517353ca46977b376dca80e"
+ },
+ {
+  "tid": 71,
+  "path": "front/src/components/Filters/graphql/utils.ts",
+  "start_line": 995,
+  "end_line": 1009,
+  "name": "ForecastsQueryFilters",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "23be18954a7f76b6c0c7b5131d93a02f1efbbcc5c8b822f5856a2635606e8e83"
+ },
+ {
+  "tid": 72,
+  "path": "front/src/components/invoices/PaymentsList.tsx",
+  "start_line": 100,
+  "end_line": 110,
+  "name": "PaymentsListProps",
+  "language": "tsx",
+  "node_type": "interface",
+  "span_sha256": "b92355fc3c7b66fbd90d06f6174c02d2fe2695cd02913f82533f1dfe7622f668"
+ },
+ {
+  "tid": 73,
+  "path": "front/src/components/designSystem/graphs/StackedBarChart.tsx",
+  "start_line": 71,
+  "end_line": 88,
+  "name": "StackedBarChartProps",
+  "language": "tsx",
+  "node_type": "type_alias",
+  "span_sha256": "88921373d4427f28a774710b42d539ae370ce92adca9b826b0f4ef5671e26e87"
+ },
+ {
+  "tid": 74,
+  "path": "front/src/components/designSystem/Table/types.ts",
+  "start_line": 8,
+  "end_line": 18,
+  "name": "ActionItem",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "2fc96a8ade101f9b3cf1e7cb08612e8e65d9229405292702edab238d7634a899"
+ },
+ {
+  "tid": 75,
+  "path": "front/src/components/premium/PremiumFeature.tsx",
+  "start_line": 8,
+  "end_line": 15,
+  "name": "PremiumFeatureProps",
+  "language": "tsx",
+  "node_type": "type_alias",
+  "span_sha256": "961b44718dae7bfbe74fcd3ca9c23cb3f30642211fcb95960e352862956ca524"
+ },
+ {
+  "tid": 76,
+  "path": "front/src/components/customers/usage/sections/ChargeSummarySection.tsx",
+  "start_line": 22,
+  "end_line": 30,
+  "name": "ChargeSummaryRow",
+  "language": "tsx",
+  "node_type": "type_alias",
+  "span_sha256": "a687b1d3bb472baf395129c39d1c1896cf35a90759dc02a76637853db72ee819"
+ },
+ {
+  "tid": 77,
+  "path": "front/src/pages/InvoiceOverview.tsx",
+  "start_line": 201,
+  "end_line": 227,
+  "name": "InvoiceOverviewProps",
+  "language": "tsx",
+  "node_type": "interface",
+  "span_sha256": "fb64f9497e4e70b8bb5c0033256fd111c428d3c0a23229c285e2db24908c4c5b"
+ },
+ {
+  "tid": 78,
+  "path": "front/src/components/designSystem/RichTextEditor/extensions/PricingBlock.schema.ts",
+  "start_line": 81,
+  "end_line": 108,
+  "name": "addAttributes",
+  "language": "typescript",
+  "node_type": "method",
+  "span_sha256": "fbb48df5adb54639a45c5ba21894ff337d51472e9f307f607fe3dca09f1b1947"
+ },
+ {
+  "tid": 79,
+  "path": "front/src/components/designSystem/RichTextEditor/Table/RowMenuContent.tsx",
+  "start_line": 12,
+  "end_line": 19,
+  "name": "RowMenuContentProps",
+  "language": "tsx",
+  "node_type": "type_alias",
+  "span_sha256": "9878f23af416e3811ced8993c0b5ffb599d33928f8df636701e5aeb56559f4fa"
+ },
+ {
+  "tid": 80,
+  "path": "front/src/components/designSystem/RichTextEditor/extensions/CreditsBlock.schema.ts",
+  "start_line": 30,
+  "end_line": 54,
+  "name": "addStorage",
+  "language": "typescript",
+  "node_type": "method",
+  "span_sha256": "4471a77fe33b0a62c2af7901e1d7e052455a70f934c89d6e48b491105a22f2d5"
+ },
+ {
+  "tid": 81,
+  "path": "front/src/core/serializers/serializeQuotePlanBillingItems.ts",
+  "start_line": 26,
+  "end_line": 31,
+  "name": "PlanFixedChargeOverride",
+  "language": "typescript",
+  "node_type": "interface",
+  "span_sha256": "3aa712e92e8111d51ca7d89b5a5d04346cb973a639cfd8f9582e24cfbd13600d"
+ },
+ {
+  "tid": 82,
+  "path": "front/src/components/designSystem/RichTextEditor/extensions/Mention.schema.ts",
+  "start_line": 11,
+  "end_line": 16,
+  "name": "addOptions",
+  "language": "typescript",
+  "node_type": "method",
+  "span_sha256": "6e1be69d14b111e4fbfac12b20ed85c4ae905926a15d0332522b19a89ad3c4f9"
+ },
+ {
+  "tid": 83,
+  "path": "front/src/components/settings/integrations/AddStripeDialog.tsx",
+  "start_line": 133,
+  "end_line": 141,
+  "name": "onCompleted",
+  "language": "tsx",
+  "node_type": "method",
+  "span_sha256": "fd1dc2e4b3debfcbe6ae41c3535678fe61aeb3625fde0497d0e77917193b2015"
+ },
+ {
+  "tid": 84,
+  "path": "front/materialUiTheme.d.ts",
+  "start_line": 37,
+  "end_line": 45,
+  "name": "ZIndexOptions",
+  "language": "typescript",
+  "node_type": "interface",
+  "span_sha256": "5455fc702d7483bcf124010f3f4575688615d7a3eeefbaf7137ba33e6be6f8d3"
+ },
+ {
+  "tid": 85,
+  "path": "front/src/core/formats/formatInvoiceItemsMap.ts",
+  "start_line": 146,
+  "end_line": 152,
+  "name": "TSubscriptionDataForDisplay",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "5d06ee302199b547170d8f53908b7f01fcc24a406039a906c79477deb1861eb2"
+ },
+ {
+  "tid": 86,
+  "path": "front/src/pages/wallet/types.ts",
+  "start_line": 22,
+  "end_line": 45,
+  "name": "TWalletDataForm",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "cac7b6c3e76f60517dd26fe8c20e7799c622273046bfafbd2d4ebf31202f5fa8"
+ },
+ {
+  "tid": 87,
+  "path": "front/src/pages/createCreditNote/common/useCreateCreditNote.ts",
+  "start_line": 152,
+  "end_line": 163,
+  "name": "UseCreateCreditNoteReturn",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "44c159fdf6407a1d2f5b12e61e05320a30e77b52cc32e2098ba030d97b151a80"
+ },
+ {
+  "tid": 88,
+  "path": "front/src/hooks/useCreateEditBillableMetric.ts",
+  "start_line": 46,
+  "end_line": 52,
+  "name": "UseCreateEditBillableMetricReturn",
+  "language": "typescript",
+  "node_type": "type_alias",
+  "span_sha256": "25915b54df588b25c6a936b180a4afdb0c270ffcaefd2a5fbc1fe72cf2db1fb2"
+ },
+ {
+  "tid": 89,
+  "path": "front/src/components/Filters/graphql/filtersElements/DateRangeFilterFields.tsx",
+  "start_line": 8,
+  "end_line": 15,
+  "name": "DateRangeFilterFieldsProps",
+  "language": "tsx",
+  "node_type": "type_alias",
+  "span_sha256": "9e0db80b4363aab973ef3ff5e0e913d2f1c1b4001cb3c87cb4a76d15b6c90580"
+ },
+ {
+  "tid": 90,
+  "path": "events-processor/models/flat_filters.go",
+  "start_line": 165,
+  "end_line": 178,
+  "name": "ToDefaultFilter",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "b4c89083a8b2608b6ab925b6a59daab90d95331b64fc40a294c77b465908cb01"
+ },
+ {
+  "tid": 91,
+  "path": "events-processor/cache/billable_metrics.go",
+  "start_line": 54,
+  "end_line": 80,
+  "name": "StartBillableMetricsConsumer",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "e136c378c63a348f69e75934b6ab7a13af3a74d6958e2bdfcda09c258f19fd9c"
+ },
+ {
+  "tid": 92,
+  "path": "events-processor/config/tracing/datadog_tracer.go",
+  "start_line": 51,
+  "end_line": 76,
+  "name": "StartSpan",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "870843973765ff4a6d6228c91015a22ea1665158cb638d9053f06d45626f8b31"
+ },
+ {
+  "tid": 93,
+  "path": "events-processor/processors/events_processor/event_producer_service.go",
+  "start_line": 52,
+  "end_line": 61,
+  "name": "ProduceChargedInAdvanceEvent",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "133b97f08fa2ebd19ebbf28182442e6cbb26c0528a2b0182d59eb9232934f84b"
+ },
+ {
+  "tid": 94,
+  "path": "events-processor/utils/env.go",
+  "start_line": 35,
+  "end_line": 43,
+  "name": "GetEnvAsBool",
+  "language": "go",
+  "node_type": "function",
+  "span_sha256": "5de3378c7da5621759672381161d1617012da214113ea58a1e2a0b8c7748d217"
+ },
+ {
+  "tid": 95,
+  "path": "events-processor/processors/events_processor/processor.go",
+  "start_line": 18,
+  "end_line": 23,
+  "name": "EventProcessor",
+  "language": "go",
+  "node_type": "struct",
+  "span_sha256": "82a537329b2cae0578b3d71f3f332700f7d67f67dda4d772f910ecaadb118efc"
+ },
+ {
+  "tid": 96,
+  "path": "events-processor/config/kafka/consumer.go",
+  "start_line": 29,
+  "end_line": 42,
+  "name": "PartitionConsumer",
+  "language": "go",
+  "node_type": "struct",
+  "span_sha256": "01a6ed589baefb90137d8307d7fd18db6000dad487d390795651e447db4601b5"
+ },
+ {
+  "tid": 97,
+  "path": "events-processor/cache/subscriptions.go",
+  "start_line": 25,
+  "end_line": 30,
+  "name": "subscriptionKey",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "498cf265fd9e0629f2eb719453e8e7de36973aaf9083fde52f34b45b3d9df1c9"
+ },
+ {
+  "tid": 98,
+  "path": "events-processor/config/tracing/otel_tracer.go",
+  "start_line": 97,
+  "end_line": 102,
+  "name": "OTelTracerProvider",
+  "language": "go",
+  "node_type": "struct",
+  "span_sha256": "83752297ee71a10e5ea9417fb6b7c59047d27139adc3740a05636a0a1ac23d4e"
+ },
+ {
+  "tid": 99,
+  "path": "events-processor/config/database/database.go",
+  "start_line": 24,
+  "end_line": 48,
+  "name": "NewConnection",
+  "language": "go",
+  "node_type": "function",
+  "span_sha256": "cdc28c3ecde665e862986e22d5af7119336e3632d47202aa27c318b536990e60"
+ },
+ {
+  "tid": 100,
+  "path": "events-processor/utils/time.go",
+  "start_line": 174,
+  "end_line": 181,
+  "name": "NewNullTime",
+  "language": "go",
+  "node_type": "function",
+  "span_sha256": "7e2ec348992a4e12c9b05d208d1d280a357a86089b26d2d48d8fac9420603046"
+ },
+ {
+  "tid": 101,
+  "path": "events-processor/models/stores.go",
+  "start_line": 96,
+  "end_line": 104,
+  "name": "ExpireKey",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "37819ca524b39d2b103c0d467ee5bf0f0ec099278b4364d48ca5f9bfdc30df4d"
+ },
+ {
+  "tid": 102,
+  "path": "events-processor/config/tracing/tracer.go",
+  "start_line": 75,
+  "end_line": 80,
+  "name": "GetTracer",
+  "language": "go",
+  "node_type": "function",
+  "span_sha256": "a7320c1389074e8f8be64b9051df35b77b8bd9465c710db7f32bf086e2494235"
+ },
+ {
+  "tid": 103,
+  "path": "events-processor/models/event.go",
+  "start_line": 71,
+  "end_line": 98,
+  "name": "ToEnrichedEvent",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "9b3b83dfe85d6a005915089a225f78d61791cc23f3d1edc6593193ae983ea74f"
+ },
+ {
+  "tid": 104,
+  "path": "events-processor/utils/result.go",
+  "start_line": 59,
+  "end_line": 65,
+  "name": "AddErrorDetails",
+  "language": "go",
+  "node_type": "method",
+  "span_sha256": "6ed34dc68113765f2a091e537ae276ed484c4119ad7ce77571523155dd6abbf7"
+ },
+ {
+  "tid": 105,
+  "path": "api/docs/dropping_columns_and_tables.md",
+  "start_line": 9,
+  "end_line": 21,
+  "name": "1. Two-step migration complexity",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "09730a7b91a5729c398c049bbd7014fd0c13d6b08ad3680d0447b6921ce88586"
+ },
+ {
+  "tid": 106,
+  "path": "docs/architecture.md",
+  "start_line": 73,
+  "end_line": 79,
+  "name": "Architecture Benefits",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "bcd4f61210602343f521d60daab10075becebd39bf09c03217da4ade07bcce3f"
+ },
+ {
+  "tid": 107,
+  "path": "docs/database_partitioning.md",
+  "start_line": 218,
+  "end_line": 228,
+  "name": "3. Schedule the maintenance job",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "e31b63f4f5f643396fab7d857956cf0f269300edf5575c9d3cceb31a90ad4ac8"
+ },
+ {
+  "tid": 108,
+  "path": "api/AGENTS.md",
+  "start_line": 206,
+  "end_line": 219,
+  "name": "Testing",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "253fc5d09a1e8a8a02614b03d6959a4ceb170e980a82a7aea536e79de95879cf"
+ },
+ {
+  "tid": 109,
+  "path": "docs/monitoring.md",
+  "start_line": 255,
+  "end_line": 264,
+  "name": "Queue backlog building up",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "510ec459443f35a6fa2a7f8ed31bdb4947e653576762e3bedc5218c5839ba3b9"
+ },
+ {
+  "tid": 110,
+  "path": "front/CLAUDE.md",
+  "start_line": 353,
+  "end_line": 373,
+  "name": "Testing dialogs",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "f69feecd7364c3168f07721e04e1dc4aa7c5ac793a12a4a3b29b89d29c8c4d86"
+ },
+ {
+  "tid": 111,
+  "path": "CONTRIBUTING.md",
+  "start_line": 115,
+  "end_line": 120,
+  "name": "Before Submitting An Enhancement Suggestion",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "333423c8206140f6b3cfdd54f9e5b8fb74d2d6533f7b07b951f45810b9ab13cd"
+ },
+ {
+  "tid": 112,
+  "path": "docs/dev_environment.md",
+  "start_line": 150,
+  "end_line": 159,
+  "name": "Environment Variables",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "4003865bbc2920fa1a8c8e7d8a74be0d35a68cc9926a01bc17942de045dcb804"
+ },
+ {
+  "tid": 113,
+  "path": "front/src/components/designSystem/RichTextEditor/README.md",
+  "start_line": 239,
+  "end_line": 255,
+  "name": "Step 5: Register the extension",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "f69a7e0720dcd4768c3946d198de921fd42a1324faf8d83226a069eb9012abb8"
+ },
+ {
+  "tid": 114,
+  "path": "README.md",
+  "start_line": 107,
+  "end_line": 114,
+  "name": "How Lago fits into your stack",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "def736fe473880cd19f1bb4726f62524217c1406897f4558e24d9e92c1f674c1"
+ },
+ {
+  "tid": 115,
+  "path": "docker/README.md",
+  "start_line": 19,
+  "end_line": 32,
+  "name": "Get Started",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "e8007e383ab22098b0af0704284a8dba0c24412415c52f6172282dd3ab046564"
+ },
+ {
+  "tid": 116,
+  "path": "front/README.md",
+  "start_line": 45,
+  "end_line": 55,
+  "name": "Setup",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "a49a40997e7774e7db963dc0a7506e1d0167fb036d88346c462745c074cd28d1"
+ },
+ {
+  "tid": 117,
+  "path": "api/CONTRIBUTING.md",
+  "start_line": 114,
+  "end_line": 119,
+  "name": "Suggesting Enhancements",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "c3668c89bb966020bfc62cc05bd65d046312d2f15af9e35856aa9420cbd45ca0"
+ },
+ {
+  "tid": 118,
+  "path": "front/CONTRIBUTING.md",
+  "start_line": 80,
+  "end_line": 85,
+  "name": "Before Submitting A Bug Report",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "1e78553b38edd4297a48aac3a5bac8c0a8ef3a4d7f662d2c2432c7b8af66372a"
+ },
+ {
+  "tid": 119,
+  "path": "connectors/README.md",
+  "start_line": 3,
+  "end_line": 24,
+  "name": "Events format",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "4c3295b57a82aedcb3180c0ab1c99ccb026ac8744413e44a4b7d17c5968faea1"
+ },
+ {
+  "tid": 120,
+  "path": "api/README.md",
+  "start_line": 7,
+  "end_line": 13,
+  "name": "Current Releases",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "370f28e29ac5157dfdcffb2cc9af9bf51090ed21a898a137050f2c22277875b6"
+ },
+ {
+  "tid": 121,
+  "path": "deploy/README.md",
+  "start_line": 154,
+  "end_line": 169,
+  "name": "RSA Keys",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "202227beb8ca7450868fe316fa3f4e858fcf5c9522080fe4b4bafa735b9554e8"
+ },
+ {
+  "tid": 122,
+  "path": "api/docs/profiling.md",
+  "start_line": 12,
+  "end_line": 22,
+  "name": "lago/.env.development",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "d6c935b239f6599fb7803b5653c1fe3740b13a7d4f5e752ed0cc25ec24938e95"
+ },
+ {
+  "tid": 123,
+  "path": "events-processor/README.md",
+  "start_line": 26,
+  "end_line": 31,
+  "name": "Testing",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "409ce2d17f2dcc2d347698b5f17072428704427872901ed6fc352f3aee912072"
+ },
+ {
+  "tid": 124,
+  "path": "events-processor/CLAUDE.md",
+  "start_line": 3,
+  "end_line": 10,
+  "name": "Build & Test",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "b9089b42fa11c28c60a027fd7f5387479b0f2c0de3c5c2816225295f58e248d9"
+ }
+]

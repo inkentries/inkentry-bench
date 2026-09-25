@@ -1,0 +1,1252 @@
+[
+ {
+  "tid": 0,
+  "path": "crates/inkentry-core/src/storage/memory/file_links.rs",
+  "start_line": 19,
+  "end_line": 26,
+  "name": "FileState",
+  "language": "rust",
+  "node_type": "enum",
+  "span_sha256": "df30a413d70d902d8c964081d3fd03a5971cf3d0f2602695c88a41365011a26e"
+ },
+ {
+  "tid": 1,
+  "path": "crates/inkentry-server/src/relay/policy.rs",
+  "start_line": 72,
+  "end_line": 85,
+  "name": "local_config_targets",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "56486994786dd257429e39b6e7626431e9f488be3bbe187167fd1b8a9374084c"
+ },
+ {
+  "tid": 2,
+  "path": "crates/inkentry-core/src/indexer/graph/mod.rs",
+  "start_line": 58,
+  "end_line": 67,
+  "name": "Edge",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "e167f15ec678cc7c339e4019ff385736da1d14aa1ff68cd10627b597df4f47d5"
+ },
+ {
+  "tid": 3,
+  "path": "crates/inkentry-cli/src/cli/cmd/hooks.rs",
+  "start_line": 157,
+  "end_line": 167,
+  "name": "git_output",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "86102e0b727767ffb1d19924662371d6cd92b8cd68aad4167381c45dc8dd4cb5"
+ },
+ {
+  "tid": 4,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/reconcile.rs",
+  "start_line": 205,
+  "end_line": 257,
+  "name": "memory_reconcile",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "c0917e78db12c89510348a8a20d772254a3381a9115a0f4a33e5a4d129693481"
+ },
+ {
+  "tid": 5,
+  "path": "crates/inkentry-embed/src/backend.rs",
+  "start_line": 40,
+  "end_line": 47,
+  "name": "embed_with_cancel",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "0ff1018e48754c4ce30c3f139fc09f8bf43a4846e8880934eedee1d225dfee95"
+ },
+ {
+  "tid": 6,
+  "path": "crates/inkentry-server/src/auth.rs",
+  "start_line": 60,
+  "end_line": 85,
+  "name": "authenticate",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "1984e69425feb08a09d0e13033d8b4c25f1d8340ddfc137317a1798b6fae9f9f"
+ },
+ {
+  "tid": 7,
+  "path": "crates/inkentry-cli/src/cli/cmd/context.rs",
+  "start_line": 417,
+  "end_line": 438,
+  "name": "compute_overlaps",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e293b8696843459057180acce9b45caf0f8d1ce2f0960a558e6cf6d041fef934"
+ },
+ {
+  "tid": 8,
+  "path": "crates/inkentry-core/src/storage/git_notes/backend_impl.rs",
+  "start_line": 142,
+  "end_line": 165,
+  "name": "archive",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "3c04f0f8f20767e7a79d9680d69a0708b9cbe6fd2992be53e6fbffbfa6576cdf"
+ },
+ {
+  "tid": 9,
+  "path": "crates/inkentry-cli/src/cli/cmd/server.rs",
+  "start_line": 107,
+  "end_line": 113,
+  "name": "write_state_file",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "5f56c36fd8360aa8c4f9384a53917d715e6ccec5e99a50d25e58d7f9e10e235f"
+ },
+ {
+  "tid": 10,
+  "path": "crates/inkentry-server/src/db.rs",
+  "start_line": 834,
+  "end_line": 841,
+  "name": "archive_note",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e5268980a7a24de962a9d36171e92dbb459168ef6af1aba55a8ff4ad57eefdbf"
+ },
+ {
+  "tid": 11,
+  "path": "crates/inkentry-core/src/storage/git_notes/mod.rs",
+  "start_line": 1060,
+  "end_line": 1086,
+  "name": "list_anchored_to",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "02bc95d43305911b9119030782ff13eaac0ee89b78dbfb798579b02e27dee4a8"
+ },
+ {
+  "tid": 12,
+  "path": "crates/inkentry-cli/src/capability/probe.rs",
+  "start_line": 473,
+  "end_line": 484,
+  "name": "inference_tier",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "3be8d94429b80d5bc16ff94f01aa7b097e49d0a052e9bf2d2bf4df9911a41017"
+ },
+ {
+  "tid": 13,
+  "path": "crates/inkentry-server/src/relay/mod.rs",
+  "start_line": 334,
+  "end_line": 342,
+  "name": "seed_cursor",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e982d43b8173590a78f5fe2e7c90aa3064c6c6fad82f3edff39547dcd46bbd98"
+ },
+ {
+  "tid": 14,
+  "path": "crates/inkentry-core/src/storage/remote/cloud_api.rs",
+  "start_line": 270,
+  "end_line": 300,
+  "name": "list",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "86dc501f0dcb0d9421098a2f5ef8e0bc88c5a62dfb01f54268bb0aaf3370ece5"
+ },
+ {
+  "tid": 15,
+  "path": "crates/inkentry-server/src/embed_hub/mod.rs",
+  "start_line": 270,
+  "end_line": 293,
+  "name": "classify_render_nodes",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "003b3ee23c10a48c4a35b2aaee22a9041d745e81203ccb1c78894b511f0da605"
+ },
+ {
+  "tid": 16,
+  "path": "crates/inkentry-cli/src/cli/cmd/status.rs",
+  "start_line": 523,
+  "end_line": 539,
+  "name": "metrics_status_summary",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "aefbd0c95b107154c5f253cd26ed1c5bfecee3650c074aa2855425b14d3862a0"
+ },
+ {
+  "tid": 17,
+  "path": "crates/inkentry-core/src/indexer/graph/edges.rs",
+  "start_line": 470,
+  "end_line": 513,
+  "name": "kotlin_edges",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "f9a61bb237cafae4d9ea5c1f21cb281699cd5f8c5d94e6916ef44c6c420235bb"
+ },
+ {
+  "tid": 18,
+  "path": "crates/inkentry-cli/src/cli/cmd/plumbing/knn.rs",
+  "start_line": 7,
+  "end_line": 60,
+  "name": "knn",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "7f0a2ed67c03ac088866590811dae6e2f82368a60ad336e274c083e66e3e9400"
+ },
+ {
+  "tid": 19,
+  "path": "crates/inkentry-core/src/config/paths.rs",
+  "start_line": 21,
+  "end_line": 29,
+  "name": "inkentry_config_dir",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e6b4d92fa1ce77f21a29570c889111a0ab6b2287e8d2d1163c8f2d0620ae5324"
+ },
+ {
+  "tid": 20,
+  "path": "crates/inkentry-core/src/storage/stats.rs",
+  "start_line": 127,
+  "end_line": 142,
+  "name": "language_stats",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "8c25b51445436395d63c316376bd8f1f839696e798ec4192d6fd0a41c61055b0"
+ },
+ {
+  "tid": 21,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/harvest.rs",
+  "start_line": 179,
+  "end_line": 198,
+  "name": "harvest_clients",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "7ba2c02b29e200c13dba2e7d11c8edff8a928ada40939a3f04a92409cf5ca730"
+ },
+ {
+  "tid": 22,
+  "path": "crates/inkentry-core/src/config/team_target.rs",
+  "start_line": 64,
+  "end_line": 102,
+  "name": "declared_team_targets",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "bd3174b2e1cf9f243117c7dba4aa600f9b50433089c3f757d772ac3e1032a8b0"
+ },
+ {
+  "tid": 23,
+  "path": "crates/inkentry-core/src/storage/git_notes/lock.rs",
+  "start_line": 113,
+  "end_line": 123,
+  "name": "resolve_relative_common_dir",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e841d7015873a6ea77fd9c26aa42e6a8a740593c39ca7160edc7dd7095bfc3cd"
+ },
+ {
+  "tid": 24,
+  "path": "crates/inkentry-core/src/storage/memory/notes.rs",
+  "start_line": 703,
+  "end_line": 709,
+  "name": "archive",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "36e2e725212f9a42f2944adb97466ab5fa14ffbab3d4d17395f78f91ae081c82"
+ },
+ {
+  "tid": 25,
+  "path": "crates/inkentry-cli/src/cli/cmd/embed_worker.rs",
+  "start_line": 132,
+  "end_line": 142,
+  "name": "command_looks_like_index_run",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "cd6d46fc7e1a4ee086d39b384b3851c56190db8c0d3d62b438aadee201879126"
+ },
+ {
+  "tid": 26,
+  "path": "crates/inkentry-core/src/metrics/state.rs",
+  "start_line": 317,
+  "end_line": 335,
+  "name": "entry_counts",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "75fdaba60c76e44417215d589e87adbb50059a3f6647759dd1251c4e36874082"
+ },
+ {
+  "tid": 27,
+  "path": "crates/inkentry-core/src/storage/remote/cloud_api/wire.rs",
+  "start_line": 15,
+  "end_line": 25,
+  "name": "CreateEntryBody",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "275942b806b779ce375ef07a3edee47077dae8c1e8b8472be62159e970621d02"
+ },
+ {
+  "tid": 28,
+  "path": "crates/inkentry-embed/src/embedder_llama.rs",
+  "start_line": 339,
+  "end_line": 348,
+  "name": "drop",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "9544c9b9a71c95aa74d148612e0e4b529594e7cd1a2a8d1f0870002cff00143b"
+ },
+ {
+  "tid": 29,
+  "path": "crates/inkentry-core/src/storage/remote/mod.rs",
+  "start_line": 76,
+  "end_line": 86,
+  "name": "url",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e7fcf52d7915f8ffd0412b0fd19c635762b6627df1864b8fe0e1c6bb6720914f"
+ },
+ {
+  "tid": 30,
+  "path": "crates/inkentry-core/src/dump/record.rs",
+  "start_line": 65,
+  "end_line": 71,
+  "name": "dump_ref",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "dc0b89a467d19faf755352c7975467bf74a1a277b191701f93737f1a35e6a8b0"
+ },
+ {
+  "tid": 31,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/sync/local_embed.rs",
+  "start_line": 75,
+  "end_line": 83,
+  "name": "pending_embedding_warning",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "03782248b2b7e2b03a128a6b26ef8b3914f0745211ab6ab9c3360fc52fd972e7"
+ },
+ {
+  "tid": 32,
+  "path": "crates/inkentry-core/src/storage/memory/edges.rs",
+  "start_line": 116,
+  "end_line": 145,
+  "name": "supersede",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "8f6f1fad3aa68be3cda827c4da636fa03f355d2b00758ade10be5acdf5113e34"
+ },
+ {
+  "tid": 33,
+  "path": "crates/inkentry-server/src/handlers/notes.rs",
+  "start_line": 378,
+  "end_line": 422,
+  "name": "search_notes",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "c0131de5a52a6cfca61b0a247a9e4ecb3067e81267fe84b4b2020c4f9c446894"
+ },
+ {
+  "tid": 34,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/failures.rs",
+  "start_line": 6,
+  "end_line": 36,
+  "name": "memory_failures",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "af98204ba4cd6b6b5ca986ee8855e8f6c118f5a420c516c406b4e9cda0773fbf"
+ },
+ {
+  "tid": 35,
+  "path": "crates/inkentry-core/src/storage/graph.rs",
+  "start_line": 209,
+  "end_line": 244,
+  "name": "chunks_mentioning_symbols",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "8618abe7c32b01683263d47e1fa601c7d37fcb0e0e2fdc92d58047c643c0d33e"
+ },
+ {
+  "tid": 36,
+  "path": "crates/inkentry-core/src/storage/db.rs",
+  "start_line": 238,
+  "end_line": 259,
+  "name": "migrate_or_rebuild",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "20532da32264a2eaf73588ad74ba3474099017bda37bdbfb6466a9eab410fe8d"
+ },
+ {
+  "tid": 37,
+  "path": "crates/inkentry-core/src/conventions/extractor.rs",
+  "start_line": 102,
+  "end_line": 126,
+  "name": "dedup_by_language_category",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "f77e6552d4754496f5f81f7b53f74d2fa69c10906daab64e871f6dd1aec14779"
+ },
+ {
+  "tid": 38,
+  "path": "crates/inkentry-core/src/registry.rs",
+  "start_line": 455,
+  "end_line": 461,
+  "name": "optional",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "4a3fb58c468886049680ff961ed79617328da4d24ee4325ea9a5092fb841c4b9"
+ },
+ {
+  "tid": 39,
+  "path": "crates/inkentry-cli/src/cli/cmd/logout.rs",
+  "start_line": 30,
+  "end_line": 63,
+  "name": "logout",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "12fb74253b56b94a2b7e6ae5277618be1e7d141b61684c6fe1e368ba032fe918"
+ },
+ {
+  "tid": 40,
+  "path": "crates/inkentry-embed/examples/embed_bench.rs",
+  "start_line": 320,
+  "end_line": 328,
+  "name": "median",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "3f890fc83296c20ef2b46b523cc88119002a330a9dea80fbac26ecd86b3af456"
+ },
+ {
+  "tid": 41,
+  "path": "crates/inkentry-core/src/storage/chunks.rs",
+  "start_line": 38,
+  "end_line": 56,
+  "name": "backfill_token_counts",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "260c5da33850276492e8ab4c341d259ecb97a51c632b0c3444414135a4a4c9a3"
+ },
+ {
+  "tid": 42,
+  "path": "crates/inkentry-cli/src/cli/cmd/login.rs",
+  "start_line": 50,
+  "end_line": 66,
+  "name": "LoginArgs",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "280538933dec90f630a8593199a9200b2e8372f1c425c5518e23307186403952"
+ },
+ {
+  "tid": 43,
+  "path": "crates/inkentry-core/src/storage/note_record.rs",
+  "start_line": 99,
+  "end_line": 121,
+  "name": "record_to_note",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "675403fecbdcb40971691ae251d97bb6f7e758ab9e7608204b0737245560beab"
+ },
+ {
+  "tid": 44,
+  "path": "crates/inkentry-server/src/handlers/health.rs",
+  "start_line": 17,
+  "end_line": 33,
+  "name": "EmbedderStatus",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "20fe4e3925794885fb00d588d2bb276f8757da9e7d79907945a8547f8f934d2a"
+ },
+ {
+  "tid": 45,
+  "path": "crates/inkentry-core/src/storage/git_notes/fold.rs",
+  "start_line": 139,
+  "end_line": 147,
+  "name": "base_key",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "9f6a421a3be38bdab1e5e92e34a5c92b0ecb6a4bb4843192b05f1efdb7208e6e"
+ },
+ {
+  "tid": 46,
+  "path": "crates/inkentry-core/src/dump/reader.rs",
+  "start_line": 181,
+  "end_line": 199,
+  "name": "dedupe",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "8bb1fe14ee38d31a0bd225516323be513ca5a0d4af9717ebc53a3057775a736c"
+ },
+ {
+  "tid": 47,
+  "path": "crates/inkentry-core/src/storage/remote/sync.rs",
+  "start_line": 221,
+  "end_line": 230,
+  "name": "SinceBody",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "9f89fec27c6fdf2d3fc1c2b9b4ea8296a48c3efe422813a04e0ce8a8e32bffd9"
+ },
+ {
+  "tid": 48,
+  "path": "crates/inkentry-cli/src/cli/cmd/index/embed_phase.rs",
+  "start_line": 102,
+  "end_line": 108,
+  "name": "resolve_target_batch_seconds",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "cc753a0a23f265174b99484c79418e4b4c836897f2504b01f86bcb3087a314dc"
+ },
+ {
+  "tid": 49,
+  "path": "crates/inkentry-core/src/indexer/parser/ts_walker.rs",
+  "start_line": 424,
+  "end_line": 438,
+  "name": "kotlin_decl_name",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "002c0ddd2afbe465064d2353fb7e01d581598d493fae689ce3ee36b22b826e64"
+ },
+ {
+  "tid": 50,
+  "path": "crates/inkentry-cli/src/cli/cmd/import.rs",
+  "start_line": 307,
+  "end_line": 362,
+  "name": "finish_embeddings",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "a6eb5366dc332393c0adbd10c652e5ac6297dba29f1c752f5dffe6b86cdf9836"
+ },
+ {
+  "tid": 51,
+  "path": "crates/inkentry-cli/src/cli/cmd/links.rs",
+  "start_line": 41,
+  "end_line": 48,
+  "name": "LinkedProjectInfo",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "8cdb65d84db8c3fab874be1284cd4ec663c3c0bbaf449ea6de276d9f123c6e92"
+ },
+ {
+  "tid": 52,
+  "path": "crates/inkentry-core/src/storage/memory/tags.rs",
+  "start_line": 11,
+  "end_line": 27,
+  "name": "normalize_tag",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "43eec8b16b3df0ad578f3b9173fb34d9e4d4f1c0b8fcdfb79b3a159b93151122"
+ },
+ {
+  "tid": 53,
+  "path": "crates/inkentry-core/src/storage/memory/search.rs",
+  "start_line": 130,
+  "end_line": 184,
+  "name": "search_hybrid",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "33769cc05bb6dd0cae2951f389cc7af19499ba2e9fed704f222c932f082d2147"
+ },
+ {
+  "tid": 54,
+  "path": "crates/inkentry-core/src/config/org_tokens.rs",
+  "start_line": 163,
+  "end_line": 171,
+  "name": "resolve_session",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "276df9c83cc89d0aac42a3f0fd42fcc36d5192990a579c9694112c61a89813cc"
+ },
+ {
+  "tid": 55,
+  "path": "crates/inkentry-cli/src/cli/cmd/index/tier3.rs",
+  "start_line": 76,
+  "end_line": 91,
+  "name": "select_prefix",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "79088bb8e20fe5cfb94ed47fcb1e4d36ca3146b58edbfb336476c629bab4d6dc"
+ },
+ {
+  "tid": 56,
+  "path": "crates/inkentry-cli/src/capability/state.rs",
+  "start_line": 122,
+  "end_line": 138,
+  "name": "from_server_caps",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "8e253c3a8be7fa770e3a6ff74bfe28ab3cda9f63310eb78f13c4c1b21a3f1ff8"
+ },
+ {
+  "tid": 57,
+  "path": "crates/inkentry-cli/src/cli/cmd/helpers.rs",
+  "start_line": 50,
+  "end_line": 60,
+  "name": "announce_index_rebuild",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "678aee62bd290d5d7775428134c6b70a0921079eed86e26651573b8dc5b0e13c"
+ },
+ {
+  "tid": 58,
+  "path": "crates/inkentry-cli/src/capability/llm_message.rs",
+  "start_line": 8,
+  "end_line": 19,
+  "name": "NoLlmReason",
+  "language": "rust",
+  "node_type": "enum",
+  "span_sha256": "652c3e7bc88f1732d2672be0b03b88ad315f32fc19e6e4a93f6e14b78093e6f3"
+ },
+ {
+  "tid": 59,
+  "path": "crates/inkentry-core/src/conventions/rules/mod.rs",
+  "start_line": 28,
+  "end_line": 48,
+  "name": "detect_case",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "2d61f7cb871669f0ef281e8ca7d48556c34e8eaa20029cdce42889442296ebdd"
+ },
+ {
+  "tid": 60,
+  "path": "crates/inkentry-cli/src/cli/cmd/fusion.rs",
+  "start_line": 112,
+  "end_line": 121,
+  "name": "unranked_code",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "54f207e9b46a92db3538fd4a501d6983b450288cceae400d110a9f45e7918f66"
+ },
+ {
+  "tid": 61,
+  "path": "crates/inkentry-core/src/storage/git_notes/refs.rs",
+  "start_line": 94,
+  "end_line": 128,
+  "name": "read_ref",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "98ce746e708bdddf01b9e9f206d29e7b3ddbc4746362d09c85e219ee8161c194"
+ },
+ {
+  "tid": 62,
+  "path": "crates/inkentry-core/src/conventions/rules/typescript.rs",
+  "start_line": 114,
+  "end_line": 139,
+  "name": "testing_record",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "95b0c5b176b35f1c9e3def9423a1f0ba8d6c34777f2dde976a27c2f324219520"
+ },
+ {
+  "tid": 63,
+  "path": "crates/inkentry-cli/src/cli/cmd/auth.rs",
+  "start_line": 50,
+  "end_line": 59,
+  "name": "AuthSetKeyArgs",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "5552c20bc5077e5b44608edbc1f23cdacdcf9baf08124144714924d30fe02dba"
+ },
+ {
+  "tid": 64,
+  "path": "crates/inkentry-core/src/metrics/git.rs",
+  "start_line": 70,
+  "end_line": 78,
+  "name": "parse_sha_committer_lines",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "321df616b16bc98a52745f474bfe4cf9e8281beca61dedc40555f023fff78d3d"
+ },
+ {
+  "tid": 65,
+  "path": "crates/inkentry-core/src/storage/index_migrate.rs",
+  "start_line": 22,
+  "end_line": 32,
+  "name": "IndexMigrationKind",
+  "language": "rust",
+  "node_type": "enum",
+  "span_sha256": "f06c8d8234efad6f1fb88b45b21c8c3c843cc0e452544229266a11abf06eb80f"
+ },
+ {
+  "tid": 66,
+  "path": "crates/inkentry-cli/src/cli/cmd/plumbing/mod.rs",
+  "start_line": 214,
+  "end_line": 225,
+  "name": "require_memory_store",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "0a6045d8b7b05ad759206788ef20a99a8efbef27ba81f4b0d0ffa84026ccf9bf"
+ },
+ {
+  "tid": 67,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/mod.rs",
+  "start_line": 298,
+  "end_line": 314,
+  "name": "MemoryReindexArgs",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "0bc6b7270379eb74ae12b906a9098705b516cc85b35566cfc42d372ba68e5e58"
+ },
+ {
+  "tid": 68,
+  "path": "crates/inkentry-core/src/config/server_keys.rs",
+  "start_line": 164,
+  "end_line": 170,
+  "name": "clear_all",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "b97132a655486b87c08311b11525aa292ccd63171577b8e74a07c0346755a04a"
+ },
+ {
+  "tid": 69,
+  "path": "crates/inkentry-core/src/conventions/mod.rs",
+  "start_line": 38,
+  "end_line": 47,
+  "name": "from",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "dd4004fdbdd6fbd29220c6fa2f12c76c6731782511e2fa457445ac6ec870a906"
+ },
+ {
+  "tid": 70,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/add.rs",
+  "start_line": 34,
+  "end_line": 40,
+  "name": "pending_embedding_warning",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "efef979287c4e239e98bd1d5d15fd7d31031752ed5cf907feabbf3dbcd3f7fcd"
+ },
+ {
+  "tid": 71,
+  "path": "crates/inkentry-core/src/storage/memory/import.rs",
+  "start_line": 175,
+  "end_line": 198,
+  "name": "import_carried_edges",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "e31d7fa33867e5e73d2ec23f778d1b6fc45cdeabf9db9954b3d4fc94ea418972"
+ },
+ {
+  "tid": 72,
+  "path": "crates/inkentry-server/src/lib.rs",
+  "start_line": 147,
+  "end_line": 158,
+  "name": "try_acquire",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "0fa4a5086c8cfa88fdf2749cdbadf7ccc309ac01e03c2f2da77dac05e1712492"
+ },
+ {
+  "tid": 73,
+  "path": "crates/inkentry-cli/src/cli/cmd/org.rs",
+  "start_line": 99,
+  "end_line": 115,
+  "name": "org_list",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "933e4bdfc81062f83747b205c4f66e2a3ffb72b4b2527b837291619a8d3d5195"
+ },
+ {
+  "tid": 74,
+  "path": "crates/inkentry-cli/src/cli/cmd/search.rs",
+  "start_line": 423,
+  "end_line": 477,
+  "name": "print_unified_text",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "fce559d5c477108234da230e02b7e18daa4f4f450c0e0837e31ea14defe5e538"
+ },
+ {
+  "tid": 75,
+  "path": "crates/inkentry-cli/src/cli/cmd/color.rs",
+  "start_line": 56,
+  "end_line": 62,
+  "name": "color_enabled",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "d12670c45b55be742a74589314f9c92f0e27c3e96c975e0dd53be2d3db84536b"
+ },
+ {
+  "tid": 76,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/sync/test_support.rs",
+  "start_line": 245,
+  "end_line": 265,
+  "name": "point_discovery_at",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "b190ca73953731996a56390aa222d09daa70c522d3ebd55b0c3d89ae5df2b80e"
+ },
+ {
+  "tid": 77,
+  "path": "crates/inkentry-cli/src/cli/cmd/index/continuation.rs",
+  "start_line": 145,
+  "end_line": 151,
+  "name": "detach_embed_eligible",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "894af758816bbc95128539623b9930d8b33a770e3f24e40716414373ac60f0ec"
+ },
+ {
+  "tid": 78,
+  "path": "crates/inkentry-core/src/storage/specs.rs",
+  "start_line": 90,
+  "end_line": 96,
+  "name": "add_spec_link",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "09423085f20b4c1b0ef1aa3e7c15720ed4eb74c87157fbcbea967cffdb0f87aa"
+ },
+ {
+  "tid": 79,
+  "path": "crates/inkentry-core/src/config/secret_store.rs",
+  "start_line": 132,
+  "end_line": 146,
+  "name": "get",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "3191d7c383658256b0ba91388a1e8d0d31cf3735ac44f19b8ad0228ac6e73b44"
+ },
+ {
+  "tid": 80,
+  "path": "crates/inkentry-server/src/uuid_v7.rs",
+  "start_line": 16,
+  "end_line": 27,
+  "name": "uuid_v7_at",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "927a0ffea4243ee1719b2155e2e4dbede30ec5acf778a041f586697671621395"
+ },
+ {
+  "tid": 81,
+  "path": "crates/inkentry-embed/src/error.rs",
+  "start_line": 8,
+  "end_line": 30,
+  "name": "EmbedError",
+  "language": "rust",
+  "node_type": "enum",
+  "span_sha256": "2d5881a2318f5e5a8e3a07897d953db7e757855ed6b0ed7a3ca5c932eb0d4409"
+ },
+ {
+  "tid": 82,
+  "path": "crates/inkentry-core/src/storage/memory/sync.rs",
+  "start_line": 93,
+  "end_line": 126,
+  "name": "rows_for_sync",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "c0c36ff240044649fb631b3c32770271d1b5bed04b814aebdbaa9923e538f422"
+ },
+ {
+  "tid": 83,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/outbox.rs",
+  "start_line": 106,
+  "end_line": 113,
+  "name": "RelayAckRequestWire",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "0140611761c6f508ec1b3a5cc31e8613af8dc13a790493a3cdb3c38ab10b87d8"
+ },
+ {
+  "tid": 84,
+  "path": "crates/inkentry-core/src/storage/git_notes/publish.rs",
+  "start_line": 146,
+  "end_line": 163,
+  "name": "git",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "135de3a9bd30e2acbfc1c605c4514897911d3e38bda8edac208acfd4795622c7"
+ },
+ {
+  "tid": 85,
+  "path": "crates/inkentry-server/src/repair.rs",
+  "start_line": 192,
+  "end_line": 205,
+  "name": "PageOutcome",
+  "language": "rust",
+  "node_type": "enum",
+  "span_sha256": "9937bfc36134abedf67d52b5340b9409fc2f03604fa6e92750a3cb0d28098ffd"
+ },
+ {
+  "tid": 86,
+  "path": "crates/inkentry-core/src/indexer/parser/mod.rs",
+  "start_line": 121,
+  "end_line": 130,
+  "name": "is_binary_file",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "3949145ce99cfc2f6445d0fbe5d433ac4d29caf8623a050a6a5ec63a77f0b03f"
+ },
+ {
+  "tid": 87,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/sync/pull.rs",
+  "start_line": 36,
+  "end_line": 42,
+  "name": "merge",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "b572438b2199f8a008897929cdeaf0ba242a62f6506205372cfc7a10946c1311"
+ },
+ {
+  "tid": 88,
+  "path": "crates/inkentry-server/src/security.rs",
+  "start_line": 15,
+  "end_line": 49,
+  "name": "patterns",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "2b5bdb04d42eba34b8b2412c249bce369fa68e68be11a61ef6b6580ee6bd4fe0"
+ },
+ {
+  "tid": 89,
+  "path": "crates/inkentry-core/src/llm/mod.rs",
+  "start_line": 30,
+  "end_line": 43,
+  "name": "LlmBackend",
+  "language": "rust",
+  "node_type": "trait",
+  "span_sha256": "1dac73c7f3e39603424c15d5ececc88754c48268cc18c82c14982f9a803537ff"
+ },
+ {
+  "tid": 90,
+  "path": "crates/inkentry-cli/src/cli/cmd/metrics.rs",
+  "start_line": 236,
+  "end_line": 245,
+  "name": "format_duration",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "ed203e2b28d2bd2aee7dd53ae25863ae365edb76c616da2355ce916c39a1e733"
+ },
+ {
+  "tid": 91,
+  "path": "crates/inkentry-cli/src/cli/cmd/init.rs",
+  "start_line": 330,
+  "end_line": 351,
+  "name": "write_inkentry_gitignore",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "96ad3a9a61bbebac1b68aaebdd38b124ce462995b2fde62844da6e4957876125"
+ },
+ {
+  "tid": 92,
+  "path": "crates/inkentry-core/src/config/predicates.rs",
+  "start_line": 130,
+  "end_line": 146,
+  "name": "validate_transport_url",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "f63d4b4878c33347b27e0bf0a92f8bdd7fb6f57faf0163227e221c4b05272819"
+ },
+ {
+  "tid": 93,
+  "path": "crates/inkentry-cli/src/cli/cmd/plumbing/cat_chunks.rs",
+  "start_line": 6,
+  "end_line": 19,
+  "name": "cat_chunks",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "83cd9bd452dd5f9f1936c4e5be9442709c02e97d03fcad4e1a6837ab4da80ba2"
+ },
+ {
+  "tid": 94,
+  "path": "crates/inkentry-core/src/conventions/rules/rust.rs",
+  "start_line": 158,
+  "end_line": 197,
+  "name": "async_record",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "964499929a3b7af206b6cea7c0a112a259754732aff8bec9c640757cffb8899d"
+ },
+ {
+  "tid": 95,
+  "path": "crates/inkentry-server/src/server_llm.rs",
+  "start_line": 72,
+  "end_line": 78,
+  "name": "ServerLlm",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "551af889394cbeb399b916173008683acb8486de8a9c5ad22470b4116e7113ba"
+ },
+ {
+  "tid": 96,
+  "path": "crates/inkentry-core/src/utils/mod.rs",
+  "start_line": 71,
+  "end_line": 77,
+  "name": "effective_format",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "489b72f10761db9021dcb9166fd686fe53650a1e79d23d438de5e8593d6815d9"
+ },
+ {
+  "tid": 97,
+  "path": "crates/inkentry-cli/src/cli/cmd/memory/harvest_claude.rs",
+  "start_line": 25,
+  "end_line": 33,
+  "name": "ClaudeHistoryEntry",
+  "language": "rust",
+  "node_type": "struct",
+  "span_sha256": "6cef2e90c02c4fe5d42573fae1624fbcc5404faeb766cf327764bc887f631187"
+ },
+ {
+  "tid": 98,
+  "path": "crates/inkentry-cli/src/cli/cmd/index/mentions.rs",
+  "start_line": 268,
+  "end_line": 306,
+  "name": "extract_mention_tokens",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "c65710092ac34ab209f8d130885460413685058947ffdb43f71d70fffe42b194"
+ },
+ {
+  "tid": 99,
+  "path": "crates/inkentry-core/src/storage/backend.rs",
+  "start_line": 228,
+  "end_line": 235,
+  "name": "search_text",
+  "language": "rust",
+  "node_type": "function",
+  "span_sha256": "af849edfdab88565c18bfc6208a966cacebec60c0f36c9698bf061dcea5f43ab"
+ },
+ {
+  "tid": 100,
+  "path": "docs/examples/onboarding-a-new-codebase.md",
+  "start_line": 7,
+  "end_line": 17,
+  "name": "Step 1: Read what previous contributors left behind",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "c4ac489875464c715f702e636fe5c8f8cab539e002f4673fd2713f826e9a2c95"
+ },
+ {
+  "tid": 101,
+  "path": "docs/commands.md",
+  "start_line": 477,
+  "end_line": 497,
+  "name": "The `code` payload",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "2d7d7d7e7e02090f823ecbd99455e71148cfc4edcaf8c360e8ef1ce7466aa1ea"
+ },
+ {
+  "tid": 102,
+  "path": "docs/dump-format.md",
+  "start_line": 224,
+  "end_line": 232,
+  "name": "Endpoints must resolve",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "f19fa26ee53430382fb2266655450d5d3b2f89719c96f85f6949579cca0c13ff"
+ },
+ {
+  "tid": 103,
+  "path": "docs/architecture/server-api.md",
+  "start_line": 477,
+  "end_line": 486,
+  "name": "Implementation status",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "85f7595eed34a9fd0b011a1bb5e615a2905ef0fb9e73a6766586a2c8fd515b4f"
+ },
+ {
+  "tid": 104,
+  "path": "docs/version-skew.md",
+  "start_line": 188,
+  "end_line": 218,
+  "name": "A live cross-peer divergence",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "3f4d1d0c8ffcb4d107f751f3f9388a4c22c53d698f8de2588712c94361687c89"
+ },
+ {
+  "tid": 105,
+  "path": "docs/model-attribution.md",
+  "start_line": 55,
+  "end_line": 59,
+  "name": "Other bundled inference dependencies",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "78b070320301095f713e575270416d62896057542c35edf6658f2f2f85d1aded"
+ },
+ {
+  "tid": 106,
+  "path": "docs/examples/pre-change-impact-analysis.md",
+  "start_line": 48,
+  "end_line": 53,
+  "name": "Step 4: Find the tests",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "c49cfe43dc20c74d2fafe22880dc6dc287e1ddda9944314838f11fea480a8a75"
+ },
+ {
+  "tid": 107,
+  "path": "docs/memory.md",
+  "start_line": 542,
+  "end_line": 548,
+  "name": "Combine with tags",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "d5860181b09b08ace5b463596d3cae31228e61f781d6e35be0584c5d90f0ed00"
+ },
+ {
+  "tid": 108,
+  "path": "docs/server-setup.md",
+  "start_line": 328,
+  "end_line": 333,
+  "name": "Manual alternative: bare `docker run`",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "fe008253eb88d793b8fd68c97aa6c76ad64c89e59ceb41343ec5451ba4ff85f1"
+ },
+ {
+  "tid": 109,
+  "path": "docs/security/SECURITY-PROGRAM.md",
+  "start_line": 142,
+  "end_line": 151,
+  "name": "Per-release",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "2f0c29dea4ff1f64ecef0a5d6f8982d201c58d4209b92fdea7c9fecad698f2af"
+ },
+ {
+  "tid": 110,
+  "path": "docs/plumbing-and-porcelain.md",
+  "start_line": 69,
+  "end_line": 80,
+  "name": "Output format",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "ab2bdaf11eddc6222544f6be23a8efd93c2a7f6bc32af0c5cabfcc0afe517f42"
+ },
+ {
+  "tid": 111,
+  "path": "docs/architecture/capability-tiers.md",
+  "start_line": 275,
+  "end_line": 310,
+  "name": "Phase 2 (Tier 1 only)",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "ad5c8b4c1557fc15629a51de05f1c7861afee2680571202b8343096730e39fed"
+ },
+ {
+  "tid": 112,
+  "path": "docs/getting-started.md",
+  "start_line": 95,
+  "end_line": 109,
+  "name": "Homebrew (macOS and Linux)",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "4689a25bd5f28c964b9326c0e34c627a706549bd5a6d397db246e8a6915447d9"
+ },
+ {
+  "tid": 113,
+  "path": "docs/architecture/convention-extraction.md",
+  "start_line": 276,
+  "end_line": 280,
+  "name": "Open Questions (for founder)",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "efca9fb274578f416f8b486e11d63ac869b1ddee2f18e866861254fd84fada8b"
+ },
+ {
+  "tid": 114,
+  "path": "docs/security/in-clause-parameterisation.md",
+  "start_line": 47,
+  "end_line": 60,
+  "name": "2.1 Helper",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "c137f90ef88fb931b6f932ee07c0663f18be1eb775912122d4384b43758252ad"
+ },
+ {
+  "tid": 115,
+  "path": "docs/stability.md",
+  "start_line": 161,
+  "end_line": 180,
+  "name": "Server HTTP API",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "2158591f05706da20fb484991835050b7d485c90acb2c5026ce333b8bef02584"
+ },
+ {
+  "tid": 116,
+  "path": "docs/plugin.md",
+  "start_line": 1,
+  "end_line": 10,
+  "name": "Installing the inkentry agent skill",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "05763f7633d30f904775a06f5c8c87f4859ed7d004c71c2c191ced45dbfdfed0"
+ },
+ {
+  "tid": 117,
+  "path": "docs/security/V1-SERVER-AUDIT.md",
+  "start_line": 188,
+  "end_line": 198,
+  "name": "6. Dependencies",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "93d88bf9d8c980dc6261d2e68f7332c09dc2a1784e5a606c130387d69966d0e9"
+ },
+ {
+  "tid": 118,
+  "path": "docs/building.md",
+  "start_line": 162,
+  "end_line": 167,
+  "name": "inkentry-core features",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "0adc053fce072cfa514f41d2ea885b857be3d51fb487993ab1fc3cb39a11dde9"
+ },
+ {
+  "tid": 119,
+  "path": "docs/releasing.md",
+  "start_line": 211,
+  "end_line": 216,
+  "name": "Download URLs",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "aab49f5fbc2e0107733fca8d4a1e867c2c5231e96d171cdc8a3b702bf5f28cfe"
+ },
+ {
+  "tid": 120,
+  "path": "docs/security/THREAT-MODEL.md",
+  "start_line": 527,
+  "end_line": 546,
+  "name": "Test-only overrides that relax discovery",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "350ee1c960dc9807dab5cf6175206113004193150fdea0ec42419a476894a2a2"
+ },
+ {
+  "tid": 121,
+  "path": "docs/testing.md",
+  "start_line": 42,
+  "end_line": 51,
+  "name": "Doctests: nextest does not run them, so they're a separate pass",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "cd2a72f0cc60ab1e4819186d74cacb5b745d81393795889040ed75d3fc777f05"
+ },
+ {
+  "tid": 122,
+  "path": "docs/agent-guide.md",
+  "start_line": 193,
+  "end_line": 197,
+  "name": "Retrieving targeted context",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "97579703408ecdfbdafa52caced4847c4c92c30c6481efaada2d71854ad40390"
+ },
+ {
+  "tid": 123,
+  "path": "docs/config-reference.md",
+  "start_line": 50,
+  "end_line": 56,
+  "name": "Fields (personal config)",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "36428efb9d7622e55f1b937fbbc84e2825e73336f2ca360ebf4124c5773bb8f7"
+ },
+ {
+  "tid": 124,
+  "path": "docs/examples/mdm/README.md",
+  "start_line": 123,
+  "end_line": 129,
+  "name": "Pushing inkentry configuration",
+  "language": "markdown",
+  "node_type": "section",
+  "span_sha256": "c48d0a3562b33649a7548e230ac1e693953f2bd71f4e0f7ef1b814efffa3a177"
+ }
+]

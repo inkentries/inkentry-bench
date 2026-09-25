@@ -1,0 +1,77 @@
+{
+  "name": "code-knownitem-lago-uncovered",
+  "version": 1,
+  "description": "Targeted known-item set over getlago/lago at 02a4bc8d: 20 TypeScript/TSX functions defined as const arrow-function bindings and 10 Rails model class-body regions, all code an older chunker left without a chunk. Three queries each.",
+  "job": {
+    "d4_job": "guard",
+    "note": "Also used as a development signal for code-ranking work (ADR-098 D4). Not blind, so never a comparison."
+  },
+  "frozen": true,
+  "corpus": {
+    "repo_url": "https://github.com/getlago/lago",
+    "commit": "02a4bc8d9c0ab4201875d8615a09c48a2f2a4d31",
+    "submodules": [
+      {
+        "path": "api",
+        "url": "https://github.com/getlago/lago-api",
+        "commit": "731388fca8d8b29d4c9a900d0f6325a509e8ab05"
+      },
+      {
+        "path": "front",
+        "url": "https://github.com/getlago/lago-front",
+        "commit": "dbde5273ec3f9c3c803845146ed0689fca16263a"
+      }
+    ],
+    "materialize": "git archive <commit>, then each submodule's git archive at its pinned commit under its path; delete .inkentry/ before indexing"
+  },
+  "counts": {
+    "targets": 30,
+    "queries": 90,
+    "targets_by_language": {
+      "ruby": 10,
+      "tsx": 9,
+      "typescript": 11
+    },
+    "queries_by_style": {
+      "concept": 30,
+      "keywords": 30,
+      "identifier": 30
+    }
+  },
+  "sampling": {
+    "kind": "targeted, not random",
+    "seed": null,
+    "rng": "none recorded; the selection script was not preserved",
+    "source_index": "chunks from a development build of inkentry that chunked JS/TS function bindings and kept code outside any matched definition (the change that landed as inkentry commit 60694a1b). node_type and name, including the 'verbatim' type and '(class body of ...)' names, are that build's labels.",
+    "pools": {
+      "ts": "front/ TypeScript/TSX functions defined through a const binding, almost all arrow functions (components, hooks and utilities; one is a component wrapped in create(...)), which the earlier chunker did not chunk",
+      "ruby": "api/app/models/*.rb class-body regions (includes, constants, associations, scopes and similar declarations) that the earlier chunker left outside every chunk"
+    },
+    "selection": "20 ts, 10 ruby, chosen to exercise the newly covered code. Kept apart from code-knownitem-lago because it is not a random sample: its numbers describe coverage of those two shapes, not retrieval in general."
+  },
+  "query_authoring": {
+    "method": "LLM-written. For each target the model was shown the target chunk (path, name, docstring and code) and wrote one query in each of three styles.",
+    "styles": {
+      "concept": "plain-language description of what the code does, with no identifiers",
+      "keywords": "2 to 5 keywords",
+      "identifier": "a query that contains an identifier from the target"
+    },
+    "blind": false,
+    "caveat": "The author saw the target, so wording can echo it; the identifier style names the target's own symbols by construction. Good for catching a retrieval regression, not for claiming retrieval quality or comparing against other tools.",
+    "model": "not recorded",
+    "authored": "2026-09-24",
+    "batches": "two batches of 15 targets (tids 1000-1014 and 1015-1029)"
+  },
+  "hit_rule": {
+    "k": 10,
+    "chunk": "hit when a ranked result in the top k has file_path equal to the target's path and a line span [start_line, end_line] that overlaps the target's (both inclusive). Rank is the 1-based position of the first such result.",
+    "file": "hit when a ranked result in the top k has file_path equal to the target's path.",
+    "ranked_only": "results with fused_rank null (graph or cross-project appendix members) are not scored",
+    "chunker_independent": "the rule uses only path and line span at a pinned commit, never a chunk id, so the set survives chunker changes. A result chunk that spans the whole target region (or a large enclosing chunk) counts as a hit."
+  },
+  "span_check": "span_sha256 in targets.json is the sha256 of the target's lines start_line..end_line (1-based, inclusive) of the file at the pinned commit, as raw bytes joined by \\n. The harness checks every one against the materialized corpus before indexing.",
+  "files": {
+    "targets.json": "tid, path, start_line, end_line, name, language, node_type, span_sha256",
+    "queries.json": "tid, style, query"
+  }
+}
