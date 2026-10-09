@@ -1,0 +1,502 @@
+[
+ {
+  "tid": 3000,
+  "path": "api/app/models/charge_filter.rb",
+  "start_line": 22,
+  "end_line": 22,
+  "name": "ChargeFilter default_scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "b566d805ec917da5e4465179dbbfa8f5bfc1ce92c15cc9736a0a5918b314f381"
+ },
+ {
+  "tid": 3001,
+  "path": "api/app/models/charge.rb",
+  "start_line": 47,
+  "end_line": 47,
+  "name": "Charge validate",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "c131462d42414d7e8125e5f464cdaf992c3974ad9d3064c4722668c09f9453f7"
+ },
+ {
+  "tid": 3002,
+  "path": "api/app/models/wallet_transaction.rb",
+  "start_line": 80,
+  "end_line": 80,
+  "name": "WalletTransaction scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "c18b825cc7715940cbd7d95d30445a37dbd8807b6fe84c6e78b29b07aa4d9a65"
+ },
+ {
+  "tid": 3003,
+  "path": "api/app/models/fixed_charge.rb",
+  "start_line": 26,
+  "end_line": 26,
+  "name": "FixedCharge scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "31e840584b3629920b3abedb8ade1beecadac0205bce0c72b9a373f28bcfa651"
+ },
+ {
+  "tid": 3004,
+  "path": "api/app/models/fixed_charge.rb",
+  "start_line": 22,
+  "end_line": 22,
+  "name": "FixedCharge has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "7df08c0dd5b8dfc6b813991f0ed03d8eafc5978cb81bb1e3bba641dd5aef7179"
+ },
+ {
+  "tid": 3005,
+  "path": "api/app/models/organization.rb",
+  "start_line": 190,
+  "end_line": 190,
+  "name": "Organization validate",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f0573b2cb138bd30570e0f4899a9c07aebf97830890117990577e276fa50c230"
+ },
+ {
+  "tid": 3006,
+  "path": "api/app/models/billable_metric.rb",
+  "start_line": 18,
+  "end_line": 18,
+  "name": "BillableMetric has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "8fe867701f15d12865e8879cb40e61d903d5569a787e23f0bf1514d0b693548d"
+ },
+ {
+  "tid": 3007,
+  "path": "api/app/models/credit_note.rb",
+  "start_line": 70,
+  "end_line": 70,
+  "name": "CreditNote enum",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "fe1aad89b2e2e49607cbca72e604bbe76781fbf0e55d8e91e8ac2860c0914fb0"
+ },
+ {
+  "tid": 3008,
+  "path": "api/app/models/subscription.rb",
+  "start_line": 51,
+  "end_line": 51,
+  "name": "Subscription delegate",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f2d9a46444bfa9e60fd7c33b28ffd56ce94a9eec5ce1e13c88bf3d918b440dc7"
+ },
+ {
+  "tid": 3009,
+  "path": "api/app/models/credit_note.rb",
+  "start_line": 77,
+  "end_line": 77,
+  "name": "CreditNote validates",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f1118ae895197b70acd8d10d0bc988a1bfe441bd56551f0fdad45d1de47f0501"
+ },
+ {
+  "tid": 3010,
+  "path": "api/app/models/order_form.rb",
+  "start_line": 26,
+  "end_line": 26,
+  "name": "OrderForm belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "d2f37e3b271de197f31dc8b0482bca6ff9343c716e70c9c6d05d350700fad4a5"
+ },
+ {
+  "tid": 3011,
+  "path": "api/app/models/wallet_transaction.rb",
+  "start_line": 79,
+  "end_line": 79,
+  "name": "WalletTransaction scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "08bc355c53d8f816d71e7036b8e2f05baa30a8998362b3d94e8ecfa2fcb8baa5"
+ },
+ {
+  "tid": 3012,
+  "path": "api/app/models/coupon.rb",
+  "start_line": 16,
+  "end_line": 16,
+  "name": "Coupon has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "3f2ccf2481dee952c2f4872603292fefe50e1e4d1989fb6095daf9c667a3d248"
+ },
+ {
+  "tid": 3013,
+  "path": "api/app/models/invoice.rb",
+  "start_line": 130,
+  "end_line": 135,
+  "name": "Invoice monetize",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "00e0ff2011f75aee1119cedabe24ffe867e9f1c90f73a5e6fe45d75daa49098c"
+ },
+ {
+  "tid": 3014,
+  "path": "api/app/models/invoice.rb",
+  "start_line": 219,
+  "end_line": 219,
+  "name": "Invoice validates",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "75c0b905b2e1400182d06e4bef1237052c4fbf69503bbb215e4f4fc7114bc52a"
+ },
+ {
+  "tid": 3015,
+  "path": "api/app/models/billing_entity.rb",
+  "start_line": 96,
+  "end_line": 96,
+  "name": "BillingEntity validates",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "05a097b917f48312af003a660e4f8ca5ac1ff4749b9ae46143e7db3085074350"
+ },
+ {
+  "tid": 3016,
+  "path": "api/app/models/customer.rb",
+  "start_line": 122,
+  "end_line": 122,
+  "name": "Customer has_one",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "b7a3f3c3d68d991fd3fa69e6d9457c211e4768f88edb1739ab24e3f597ba90db"
+ },
+ {
+  "tid": 3017,
+  "path": "api/app/models/wallet.rb",
+  "start_line": 8,
+  "end_line": 8,
+  "name": "Wallet belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "5a2e1137fe10eaf1e48daa18730c4dd576d76ca6f3805116df975b89bf22755a"
+ },
+ {
+  "tid": 3018,
+  "path": "api/app/models/billable_metric.rb",
+  "start_line": 14,
+  "end_line": 14,
+  "name": "BillableMetric has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "3ef46757325ea3792852386872eebd312d109c39d9033a38f029311eb0af3cc0"
+ },
+ {
+  "tid": 3019,
+  "path": "api/app/models/organization.rb",
+  "start_line": 94,
+  "end_line": 94,
+  "name": "Organization has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "8e15acbeaef75ca7a978919a7f42231c0bd74bd1d6972702e9f964f3a9f7f4a7"
+ },
+ {
+  "tid": 3020,
+  "path": "api/app/models/tax.rb",
+  "start_line": 39,
+  "end_line": 39,
+  "name": "Tax validates",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "14e323ef57231eaf2151a8c45a565fd09bf7cea826dab49ef31eec25a8b4385d"
+ },
+ {
+  "tid": 3021,
+  "path": "api/app/models/fee.rb",
+  "start_line": 26,
+  "end_line": 26,
+  "name": "Fee belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "2f373527f26912120e8da04c302081d2cff8403adb18b225ce3ee4e83d923f47"
+ },
+ {
+  "tid": 3022,
+  "path": "api/app/models/payment.rb",
+  "start_line": 39,
+  "end_line": 56,
+  "name": "Payment scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "d4cc7c09903da8ec0ba954115af50624505ab604c4380364768a4eddfdf2ee0c"
+ },
+ {
+  "tid": 3023,
+  "path": "api/app/models/clickhouse/activity_log.rb",
+  "start_line": 8,
+  "end_line": 8,
+  "name": "ActivityLog belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "a76c66e683c7fe4194d5fa568b33b4731b7178e0778025a9711fba88e8630f4f"
+ },
+ {
+  "tid": 3024,
+  "path": "api/app/models/customer.rb",
+  "start_line": 136,
+  "end_line": 136,
+  "name": "Customer default_scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "484b8dbfc3f12b54f8cc220d6a34f78885e1b3dcfcb0daf21719f5a3a71504ea"
+ },
+ {
+  "tid": 3025,
+  "path": "api/app/models/wallet.rb",
+  "start_line": 42,
+  "end_line": 42,
+  "name": "Wallet monetize",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "0d8d462f0a338e3067840ae51a09e5ce98981cf413f2c53237925ec51506ab25"
+ },
+ {
+  "tid": 3026,
+  "path": "api/app/models/invoice_subscription.rb",
+  "start_line": 16,
+  "end_line": 16,
+  "name": "InvoiceSubscription monetize",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "676e88724f77bff31b42a2d6838b6c8a48805c2ee008c6a902031284b2b11a2e"
+ },
+ {
+  "tid": 3027,
+  "path": "api/app/models/coupon.rb",
+  "start_line": 52,
+  "end_line": 52,
+  "name": "Coupon validates",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "b5784213bb28e44a49e59d078d96e5c1db470654ba032d29a5ee9dc58ece5703"
+ },
+ {
+  "tid": 3028,
+  "path": "api/app/models/credit.rb",
+  "start_line": 23,
+  "end_line": 23,
+  "name": "Credit scope",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "7d62d678dddb1515fe5ad4006f212e38b15aa56a65a27364d78a3f4dc3a220b2"
+ },
+ {
+  "tid": 3029,
+  "path": "api/app/models/order.rb",
+  "start_line": 35,
+  "end_line": 35,
+  "name": "Order belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "e21841065eff71fb6e4bde40a40746966aa5c0f347b0553f72681a173f15dc73"
+ },
+ {
+  "tid": 3030,
+  "path": "api/app/models/integration_customers/base_customer.rb",
+  "start_line": 38,
+  "end_line": 38,
+  "name": "BaseCustomer before_validation",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "c995f3117f0da095cfd4726d11b8d3c7b15797e00dd5311a635c1981ca10ec5d"
+ },
+ {
+  "tid": 3031,
+  "path": "api/app/models/fee.rb",
+  "start_line": 48,
+  "end_line": 48,
+  "name": "Fee monetize",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "6f37e03be7aaa5ecfced527b4b72119a335283950266f6c43de8080bb3376e41"
+ },
+ {
+  "tid": 3032,
+  "path": "api/app/models/subscription.rb",
+  "start_line": 17,
+  "end_line": 17,
+  "name": "Subscription has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "4de3417d72929351b7995e683357c295a787d27a18e285a271a0b46851933a68"
+ },
+ {
+  "tid": 3033,
+  "path": "api/app/models/order_form.rb",
+  "start_line": 25,
+  "end_line": 25,
+  "name": "OrderForm belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f689aeaa44e5622da421058da72422a7c4621658f82431e3847fe7a67aa7dcee"
+ },
+ {
+  "tid": 3034,
+  "path": "api/app/models/tax.rb",
+  "start_line": 24,
+  "end_line": 24,
+  "name": "Tax has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "9d99eab94841344052c988d90a4ecbdb6f08e1f08786d15ffccff636ba4382c4"
+ },
+ {
+  "tid": 3035,
+  "path": "api/app/models/invoice_subscription.rb",
+  "start_line": 7,
+  "end_line": 7,
+  "name": "InvoiceSubscription belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "97053582cb32898d7b7642a6dc053129487b75dad00b1aca1de70e38a5605f88"
+ },
+ {
+  "tid": 3036,
+  "path": "api/app/models/usage_monitoring/alert.rb",
+  "start_line": 33,
+  "end_line": 33,
+  "name": "Alert belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "39a78477f0767a195c7e13e58951bf4ebe817971e02991839e2e63bf8fe85f23"
+ },
+ {
+  "tid": 3037,
+  "path": "api/app/models/clickhouse/activity_log.rb",
+  "start_line": 22,
+  "end_line": 22,
+  "name": "ActivityLog belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f29521157e770b41bb87a250d3b94d0d8c1d58394dc1fa3e02113c24977da0af"
+ },
+ {
+  "tid": 3038,
+  "path": "api/app/models/plan.rb",
+  "start_line": 24,
+  "end_line": 24,
+  "name": "Plan has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "17141357d27ae7cb2c43acd5092fa3f969a4f9efb15f3c8cca6383409326a39c"
+ },
+ {
+  "tid": 3039,
+  "path": "api/app/models/charge.rb",
+  "start_line": 57,
+  "end_line": 57,
+  "name": "Charge validate",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "4d45cfc2b0ecac3d2673b64ecefacc0486a68a304cd6bbd6a7642ddf576ddce5"
+ },
+ {
+  "tid": 3040,
+  "path": "api/app/models/payment.rb",
+  "start_line": 14,
+  "end_line": 14,
+  "name": "Payment belongs_to",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "e9aca633008c6af489ab685577677091d061634b2446738a7ed6de98605cf972"
+ },
+ {
+  "tid": 3041,
+  "path": "api/app/models/plan.rb",
+  "start_line": 35,
+  "end_line": 35,
+  "name": "Plan has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "03834c7ed4190a8b93b8f2f6380f0e4d1458af9eb79ff1b5d9f7977439546aa0"
+ },
+ {
+  "tid": 3042,
+  "path": "api/app/models/quote_version.rb",
+  "start_line": 33,
+  "end_line": 35,
+  "name": "QuoteVersion enum",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "9137e3fb93982fa92d529fe0943314af6af8a854cfe791cbf775186c8ac6f66c"
+ },
+ {
+  "tid": 3043,
+  "path": "api/app/models/credit.rb",
+  "start_line": 14,
+  "end_line": 14,
+  "name": "Credit monetize",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "2e0957af51053f99b5d4329f75b3254ed9dad6e41866e8830ab255fd2837f2b1"
+ },
+ {
+  "tid": 3044,
+  "path": "api/app/models/billing_entity.rb",
+  "start_line": 32,
+  "end_line": 32,
+  "name": "BillingEntity has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "4b67fad7044501347349dfe296a05cffd7540d0155a447373dc3f35cf56d5e12"
+ },
+ {
+  "tid": 3045,
+  "path": "api/app/models/recurring_transaction_rule.rb",
+  "start_line": 49,
+  "end_line": 49,
+  "name": "RecurringTransactionRule enum",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "6dc72178fec770964e1f6472ff3712aea1c98c97b15a8524e88be09327a5d280"
+ },
+ {
+  "tid": 3046,
+  "path": "api/app/models/rate_card_rate.rb",
+  "start_line": 42,
+  "end_line": 42,
+  "name": "RateCardRate enum",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "dd840836da9f183d59419ed3c330b2740ba546f6210f142ec59f0317a6f7318d"
+ },
+ {
+  "tid": 3047,
+  "path": "api/app/models/usage_monitoring/alert.rb",
+  "start_line": 46,
+  "end_line": 48,
+  "name": "Alert has_many",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "f5469f58d137b7ea4fa896e43e6243cc30d8665be5e727a56f99c6e9715edf4e"
+ },
+ {
+  "tid": 3048,
+  "path": "api/app/models/order.rb",
+  "start_line": 56,
+  "end_line": 56,
+  "name": "Order delegate",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "9e7cf3036b1c22cb1d257127a986b262260161874476a12c361392b587a4d5ad"
+ },
+ {
+  "tid": 3049,
+  "path": "api/app/models/rate_card.rb",
+  "start_line": 31,
+  "end_line": 31,
+  "name": "RateCard enum",
+  "language": "ruby",
+  "node_type": "class_body_statement",
+  "span_sha256": "4bc8e83abea31c5ecee51f4ea52d03211397707a2aaa116cb6785e3d451564d9"
+ }
+]

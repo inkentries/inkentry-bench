@@ -1,0 +1,752 @@
+[
+ {
+  "tid": 3000,
+  "style": "concept",
+  "query": "charge filters skip soft-deleted ones and keep the order they were last updated in"
+ },
+ {
+  "tid": 3000,
+  "style": "keywords",
+  "query": "charge filter default ordering"
+ },
+ {
+  "tid": 3000,
+  "style": "identifier",
+  "query": "ChargeFilter default_scope kept updated_at order"
+ },
+ {
+  "tid": 3001,
+  "style": "concept",
+  "query": "check a usage charge's pricing properties are valid for its pricing model"
+ },
+ {
+  "tid": 3001,
+  "style": "keywords",
+  "query": "charge properties validation"
+ },
+ {
+  "tid": 3001,
+  "style": "identifier",
+  "query": "Charge validate_properties"
+ },
+ {
+  "tid": 3002,
+  "style": "concept",
+  "query": "wallet top-ups that have settled and still have unspent credit left to consume"
+ },
+ {
+  "tid": 3002,
+  "style": "keywords",
+  "query": "settled wallet credits remaining"
+ },
+ {
+  "tid": 3002,
+  "style": "identifier",
+  "query": "available_inbound wallet transactions remaining_amount_cents"
+ },
+ {
+  "tid": 3003,
+  "style": "concept",
+  "query": "fixed fees billed at the end of the period instead of upfront"
+ },
+ {
+  "tid": 3003,
+  "style": "keywords",
+  "query": "fixed charge arrears"
+ },
+ {
+  "tid": 3003,
+  "style": "identifier",
+  "query": "FixedCharge pay_in_arrears scope"
+ },
+ {
+  "tid": 3004,
+  "style": "concept",
+  "query": "tax rates attached to a recurring fixed fee, removed when the fee is deleted"
+ },
+ {
+  "tid": 3004,
+  "style": "keywords",
+  "query": "fixed charge applied taxes"
+ },
+ {
+  "tid": 3004,
+  "style": "identifier",
+  "query": "FixedCharge applied_taxes association"
+ },
+ {
+  "tid": 3005,
+  "style": "concept",
+  "query": "stop an account from turning on paid add-on integrations it has no license for"
+ },
+ {
+  "tid": 3005,
+  "style": "keywords",
+  "query": "organization premium integrations check"
+ },
+ {
+  "tid": 3005,
+  "style": "identifier",
+  "query": "validate_premium_integrations on Organization"
+ },
+ {
+  "tid": 3006,
+  "style": "concept",
+  "query": "discount restrictions that point at a particular usage metric"
+ },
+ {
+  "tid": 3006,
+  "style": "keywords",
+  "query": "billable metric coupon targets"
+ },
+ {
+  "tid": 3006,
+  "style": "identifier",
+  "query": "BillableMetric coupon_targets"
+ },
+ {
+  "tid": 3007,
+  "style": "concept",
+  "query": "the refund progress state of a credit note, which may be empty when nothing is refunded"
+ },
+ {
+  "tid": 3007,
+  "style": "keywords",
+  "query": "credit note refund status"
+ },
+ {
+  "tid": 3007,
+  "style": "identifier",
+  "query": "refund_status enum on CreditNote"
+ },
+ {
+  "tid": 3008,
+  "style": "concept",
+  "query": "a subscription reads its currency from the plan it is on"
+ },
+ {
+  "tid": 3008,
+  "style": "keywords",
+  "query": "subscription plan currency"
+ },
+ {
+  "tid": 3008,
+  "style": "identifier",
+  "query": "plan_amount_currency delegated to plan"
+ },
+ {
+  "tid": 3009,
+  "style": "concept",
+  "query": "a credit note's total can never be negative"
+ },
+ {
+  "tid": 3009,
+  "style": "keywords",
+  "query": "credit note total non-negative"
+ },
+ {
+  "tid": 3009,
+  "style": "identifier",
+  "query": "CreditNote total_amount_cents numericality"
+ },
+ {
+  "tid": 3010,
+  "style": "concept",
+  "query": "an order form is generated from one specific revision of a sales quote"
+ },
+ {
+  "tid": 3010,
+  "style": "keywords",
+  "query": "order form quote version"
+ },
+ {
+  "tid": 3010,
+  "style": "identifier",
+  "query": "OrderForm belongs_to quote_version"
+ },
+ {
+  "tid": 3011,
+  "style": "concept",
+  "query": "wallet credit movements still waiting to be settled"
+ },
+ {
+  "tid": 3011,
+  "style": "keywords",
+  "query": "pending wallet transactions"
+ },
+ {
+  "tid": 3011,
+  "style": "identifier",
+  "query": "WalletTransaction pending scope"
+ },
+ {
+  "tid": 3012,
+  "style": "concept",
+  "query": "the usage metrics a discount is limited to"
+ },
+ {
+  "tid": 3012,
+  "style": "keywords",
+  "query": "coupon billable metrics restriction"
+ },
+ {
+  "tid": 3012,
+  "style": "identifier",
+  "query": "Coupon billable_metrics through coupon_targets"
+ },
+ {
+  "tid": 3013,
+  "style": "concept",
+  "query": "read-only money amounts on an invoice for usage charges, subscription fees and what is still owed, in the invoice currency"
+ },
+ {
+  "tid": 3013,
+  "style": "keywords",
+  "query": "invoice total due money amounts"
+ },
+ {
+  "tid": 3013,
+  "style": "identifier",
+  "query": "Invoice monetize total_due_amount_cents"
+ },
+ {
+  "tid": 3014,
+  "style": "concept",
+  "query": "an invoice may only record a lost payment dispute when it is in a state where losing one is possible"
+ },
+ {
+  "tid": 3014,
+  "style": "keywords",
+  "query": "invoice payment dispute lost"
+ },
+ {
+  "tid": 3014,
+  "style": "identifier",
+  "query": "payment_dispute_lost_at validation payment_dispute_losable?"
+ },
+ {
+  "tid": 3015,
+  "style": "concept",
+  "query": "invoice numbering prefix for a billing entity must be 1 to 10 characters but can be left blank at creation"
+ },
+ {
+  "tid": 3015,
+  "style": "keywords",
+  "query": "document number prefix length"
+ },
+ {
+  "tid": 3015,
+  "style": "identifier",
+  "query": "BillingEntity document_number_prefix length on create"
+ },
+ {
+  "tid": 3016,
+  "style": "concept",
+  "query": "a customer's linked account in the Anrok sales tax service"
+ },
+ {
+  "tid": 3016,
+  "style": "keywords",
+  "query": "customer anrok tax integration"
+ },
+ {
+  "tid": 3016,
+  "style": "identifier",
+  "query": "anrok_customer on Customer"
+ },
+ {
+  "tid": 3017,
+  "style": "concept",
+  "query": "a prepaid credit wallet still finds its owner even after that customer has been deleted"
+ },
+ {
+  "tid": 3017,
+  "style": "keywords",
+  "query": "wallet customer deleted"
+ },
+ {
+  "tid": 3017,
+  "style": "identifier",
+  "query": "Wallet belongs_to customer with_discarded"
+ },
+ {
+  "tid": 3018,
+  "style": "concept",
+  "query": "the plans a usage metric is priced in, through its charges"
+ },
+ {
+  "tid": 3018,
+  "style": "keywords",
+  "query": "billable metric plans"
+ },
+ {
+  "tid": 3018,
+  "style": "identifier",
+  "query": "BillableMetric plans through charges"
+ },
+ {
+  "tid": 3019,
+  "style": "concept",
+  "query": "an account's record of subscription activity that feeds usage monitoring and alerts"
+ },
+ {
+  "tid": 3019,
+  "style": "keywords",
+  "query": "organization subscription activities monitoring"
+ },
+ {
+  "tid": 3019,
+  "style": "identifier",
+  "query": "Organization subscription_activities UsageMonitoring"
+ },
+ {
+  "tid": 3020,
+  "style": "concept",
+  "query": "tax codes are required and must be unique within an account"
+ },
+ {
+  "tid": 3020,
+  "style": "keywords",
+  "query": "tax code unique"
+ },
+ {
+  "tid": 3020,
+  "style": "identifier",
+  "query": "Tax code uniqueness organization_id"
+ },
+ {
+  "tid": 3021,
+  "style": "concept",
+  "query": "a fee keeps resolving the rate-card price it was billed from even after that price is archived"
+ },
+ {
+  "tid": 3021,
+  "style": "keywords",
+  "query": "fee rate card rate archived"
+ },
+ {
+  "tid": 3021,
+  "style": "identifier",
+  "query": "Fee rate_card_rate with_discarded"
+ },
+ {
+  "tid": 3022,
+  "style": "concept",
+  "query": "payments that belong to an account, found through the visible invoices or payment requests they pay"
+ },
+ {
+  "tid": 3022,
+  "style": "keywords",
+  "query": "organization payments invoices requests"
+ },
+ {
+  "tid": 3022,
+  "style": "identifier",
+  "query": "Payment for_organization scope"
+ },
+ {
+  "tid": 3023,
+  "style": "concept",
+  "query": "each audit log entry is tied to the account where the action happened"
+ },
+ {
+  "tid": 3023,
+  "style": "keywords",
+  "query": "activity log organization"
+ },
+ {
+  "tid": 3023,
+  "style": "identifier",
+  "query": "Clickhouse ActivityLog belongs_to organization"
+ },
+ {
+  "tid": 3024,
+  "style": "concept",
+  "query": "deleted customers are hidden from every query by default"
+ },
+ {
+  "tid": 3024,
+  "style": "keywords",
+  "query": "customer soft delete default scope"
+ },
+ {
+  "tid": 3024,
+  "style": "identifier",
+  "query": "Customer default_scope kept"
+ },
+ {
+  "tid": 3025,
+  "style": "concept",
+  "query": "a wallet's live balance and live usage expressed as money in the wallet's own currency"
+ },
+ {
+  "tid": 3025,
+  "style": "keywords",
+  "query": "wallet ongoing balance money"
+ },
+ {
+  "tid": 3025,
+  "style": "identifier",
+  "query": "monetize ongoing_balance_cents ongoing_usage_balance_cents"
+ },
+ {
+  "tid": 3026,
+  "style": "concept",
+  "query": "the total billed for one subscription on an invoice, as a read-only money value"
+ },
+ {
+  "tid": 3026,
+  "style": "keywords",
+  "query": "invoice subscription total amount"
+ },
+ {
+  "tid": 3026,
+  "style": "identifier",
+  "query": "InvoiceSubscription total_amount_cents monetize"
+ },
+ {
+  "tid": 3027,
+  "style": "concept",
+  "query": "discount codes must be unique per account, ignoring codes that were deleted"
+ },
+ {
+  "tid": 3027,
+  "style": "keywords",
+  "query": "coupon code unique deleted"
+ },
+ {
+  "tid": 3027,
+  "style": "identifier",
+  "query": "Coupon code uniqueness deleted_at organization_id"
+ },
+ {
+  "tid": 3028,
+  "style": "concept",
+  "query": "credits that still count because their invoice wasn't voided, closed or deleted"
+ },
+ {
+  "tid": 3028,
+  "style": "keywords",
+  "query": "active credits invoice status"
+ },
+ {
+  "tid": 3028,
+  "style": "identifier",
+  "query": "Credit active scope invoices status"
+ },
+ {
+  "tid": 3029,
+  "style": "concept",
+  "query": "every order originates from a signed order form"
+ },
+ {
+  "tid": 3029,
+  "style": "keywords",
+  "query": "order order form"
+ },
+ {
+  "tid": 3029,
+  "style": "identifier",
+  "query": "Order belongs_to order_form"
+ },
+ {
+  "tid": 3030,
+  "style": "concept",
+  "query": "integration customer mappings get a code filled in automatically before they are validated"
+ },
+ {
+  "tid": 3030,
+  "style": "keywords",
+  "query": "integration customer code default"
+ },
+ {
+  "tid": 3030,
+  "style": "identifier",
+  "query": "IntegrationCustomers set_code before_validation"
+ },
+ {
+  "tid": 3031,
+  "style": "concept",
+  "query": "a fee's unrounded high-precision total as a money amount"
+ },
+ {
+  "tid": 3031,
+  "style": "keywords",
+  "query": "fee precise total amount"
+ },
+ {
+  "tid": 3031,
+  "style": "identifier",
+  "query": "Fee monetize precise_total_amount_cents"
+ },
+ {
+  "tid": 3032,
+  "style": "concept",
+  "query": "the subscriptions that replaced this one after an upgrade or downgrade"
+ },
+ {
+  "tid": 3032,
+  "style": "keywords",
+  "query": "subscription next upgrade downgrade"
+ },
+ {
+  "tid": 3032,
+  "style": "identifier",
+  "query": "next_subscriptions previous_subscription_id"
+ },
+ {
+  "tid": 3033,
+  "style": "concept",
+  "query": "the customer an order form is made out to"
+ },
+ {
+  "tid": 3033,
+  "style": "keywords",
+  "query": "order form customer"
+ },
+ {
+  "tid": 3033,
+  "style": "identifier",
+  "query": "OrderForm belongs_to customer"
+ },
+ {
+  "tid": 3034,
+  "style": "concept",
+  "query": "credit notes on which a given tax rate was applied"
+ },
+ {
+  "tid": 3034,
+  "style": "keywords",
+  "query": "tax credit notes"
+ },
+ {
+  "tid": 3034,
+  "style": "identifier",
+  "query": "Tax credit_notes through credit_notes_taxes"
+ },
+ {
+  "tid": 3035,
+  "style": "concept",
+  "query": "tie an invoice's per-subscription line back to the subscription being billed"
+ },
+ {
+  "tid": 3035,
+  "style": "keywords",
+  "query": "invoice subscription link"
+ },
+ {
+  "tid": 3035,
+  "style": "identifier",
+  "query": "InvoiceSubscription belongs_to subscription"
+ },
+ {
+  "tid": 3036,
+  "style": "concept",
+  "query": "a usage alert keeps resolving the metric it watches even if that metric is archived"
+ },
+ {
+  "tid": 3036,
+  "style": "keywords",
+  "query": "usage alert billable metric"
+ },
+ {
+  "tid": 3036,
+  "style": "identifier",
+  "query": "UsageMonitoring Alert billable_metric with_discarded"
+ },
+ {
+  "tid": 3037,
+  "style": "concept",
+  "query": "audit log entries record which team member made the change, when there was one"
+ },
+ {
+  "tid": 3037,
+  "style": "keywords",
+  "query": "activity log user"
+ },
+ {
+  "tid": 3037,
+  "style": "identifier",
+  "query": "ActivityLog belongs_to user optional"
+ },
+ {
+  "tid": 3038,
+  "style": "concept",
+  "query": "all the subscriptions customers hold on a pricing plan"
+ },
+ {
+  "tid": 3038,
+  "style": "keywords",
+  "query": "plan subscriptions"
+ },
+ {
+  "tid": 3038,
+  "style": "identifier",
+  "query": "Plan has_many subscriptions"
+ },
+ {
+  "tid": 3039,
+  "style": "concept",
+  "query": "rules for when a usage charge is allowed to be prorated"
+ },
+ {
+  "tid": 3039,
+  "style": "keywords",
+  "query": "charge proration validation"
+ },
+ {
+  "tid": 3039,
+  "style": "identifier",
+  "query": "Charge validate_prorated"
+ },
+ {
+  "tid": 3040,
+  "style": "concept",
+  "query": "the saved card or bank method a payment was made with, if any"
+ },
+ {
+  "tid": 3040,
+  "style": "keywords",
+  "query": "payment method on payment"
+ },
+ {
+  "tid": 3040,
+  "style": "identifier",
+  "query": "Payment belongs_to payment_method"
+ },
+ {
+  "tid": 3041,
+  "style": "concept",
+  "query": "tax rates applied to a pricing plan"
+ },
+ {
+  "tid": 3041,
+  "style": "keywords",
+  "query": "plan taxes"
+ },
+ {
+  "tid": 3041,
+  "style": "identifier",
+  "query": "Plan taxes through applied_taxes"
+ },
+ {
+  "tid": 3042,
+  "style": "concept",
+  "query": "lifecycle states of a quote revision, which starts out as a draft"
+ },
+ {
+  "tid": 3042,
+  "style": "keywords",
+  "query": "quote version status draft"
+ },
+ {
+  "tid": 3042,
+  "style": "identifier",
+  "query": "QuoteVersion status enum STATUSES"
+ },
+ {
+  "tid": 3043,
+  "style": "concept",
+  "query": "the money amount of a credit applied to an invoice"
+ },
+ {
+  "tid": 3043,
+  "style": "keywords",
+  "query": "credit amount money"
+ },
+ {
+  "tid": 3043,
+  "style": "identifier",
+  "query": "Credit amount_cents monetize"
+ },
+ {
+  "tid": 3044,
+  "style": "concept",
+  "query": "default taxes attached to a billing entity and deleted along with it"
+ },
+ {
+  "tid": 3044,
+  "style": "keywords",
+  "query": "billing entity taxes"
+ },
+ {
+  "tid": 3044,
+  "style": "identifier",
+  "query": "BillingEntity applied_taxes AppliedTax"
+ },
+ {
+  "tid": 3045,
+  "style": "concept",
+  "query": "the calculation mode of an automatic recurring wallet top-up"
+ },
+ {
+  "tid": 3045,
+  "style": "keywords",
+  "query": "recurring top-up rule method"
+ },
+ {
+  "tid": 3045,
+  "style": "identifier",
+  "query": "RecurringTransactionRule method enum"
+ },
+ {
+  "tid": 3046,
+  "style": "concept",
+  "query": "the unit of time a rate card price is billed over, like month or year"
+ },
+ {
+  "tid": 3046,
+  "style": "keywords",
+  "query": "rate billing interval unit"
+ },
+ {
+  "tid": 3046,
+  "style": "identifier",
+  "query": "RateCardRate billing_interval_unit enum"
+ },
+ {
+  "tid": 3047,
+  "style": "concept",
+  "query": "every time a usage alert fired, not only the ones currently triggered"
+ },
+ {
+  "tid": 3047,
+  "style": "keywords",
+  "query": "alert trigger history"
+ },
+ {
+  "tid": 3047,
+  "style": "identifier",
+  "query": "all_triggered_alerts on UsageMonitoring Alert"
+ },
+ {
+  "tid": 3048,
+  "style": "concept",
+  "query": "an order takes its currency from the quote revision it came from"
+ },
+ {
+  "tid": 3048,
+  "style": "keywords",
+  "query": "order currency quote"
+ },
+ {
+  "tid": 3048,
+  "style": "identifier",
+  "query": "Order currency delegate quote_version"
+ },
+ {
+  "tid": 3049,
+  "style": "concept",
+  "query": "when in the billing period a rate card's charges are invoiced"
+ },
+ {
+  "tid": 3049,
+  "style": "keywords",
+  "query": "rate card billing timing"
+ },
+ {
+  "tid": 3049,
+  "style": "identifier",
+  "query": "RateCard billing_timing enum"
+ }
+]

@@ -15,6 +15,7 @@ the set was built.
 | `code-knownitem-inkentry/v1` | `codeknown/` | 125 | 375 | guard |
 | `code-knownitem-lago/v1` | `codeknown/` | 125 | 375 | guard |
 | `code-knownitem-lago-uncovered/v1` | `codeknown/` | 30 | 90 | guard (targeted) |
+| `code-knownitem-lago-railsbody/v1` | `codeknown/` | 50 | 150 | guard (one code shape) |
 
 The older suites (`codesearchnet/`, `graph/tasks.json`, `memory/questions-*.json`)
 predate this layout and keep their own locations.
