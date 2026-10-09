@@ -323,6 +323,7 @@ ADR-098 D4 requires:
 | `code-knownitem-inkentry/v1` | inkentry at `ead04c85` | 100 Rust definitions, 25 docs sections | 375 |
 | `code-knownitem-lago/v1` | getlago/lago at `02a4bc8d`, with its `api` and `front` submodules | 70 Ruby, 20 TS/TSX, 15 Go, 20 Markdown | 375 |
 | `code-knownitem-lago-uncovered/v1` | the same lago commit | 20 TS/TSX `const` arrow functions, 10 Rails class bodies (targeted, not random) | 90 |
+| `code-knownitem-lago-railsbody/v1` | the same lago commit | 50 single statements from the class bodies of large Rails models | 150 |
 
 Each target is a path and a line span. There are three queries per target, one
 in each style: `concept` (plain language, no identifiers), `keywords` (2 to 5)
@@ -335,6 +336,7 @@ so a set stays valid across chunker changes.
 bash codeknown/run.sh --set code-knownitem-inkentry/v1 --mode text
 bash codeknown/run.sh --set code-knownitem-lago/v1 --mode text --repo-dir ~/src/lago
 bash codeknown/run.sh --set code-knownitem-lago-uncovered/v1 --mode text --reuse-index
+bash codeknown/run.sh --set code-knownitem-lago-railsbody/v1 --mode text --reuse-index
 ```
 
 The run prints R@1, R@5, R@10, MRR@10 and file-level R@10, overall, by query
@@ -429,6 +431,10 @@ builds, never as absolute quality.
   Read it next to `code-knownitem-lago`.
 - `code-knownitem-lago-uncovered` is a hand-picked sample of two code shapes.
   Never pool it with the random sets.
+- `code-knownitem-lago-railsbody` samples one code shape, class-level
+  declarations in large Rails models. Its targets are single statements, so
+  the overlap rule is much stricter there than for the region-sized Ruby
+  targets in `code-knownitem-lago-uncovered`.
 - The overlap rule is lenient. A large chunk that covers the target counts as
   a hit, so a coarser chunker can gain chunk-level recall without getting
   better at finding code.

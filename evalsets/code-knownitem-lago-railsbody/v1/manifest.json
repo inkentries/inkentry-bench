@@ -1,0 +1,87 @@
+{
+ "name": "code-knownitem-lago-railsbody",
+ "version": 1,
+ "description": "Known-item set over getlago/lago at 02a4bc8d: 50 single statements from the class bodies of large Rails models (associations, scopes, validations, enums, monetize, callbacks, delegate), three queries each. Measures how well code search reaches class-level declarations that sit outside any method.",
+ "job": {
+  "d4_job": "guard",
+  "note": "Also used as a development signal for code-ranking work (ADR-098 D4). Not blind, so never a comparison."
+ },
+ "frozen": true,
+ "corpus": {
+  "repo_url": "https://github.com/getlago/lago",
+  "commit": "02a4bc8d9c0ab4201875d8615a09c48a2f2a4d31",
+  "submodules": [
+   {
+    "path": "api",
+    "url": "https://github.com/getlago/lago-api",
+    "commit": "731388fca8d8b29d4c9a900d0f6325a509e8ab05"
+   },
+   {
+    "path": "front",
+    "url": "https://github.com/getlago/lago-front",
+    "commit": "dbde5273ec3f9c3c803845146ed0689fca16263a"
+   }
+  ],
+  "materialize": "git archive <commit>, then each submodule's git archive at its pinned commit under its path; delete .inkentry/ before indexing"
+ },
+ "counts": {
+  "targets": 50,
+  "queries": 150,
+  "targets_by_language": {
+   "ruby": 50
+  },
+  "targets_by_macro": {
+   "has_many": 11,
+   "belongs_to": 10,
+   "scope": 5,
+   "enum": 5,
+   "validates": 5,
+   "monetize": 5,
+   "validate": 3,
+   "default_scope": 2,
+   "delegate": 2,
+   "has_one": 1,
+   "before_validation": 1
+  },
+  "queries_by_style": {
+   "concept": 50,
+   "keywords": 50,
+   "identifier": 50
+  }
+ },
+ "sampling": {
+  "kind": "random",
+  "seed": 23,
+  "rng": "Python random.seed(23); candidates shuffled once",
+  "source": "every .rb file under api/app/models at the pinned commit (the api submodule)",
+  "classes": "a `class` whose text from its `class` line to its matching `end` is longer than 2048 characters (512 tokens at 4 characters per token), so a chunker that caps chunks at 512 tokens cannot keep it whole",
+  "statements": "a line at the class body's indentation (class indent + 2) starting with one of: belongs_to, has_many, has_one, has_and_belongs_to_many, validate, validates, validates_*, scope, default_scope, before_*/after_*/around_*, enum, attribute, store_accessor, delegate, encrypts, monetize, accepts_nested_attributes_for, serialize, normalizes, alias_attribute, searchkick, pg_search_scope, counter_culture, has_paper_trail, aasm, state_machine; the target span extends over following lines indented deeper, and a closing end/}/) at the body indentation",
+  "exclude": "statements with fewer than 16 word characters",
+  "selection": "walk the shuffled candidates (804 statements in 30 files) taking at most two targets per file until 50 are taken"
+ },
+ "query_authoring": {
+  "method": "LLM-written. For each target the model was shown the target statement, its class name and path, and about six lines of context either side, and wrote one query in each of three styles. It was not shown how the corpus is chunked or indexed.",
+  "styles": {
+   "concept": "plain-language description of what the code does, with no identifiers",
+   "keywords": "2 to 5 keywords",
+   "identifier": "a query that contains an identifier from the target"
+  },
+  "blind": false,
+  "caveat": "The author saw the target, so wording can echo it; the identifier style names the target's own symbols by construction. Good for catching a retrieval regression, not for claiming retrieval quality or comparing against other tools.",
+  "model": "claude-opus-5-5",
+  "authored": "2026-10-09",
+  "batches": "one batch of 50 targets (tids 3000-3049)"
+ },
+ "hit_rule": {
+  "k": 10,
+  "chunk": "hit when a ranked result in the top k has file_path equal to the target's path and a line span [start_line, end_line] that overlaps the target's (both inclusive). Rank is the 1-based position of the first such result.",
+  "file": "hit when a ranked result in the top k has file_path equal to the target's path.",
+  "ranked_only": "results with fused_rank null (graph or cross-project appendix members) are not scored",
+  "chunker_independent": "the rule uses only path and line span at a pinned commit, never a chunk id, so the set survives chunker changes. A result chunk that spans the whole target region (or a large enclosing chunk) counts as a hit."
+ },
+ "span_check": "span_sha256 in targets.json is the sha256 of the target's lines start_line..end_line (1-based, inclusive) of the file at the pinned commit, as raw bytes joined by \\n. The harness checks every one against the materialized corpus before indexing.",
+ "files": {
+  "targets.json": "tid, path, start_line, end_line, name, language, node_type, span_sha256",
+  "queries.json": "tid, style, query"
+ }
+}
